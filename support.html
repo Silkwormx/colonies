@@ -214,11 +214,15 @@ section.block li b { color: var(--fg); font-weight: 600; }
   font-size: 0.82rem;
   letter-spacing: 0.04em;
 }
+
+.foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem 1.1rem; margin-bottom: 0.5rem; }
+.foot-nav a { color: var(--muted); text-decoration: none; min-height: 32px; display: inline-flex; align-items: center; }
+.foot-nav a:hover, .foot-nav a:focus-visible { color: var(--accent); }
 </style>
 </head>
 <body>
 <div class="topbar">
-  <a class="back" href="index.html">← Colonies</a>
+  <a class="back" href="index.html">← Home</a>
   <div class="brand">Colonies</div>
 </div>
 
@@ -285,7 +289,7 @@ section.block li b { color: var(--fg); font-weight: 600; }
   </aside>
 </main>
 
-<footer class="foot">Colonies · six missions</footer>
+<footer class="foot"><nav class="foot-nav" aria-label="Site"><a href="index.html">Home</a><a href="missions.html">Missions</a><a href="about.html">About</a><a href="support.html">Support the next mission</a></nav>Colonies · six missions</footer>
 
 <script>
 (function () {

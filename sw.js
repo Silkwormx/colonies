@@ -1,9 +1,10 @@
-const CACHE = 'colonies-v25';
+const CACHE = 'colonies-v27';
 const PRECACHE = [
   './',
   './index.html',
   './support.html',
   './missions.html',
+  './about.html',
   './manifest.json',
   './hero-landing.jpg',
   './hero-someday.jpg',

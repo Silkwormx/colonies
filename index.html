@@ -635,9 +635,29 @@ footer.app-foot {
   color: var(--soft); text-align: center;
 }
 .premise .pl{display:block;text-wrap:balance}
+/* One-screen home: no scroll */
+html, body { height: 100%; }
+body.home { min-height: 0; height: 100dvh; overflow: hidden; }
+.hero { height: 100dvh; min-height: 0; }
+.hero-spacer { min-height: 0 !important; }
+.hero-actions { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  padding: 0 1.25rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); width: 100%; max-width: 520px; margin: 0 auto; }
+.hero-actions .hero-cta { margin: 0; }
+.hero-actions #missionStartBtn { min-height: 54px; padding: 0.95rem 2rem; font-size: 1.05rem; width: min(100%, 320px); }
+.hero-actions #watchIntroBtn { min-height: 46px; padding: 0.6rem 1.3rem; font-size: 0.92rem; color: #f3e2c4; width: min(100%, 320px); }
+.hero-links { display: flex; gap: 0.55rem; justify-content: center; flex-wrap: wrap; width: 100%; }
+.hero-links .hero-cta { min-height: 44px; padding: 0.5rem 1.05rem; font-size: 0.85rem; }
+.hero-actions .hero-cta-secondary { background: rgba(20,12,8,0.62); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+@media (max-height: 700px) {
+  .hero-copy { padding-top: 1.1rem !important; }
+  .hero-copy h1 { font-size: clamp(2.3rem, 11vw, 3rem) !important; }
+  .eyebrow { margin-bottom: 0.5rem; }
+  .hero-actions { gap: 0.5rem; padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px)); }
+  .hero-actions #missionStartBtn { min-height: 50px; padding: 0.8rem 1.6rem; }
+}
 </style>
 </head>
-<body>
+<body class="home">
 <header class="hero" id="top">
   <div class="hero-media" id="heroMedia">
     <img src="hero-landing.jpg" alt="Bare Mars landing site — the colony begins" class="now" />
@@ -649,72 +669,17 @@ footer.app-foot {
     <div class="eyebrow">Building a new home on another world</div>
     <h1>Colonies</h1>
     <p class="premise"><span class="pl">Two ants. One empty planet. Two years to make it a home.</span> <span class="pl">They’re going to need all the help they can get.</span></p>
-    <div class="hero-cta-wrap">
-      <button type="button" class="hero-cta" id="watchIntroBtn"><span class="cta-play" aria-hidden="true"></span>Watch the intro</button>
-      <a class="hero-cta hero-cta-secondary" id="missionStartBtn" href="mission1/index.html">Begin the adventure</a>
-    </div>
   </div>
   <div class="hero-spacer" aria-hidden="true"></div>
+  <nav class="hero-actions" aria-label="Start here">
+    <a class="hero-cta" id="missionStartBtn" href="missions.html">Begin the adventure</a>
+    <button type="button" class="hero-cta hero-cta-secondary" id="watchIntroBtn"><span class="cta-play" aria-hidden="true"></span>Watch the intro</button>
+    <div class="hero-links">
+      <a class="hero-cta hero-cta-secondary" href="about.html">About</a>
+      <a class="hero-cta hero-cta-secondary" href="support.html">Support the next mission</a>
+    </div>
+  </nav>
 </header>
-
-
-<section class="why" aria-labelledby="why-heading">
-  <div class="eyebrow">The idea</div>
-  <h2 id="why-heading">Why Colonies</h2>
-  <p>Space is amazing, but learning how life on Mars would actually work usually feels like homework. And the fun stuff, like shows and games, rarely explains anything real.</p>
-  <p>Colonies turns real Mars science into a story worth following. Two ants try to make a home on an empty planet, one problem at a time. You read their story, then solve the same problem they’re facing. It’s fun first, and you learn without noticing.</p>
-</section>
-
-<section class="section" aria-labelledby="missions-heading">
-  <div class="section-head">
-    <h2 id="missions-heading">Missions</h2>
-    <p>One Mars problem at a time</p>
-  </div>
-  <div class="rail-wrap">
-    <div class="rail" id="missionRail">
-      <!-- filled from MISSIONS -->
-    </div>
-  </div>
-</section>
-
-<section class="crew" aria-label="Kepler and Comet">
-  <div class="crew-card">
-    <div class="crew-faces">
-      <figure class="crew-person">
-        <img class="face" src="art/kepler_portrait.jpg" alt="Portrait of Kepler" width="96" height="96" />
-        <figcaption class="crew-name">Kepler</figcaption>
-      </figure>
-      <figure class="crew-person">
-        <img class="face" src="art/comet_portrait.jpg" alt="Portrait of Comet" width="96" height="96" />
-        <figcaption class="crew-name">Comet</figcaption>
-      </figure>
-    </div>
-    <div class="crew-text">
-      <h3>Kepler &amp; Comet</h3>
-      <p class="who">Kepler builds carefully and says very little. Comet builds quickly and says everything.</p>
-      <div class="guide-box">
-        <div class="guide-title">The Colony Guide</div>
-        <div class="guide-topic">Mars Gravity</div>
-        <p>About 38% of Earth's. Everything is lighter except the workload.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="someday" aria-label="Where this is going">
-  <div class="someday-inner">
-    <img src="hero-someday.jpg" alt="Lush banyan dome — the series end goal" />
-    <div class="someday-cap">
-      <span>Where this is going</span>
-      <p>A forest under glass — the banyan dome at journey's end.</p>
-    </div>
-  </div>
-</section>
-
-<section class="cta">
-  <a class="feed-btn" href="support.html">Support the next mission</a>
-  <p class="note">Watching stays free. New missions ship when they're finished.</p>
-</section>
 
 
 <div class="intro-modal" id="introModal" hidden role="dialog" aria-modal="true" aria-labelledby="introModalTitle">
@@ -728,7 +693,7 @@ footer.app-foot {
         controls
         preload="metadata"></video>
       <div class="intro-end" id="introEnd" hidden>
-        <a class="intro-end-primary" id="introEndStart" href="mission1/index.html">Begin the adventure</a>
+        <a class="intro-end-primary" id="introEndStart" href="missions.html">Begin the adventure</a>
         <button type="button" class="intro-end-again" id="introEndAgain">Watch again</button>
       </div>
     </div>
@@ -736,7 +701,6 @@ footer.app-foot {
   </div>
 </div>
 
-<footer class="app-foot">Colonies · six missions · illustrated scroll stories</footer>
 
 <script>
 (function () {
@@ -846,10 +810,11 @@ footer.app-foot {
     if (!el) return;
     const c = missionCta();
     if (!c) return;
-    if (el.tagName === 'A') el.href = c.path;
+    if (el.tagName === 'A') el.setAttribute('href', 'missions.html');
     el.textContent = c.label;
   }
   renderMissions();
+  applyMissionCta(document.getElementById('missionStartBtn'));
   // PWA
 
   // Watch the intro modal (+ end overlay)

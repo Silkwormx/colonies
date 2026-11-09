@@ -1109,7 +1109,7 @@
       "title": "End of log",
       "img": null,
       "hold_sec": 0.6,
-      "html": "<p class=\"log-head\">End of log</p><div class=\"log-body\"><p><span data-clip=\"a1_end\">Survey complete for air. Open the problem set, or pick another mission.</span></p><div class=\"end-actions\"><a class=\"btn primary\" href=\"solve/index.html\">Solve it</a><a class=\"btn ghost\" href=\"../missions.html\">Explore a mission</a></div></div>",
+      "html": "<p class=\"log-head\">End of log</p><div class=\"log-body\"><p><span data-clip=\"a1_end\">Survey complete for air. Open the problem set, or pick another mission.</span></p><div class=\"end-actions\"><a class=\"btn primary\" href=\"/colonies/mission1/solve/index.html\">Solve it</a><a class=\"btn ghost\" href=\"/colonies/missions.html\">Explore a mission</a></div></div>",
       "clips": [
         {
           "id": "a1_end",

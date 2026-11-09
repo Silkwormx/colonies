@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1a0f0a" />
+<meta name="description" content="Why Colonies exists, and the two ants at the heart of the story." />
+<title>About · Colonies</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #140c08; --bg-elev: #1f130d; --card: #27180f;
+  --fg: #f6eadc; --muted: #c9a88a; --soft: #a8886c;
+  --accent: #e8a05a; --accent-deep: #c9783a;
+  --line: rgba(232,160,90,0.22); --shadow: 0 18px 50px rgba(0,0,0,0.45);
+  --radius: 22px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  line-height: 1.55; -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+a { color: var(--accent); }
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: rgba(20,12,8,0.82);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar a.back {
+  text-decoration: none; color: var(--fg);
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 600;
+  min-height: 44px; display: inline-flex; align-items: center;
+}
+.topbar .brand {
+  font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.05rem;
+  color: var(--muted);
+}
+.hero-band {
+  position: relative; height: min(38vw, 280px); min-height: 200px; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: #1a100c;
+}
+.hero-band img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: brightness(0.78); }
+.hero-band .veil {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,12,8,0.25) 0%, transparent 35%, rgba(20,12,8,0.88) 100%);
+  display: flex; align-items: flex-end; padding: 1.5rem 1.35rem;
+}
+.hero-band h1 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(1.65rem, 5.5vw, 2.5rem); font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1.12;
+  text-wrap: balance;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.35rem 3.5rem; }
+.tag {
+  font-family: Fraunces, Georgia, serif; font-style: italic;
+  color: var(--accent); margin-bottom: 1.65rem; font-size: 1.05rem;
+}
+section.block { margin-bottom: 2.15rem; }
+section.block h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.35rem; font-weight: 600; margin-bottom: 0.65rem;
+}
+section.block p, section.block li {
+  color: var(--muted); font-size: 1.02rem;
+}
+section.block p + p { margin-top: 0.7rem; }
+section.block ul {
+  list-style: none; padding: 0; margin-top: 0.85rem;
+  display: grid; gap: 0.7rem;
+}
+section.block li {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 0.9rem 1.05rem;
+  color: var(--muted);
+}
+section.block li b { color: var(--fg); font-weight: 600; }
+
+.x-card {
+  display: flex; align-items: center; gap: 0.95rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.05rem 1.15rem;
+  box-shadow: var(--shadow);
+  margin-top: 0.85rem;
+}
+.x-icon {
+  flex-shrink: 0;
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: #0c0806;
+  border: 1px solid rgba(246,234,220,0.18);
+  display: grid; place-items: center;
+  color: var(--fg);
+}
+.x-icon svg { width: 18px; height: 18px; display: block; }
+.x-card .x-body { flex: 1; min-width: 0; }
+.x-card .x-title {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.05rem; font-weight: 600; color: var(--fg);
+  margin-bottom: 0.15rem;
+}
+.x-card .x-note { color: var(--muted); font-size: 0.92rem; line-height: 1.4; }
+.pill-soon {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 36px; padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--soft);
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(201,136,108,0.3);
+  cursor: default;
+  user-select: none;
+}
+
+.ca-box {
+  margin-top: 0.95rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem 1.1rem;
+  box-shadow: var(--shadow);
+}
+.ca-label {
+  font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 700; color: var(--accent); margin-bottom: 0.55rem;
+}
+.ca-chain {
+  font-size: 0.82rem; color: var(--soft); margin-bottom: 0.55rem;
+  display: none;
+}
+.ca-chain.show { display: block; }
+.ca-row {
+  display: flex; align-items: center; gap: 0.55rem;
+}
+.ca-field {
+  flex: 1; min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  color: var(--fg);
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(232,160,90,0.2);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ca-field.empty { color: var(--soft); font-style: italic; font-family: "Source Sans 3", system-ui, sans-serif; }
+.ca-copy {
+  flex-shrink: 0;
+  min-height: 44px; min-width: 72px;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(232,160,90,0.45);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: #1a0f0a;
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em;
+  cursor: pointer;
+  font-family: inherit;
+}
+.ca-copy:hover:not(:disabled), .ca-copy:focus-visible:not(:disabled) {
+  filter: brightness(1.05); outline: none;
+}
+.ca-copy:disabled {
+  background: rgba(0,0,0,0.28);
+  border-color: rgba(201,136,108,0.28);
+  color: var(--soft);
+  cursor: not-allowed;
+  filter: none;
+}
+.ca-pending {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+.ca-pending[hidden] { display: none !important; }
+
+.disclaimer {
+  margin-top: 2rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(201,136,108,0.25);
+  color: var(--soft);
+  font-size: 0.9rem;
+}
+.disclaimer .label {
+  display: block;
+  font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+  font-weight: 700; color: var(--muted); margin-bottom: 0.4rem;
+}
+.foot {
+  text-align: center;
+  padding: 0.25rem 1.25rem calc(2rem + var(--safe-b));
+  color: var(--soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.crew-card { display: grid; gap: 1.25rem; grid-template-columns: 1fr; margin-top: 2.15rem;
+  background: radial-gradient(ellipse at 15% 0%, rgba(232,160,90,0.12), transparent 55%), var(--bg-elev);
+  border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 1.35rem; box-shadow: var(--shadow); }
+@media (min-width: 640px) { .crew-card { grid-template-columns: 220px 1fr; align-items: center; padding: 1.5rem 1.6rem; } }
+.crew-faces { display: flex; gap: 1rem; justify-content: center; align-items: flex-start; }
+.crew-person { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; width: 96px; }
+.face { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; object-position: center 35%;
+  border: 2px solid rgba(232,160,90,0.5); box-shadow: 0 8px 24px rgba(0,0,0,0.35); background: #2a1810; display: block; }
+.crew-name { font-family: Fraunces, Georgia, serif; font-size: 0.88rem; font-weight: 600; color: var(--fg); text-align: center; }
+.crew-text h3 { font-family: Fraunces, Georgia, serif; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; }
+.crew-text .who { color: var(--muted); font-size: 0.98rem; }
+.eyebrow { font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 0.4rem; }
+.next-links { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2.15rem; }
+.next-links a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0.75rem 1.25rem;
+  border-radius: 999px; text-decoration: none; font-weight: 700; }
+.next-links a.primary { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #1a0f0a; }
+.next-links a.ghost { border: 1px solid rgba(232,160,90,0.45); color: var(--fg); }
+.foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem 1.1rem; margin-bottom: 0.5rem; }
+.foot-nav a { color: var(--muted); text-decoration: none; min-height: 32px; display: inline-flex; align-items: center; }
+.foot-nav a:hover, .foot-nav a:focus-visible { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">← Home</a>
+  <div class="brand">Colonies</div>
+</div>
+
+<main class="wrap">
+  <section class="block" aria-labelledby="why-heading">
+    <div class="eyebrow">The idea</div>
+    <h2 id="why-heading">Why Colonies</h2>
+    <p>Space is amazing, but learning how life on Mars would actually work usually feels like homework. And the fun stuff, like shows and games, rarely explains anything real.</p>
+    <p>Colonies turns real Mars science into a story worth following. Two ants try to make a home on an empty planet, one problem at a time. You read their story, then solve the same problem they’re facing. It’s fun first, and you learn without noticing.</p>
+  </section>
+
+  <section class="crew-card" aria-label="Kepler and Comet">
+    <div class="crew-faces">
+      <figure class="crew-person">
+        <img class="face" src="art/kepler_portrait.jpg" alt="Portrait of Kepler" width="96" height="96" />
+        <figcaption class="crew-name">Kepler</figcaption>
+      </figure>
+      <figure class="crew-person">
+        <img class="face" src="art/comet_portrait.jpg" alt="Portrait of Comet" width="96" height="96" />
+        <figcaption class="crew-name">Comet</figcaption>
+      </figure>
+    </div>
+    <div class="crew-text">
+      <h3>Kepler &amp; Comet</h3>
+      <p class="who">Kepler builds carefully and says very little. Comet builds quickly and says everything.</p>
+    </div>
+  </section>
+
+  <div class="next-links">
+    <a class="primary" href="missions.html">Missions</a>
+    <a class="ghost" href="support.html">Support the next mission</a>
+  </div>
+</main>
+
+<footer class="foot"><nav class="foot-nav" aria-label="Site"><a href="index.html">Home</a><a href="missions.html">Missions</a><a href="about.html">About</a><a href="support.html">Support the next mission</a></nav>Colonies · six missions</footer>
+</body>
+</html>

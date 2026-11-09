@@ -102,6 +102,8 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
 .fallback.show{display:inline-flex;align-items:center}
 
 .pill.mute[aria-pressed="true"]{opacity:.55}
+.topnav{display:flex;gap:.4rem;align-items:center}
+@media (max-width:420px){.topbar{padding-left:.5rem;padding-right:.5rem;gap:.35rem}.topbar .pill{padding:.45rem .62rem;letter-spacing:.04em}.topnav{gap:.3rem}}
 .start-overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
   background:rgba(12,7,5,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:16px;margin:.15rem .15rem .4rem}
 .start-overlay.show{display:flex}
@@ -113,7 +115,10 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
 <body>
 <div class="app">
   <div class="topbar">
-    <a class="pill" href="../index.html">← Colonies</a>
+    <div class="topnav">
+      <a class="pill" href="../missions.html" aria-label="Back to missions" title="Back to missions">← Missions</a>
+      <a class="pill" href="../index.html" aria-label="Home" title="Home">Home</a>
+    </div>
     <div style="display:flex;gap:.4rem;align-items:center">
       <button type="button" class="pill" id="raToggle" aria-pressed="false"><span class="dot"></span><span class="ra-label">Read to me</span></button>
       <button type="button" class="pill mute" id="muteBtn" aria-pressed="false" aria-label="Mute">Mute</button>
@@ -234,6 +239,7 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
   function renderPage(){
     const pg=book.pages[pageIndex], total=book.pages.length;
     pageMeta.textContent=(pageIndex+1)+' / '+total+kindLabel(pg);
+    const isEnd=pg.kind==='end'; hitLeft.style.display=isEnd?'none':''; hitRight.style.display=isEnd?'none':'';
     if((pg.kind==='scene' || pg.kind==='note' || (pg.kind==='intro' && pg.img)) && pg.img && pg.html){
       const sketch=/note|intro2|intro3/.test(String(pg.img));
       const extra=sketch?' note-page':'';
@@ -360,7 +366,7 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
   startBtn.onclick=()=>{ showStartOverlay(false); toggleRead(); };
   document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();next();} if(e.key==='ArrowLeft'){e.preventDefault();prev();} if(e.key===' '){e.preventDefault();toggleRead();} });
   let tx=null,ty=null; const wrap=document.getElementById('stageWrap');
-  wrap.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;},{passive:true});
+  wrap.addEventListener('touchstart',e=>{if(e.target.closest&&e.target.closest('a,.end-actions')){tx=ty=null;return;}const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;},{passive:true});
   wrap.addEventListener('touchend',e=>{if(tx==null)return;const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=ty=null;if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.2)return; if(dx<0)next(); else prev();},{passive:true});
   fetch('audio/manifest.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>{
     book=m; if(!book.pages) throw 0; renderPage();
