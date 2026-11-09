@@ -116,6 +116,22 @@ section.block li b { color: var(--fg); font-weight: 600; }
   margin-bottom: 0.15rem;
 }
 .x-card .x-note { color: var(--muted); font-size: 0.92rem; line-height: 1.4; }
+a.x-card { text-decoration: none; color: inherit; transition: border-color .15s, background .15s; }
+a.x-card:hover, a.x-card:focus-visible {
+  border-color: rgba(232,160,90,0.55);
+  background: rgba(232,160,90,0.06);
+  outline: none;
+}
+.x-handle {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 36px; padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.02em;
+  color: var(--accent);
+  background: rgba(232,160,90,0.12);
+  border: 1px solid rgba(232,160,90,0.35);
+}
 .pill-soon {
   flex-shrink: 0;
   display: inline-flex; align-items: center; justify-content: center;
@@ -264,7 +280,7 @@ section.block li b { color: var(--fg); font-weight: 600; }
 <main class="wrap">
   <section class="block" aria-labelledby="problem-h">
     <h2 id="problem-h">The problem</h2>
-    <p>Most people are curious about Mars, but learning how life there would actually work usually feels like homework. And the fun stuff, like shows and games, rarely explains anything real.</p>
+    <p>Humans are already planning to live on Mars, yet most of us have no idea how anyone would breathe, stay warm or grow food there. The science is real and fascinating, but it usually comes buried in textbooks and dense articles, so curiosity fades before the learning even starts.</p>
   </section>
   <section class="block" aria-labelledby="solution-h">
     <h2 id="solution-h">The solution</h2>
@@ -295,8 +311,8 @@ section.block li b { color: var(--fg); font-weight: 600; }
 
   <section class="block" aria-labelledby="join-h">
     <h2 id="join-h">Join the colony</h2>
-    <p>The Colonies page on X is coming soon. That’s where mission news, behind-the-scenes art and colony updates will go.</p>
-    <div class="x-card" aria-label="Colonies on X — coming soon">
+    <p>Follow Colonies on X for mission news, behind-the-scenes art and colony updates.</p>
+    <a class="x-card" href="https://x.com/coloniesHQ" target="_blank" rel="noopener noreferrer" aria-label="Colonies on X, @coloniesHQ">
       <div class="x-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.727-8.839L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
       </div>
@@ -304,8 +320,8 @@ section.block li b { color: var(--fg); font-weight: 600; }
         <div class="x-title">Colonies on X</div>
         <div class="x-note">Mission news and colony updates</div>
       </div>
-      <span class="pill-soon" aria-disabled="true">Coming soon</span>
-    </div>
+      <span class="x-handle">@coloniesHQ</span>
+    </a>
   </section>
 
   <div class="next-links">

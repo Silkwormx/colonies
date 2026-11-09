@@ -101,13 +101,12 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
 .fallback{position:fixed;left:50%;bottom:calc(1rem + var(--safe-b));transform:translateX(-50%);z-index:40;display:none;min-height:44px;padding:.7rem 1.1rem;border-radius:999px;border:1px solid var(--accent);background:rgba(26,15,10,.92)}
 .fallback.show{display:inline-flex;align-items:center}
 
-.btn-audio{flex:none;width:44px;height:44px;border-radius:50%;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(126,184,201,0.6);background:rgba(16,24,30,0.85);color:#7eb8c9;touch-action:manipulation}
-.btn-audio svg{width:24px;height:24px}
-.btn-audio .ico-off{display:none}
-.btn-audio[aria-pressed="true"]{background:rgba(126,184,201,0.28);border-color:#7eb8c9;color:#eaf6fa;box-shadow:0 0 0 3px rgba(126,184,201,0.35)}
-.btn-audio.is-off{color:var(--muted);border-color:rgba(232,160,90,0.45)}
-.btn-audio.is-off .ico-spk{display:none}
-.btn-audio.is-off .ico-off{display:block}
+.scene-log,.page-art.logish{position:relative}
+.box-audio{position:absolute;top:.35rem;right:.35rem;z-index:15;flex:none;width:44px;height:44px;border-radius:50%;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(126,184,201,0.6);background:rgba(16,24,30,0.9);color:#7eb8c9;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.box-audio svg{width:22px;height:22px;pointer-events:none}
+.box-audio.is-playing,.box-audio[aria-pressed="true"]{background:rgba(126,184,201,0.32);border-color:#7eb8c9;color:#eaf6fa;box-shadow:0 0 0 3px rgba(126,184,201,0.4);animation:boxAudioPulse 1.2s ease-in-out infinite}
+@keyframes boxAudioPulse{0%,100%{box-shadow:0 0 0 3px rgba(126,184,201,0.35)}50%{box-shadow:0 0 0 8px rgba(126,184,201,0)}}
+.scene-log,.page-art.logish{padding-right:3.1rem}
 .topnav{display:flex;gap:.4rem;align-items:center}
 @media (max-width:420px){.topbar{padding-left:.5rem;padding-right:.5rem;gap:.35rem}.topbar .pill{padding:.45rem .62rem;letter-spacing:.04em}.topnav{gap:.3rem}}
 .start-overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
@@ -124,13 +123,9 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     <div class="topnav">
       <a class="pill" href="../missions.html" aria-label="Back to missions" title="Back to missions">← Missions</a>
     </div>
-    <div style="display:flex;gap:.4rem;align-items:center">
-      <button type="button" class="btn-audio" id="raToggle" aria-pressed="false" aria-label="Audio on. Read aloud" title="Read aloud"><svg class="ico-spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    </div>
   </div>
   <div class="stage-wrap" id="stageWrap">
     <div class="stage" id="stage" aria-live="polite"></div>
-    <div class="start-overlay" id="startOverlay"><button type="button" id="startBtn">Tap to start reading</button></div>
     <button type="button" class="hit left" id="hitLeft" aria-label="Previous page"></button>
     <button type="button" class="hit right" id="hitRight" aria-label="Next page"></button>
   </div>
@@ -146,89 +141,53 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
   try{const k='colonies_read_missions';const r=JSON.parse(localStorage.getItem(k)||'[]');if(!r.includes('m1')){r.push('m1');localStorage.setItem(k,JSON.stringify(r));}}catch(e){}
   const stage=document.getElementById('stage'), pageMeta=document.getElementById('pageMeta'), dots=document.getElementById('dots');
   const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
-  const raToggle=document.getElementById('raToggle'), fallback=document.getElementById('fallback');
-  const startOverlay=document.getElementById('startOverlay'), startBtn=document.getElementById('startBtn');
+  const fallback=document.getElementById('fallback');
+  const hitLeft=document.getElementById('hitLeft'), hitRight=document.getElementById('hitRight');
   const audio=document.createElement('audio'); audio.setAttribute('playsinline',''); audio.preload='auto'; audio.style.display='none'; document.body.appendChild(audio);
-  const bgm=document.createElement('audio'); bgm.setAttribute('playsinline',''); bgm.preload='auto'; bgm.loop=true; bgm.volume=0.12; bgm.style.display='none'; document.body.appendChild(bgm);
-  let book=null, pageIndex=0, token=0, readingAll=false, turning=false, muted=false, userStopped=false, bgmOn=false;
-  // One shared on/off audio choice with the Solve-it games
-  const AUDIO_KEY='colonies_audio_off';
-  let audioOff=false;
-  try{ audioOff = localStorage.getItem(AUDIO_KEY)==='1'; }catch(e){}
-  if(audioOff) userStopped=true;
-  function syncAudioBtn(){
-    raToggle.classList.toggle('is-off', audioOff);
-    raToggle.setAttribute('aria-pressed', readingAll?'true':'false');
-    raToggle.setAttribute('aria-label', audioOff ? 'Audio off. Tap to turn on' : (readingAll ? 'Audio on, reading. Tap to stop' : 'Audio on. Read aloud'));
-    raToggle.title = audioOff ? 'Audio off' : 'Read aloud';
-  }
-  function setAudioOff(off){ audioOff=!!off; try{localStorage.setItem(AUDIO_KEY, off?'1':'0');}catch(e){} syncAudioBtn(); }
-  syncAudioBtn();
+  let book=null, pageIndex=0, token=0, turning=false, activeBtn=null;
+  const SPEAKER_SVG="<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9H4z\" fill=\"currentColor\"/><path d=\"M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>";
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   function setActive(el){document.querySelectorAll('.ra-active').forEach(n=>n.classList.remove('ra-active')); if(el) el.classList.add('ra-active');}
   function showFallback(retry){fallback.classList.add('show'); fallback.onclick=()=>{fallback.classList.remove('show'); if(retry) retry();};}
-  function showStartOverlay(show){ startOverlay.classList.toggle('show', !!show); }
-  function stopVoice(){ try{audio.pause(); audio.removeAttribute('src'); audio.load();}catch(e){} try{speechSynthesis&&speechSynthesis.cancel();}catch(e){} setActive(null); }
-  function stopBgm(fade){
-    if(!bgmOn && bgm.paused) return;
-    bgmOn=false;
-    if(!fade){ try{bgm.pause();}catch(e){} return; }
-    const startVol=bgm.volume, t0=performance.now();
-    const step=(now)=>{
-      const p=Math.min(1,(now-t0)/350);
-      bgm.volume=Math.max(0, startVol*(1-p));
-      if(p<1 && !bgmOn) requestAnimationFrame(step);
-      else { try{bgm.pause();}catch(e){} bgm.volume=muted?0:0.12; }
-    };
-    requestAnimationFrame(step);
+  function setBtnPlaying(btn,on){
+    if(!btn) return;
+    btn.classList.toggle('is-playing', !!on);
+    btn.setAttribute('aria-pressed', on?'true':'false');
+    btn.setAttribute('aria-label', on?'Stop audio':'Play audio');
+    btn.title = on?'Stop':'Play';
   }
-  function stopAudio(){ token++; stopVoice(); stopBgm(false); }
-  function pageWantsBgm(pg){ return false; }
-  async function ensureBgm(pg){
-    // Background music removed (it hissed under the intro); manifest bgm fields are ignored
-    stopBgm(false); return;
-    const src = (pg && pg.bgm) ? ('audio/'+pg.bgm) : (pageWantsBgm(pg) ? 'audio/theme_intro.mp3' : null);
-    if(!src){ if(bgmOn) stopBgm(true); return; }
-    const abs = new URL(src, location.href).href;
-    if(!bgm.src.endsWith('theme_intro.mp3') && bgm.src !== abs){
-      bgm.src = src; bgm.currentTime=0;
-    } else if(!bgm.src){ bgm.src = src; }
-    bgm.volume = muted ? 0 : 0.12;
-    try{
-      const p=bgm.play();
-      bgmOn=true;
-      // never let background music hold up narration
-      if(p && p.catch) await Promise.race([p.catch(()=>{}), sleep(1200)]);
-    }catch(e){ bgmOn=false; }
+  function stopVoice(){
+    token++;
+    try{audio.pause();}catch(e){}
+    try{audio.removeAttribute('src'); audio.src='';}catch(e){}
+    try{speechSynthesis&&speechSynthesis.cancel();}catch(e){}
+    setActive(null);
+    if(activeBtn){ setBtnPlaying(activeBtn,false); activeBtn=null; }
   }
-  // Play one clip. Resolves 'ok' | 'error' | 'blocked' | 'cancel'. Never hangs:
-  // a watchdog resolves if 'ended' never fires (stalled network, decode hiccup, iOS quirks).
-  function playSrc(src, expectSec){return new Promise(resolve=>{
-    if(muted){ resolve('ok'); return; }
-    let done=false, wd=null; const my=token;
+  // Play one clip exactly once. Generation token ignores stale ended/error from stopVoice()'s load().
+  function playSrc(src, expectSec, my){return new Promise(resolve=>{
+    let done=false, wd=null;
     const fin=r=>{ if(done)return; done=true; clearTimeout(wd); clearInterval(poll);
-      ['ended','error','stalled'].forEach(ev=>audio.removeEventListener(ev,handlers[ev]));
+      ['ended','error','stalled','playing'].forEach(ev=>audio.removeEventListener(ev,handlers[ev]));
       resolve(my!==token?'cancel':r); };
-    const handlers={ ended:()=>fin('ok'), error:()=>fin('error'), stalled:()=>{} };
-    ['ended','error','stalled'].forEach(ev=>audio.addEventListener(ev,handlers[ev]));
-    // cancel promptly if the page is turned or reading stops
+    const handlers={ ended:()=>fin('ok'), error:()=>{ if(!(audio.getAttribute('src')||audio.src||'').includes(src.split('/').pop())) return; fin('error'); }, stalled:()=>{}, playing:()=>{} };
     const poll=setInterval(()=>{ if(my!==token) fin('cancel'); }, 120);
-    const armWatchdog=()=>{ clearTimeout(wd);
+    handlers.playing=()=>{ clearTimeout(wd);
       const d=(isFinite(audio.duration)&&audio.duration>0)?audio.duration:(expectSec||4);
       wd=setTimeout(()=>fin(audio.error?'error':'ok'), Math.round(d*1000/(audio.playbackRate||1))+2500); };
+    ['ended','error','stalled','playing'].forEach(ev=>audio.addEventListener(ev,handlers[ev]));
     try{
-      audio.src=src; audio.volume = muted?0:1;
-      wd=setTimeout(()=>fin('error'), 12000); // never started (404 / network)
+      audio.src=src; audio.volume=1;
+      wd=setTimeout(()=>fin('error'), 12000);
       const p=audio.play();
-      audio.addEventListener('playing',armWatchdog,{once:true});
       if(p&&p.catch)p.catch(e=>{
-        if(e&&e.name==='AbortError')return; // superseded by a newer src
+        if(e&&e.name==='AbortError')return;
         fin(e&&e.name==='NotAllowedError'?'blocked':'error');
       });
     }catch(e){ fin('error'); }
   });}
-  function speakFallback(text){return new Promise(resolve=>{
-    if(muted) return resolve(true);
+  function speakFallback(text, my){return new Promise(resolve=>{
+    if(my!==token) return resolve(false);
     let done=false; const fin=v=>{ if(!done){done=true; clearTimeout(t); resolve(v);} };
     const words=String(text||'').split(/\s+/).length;
     const t=setTimeout(()=>{ try{speechSynthesis.cancel();}catch(e){} fin(false); }, 2500+words*450);
@@ -248,6 +207,51 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     if(k==='image') return ' · Image';
     return '';
   }
+
+  function injectBoxAudio(){
+    const box=stage.querySelector('.scene-log, .page-art.logish');
+    if(!box) return;
+    if(box.querySelector('.box-audio')) return;
+    const pg=book.pages[pageIndex];
+    const clips=(pg.clips||[]).filter(c=>!c.pause);
+    if(!clips.length) return;
+    const btn=document.createElement('button');
+    btn.type='button';
+    btn.className='box-audio';
+    btn.setAttribute('aria-label','Play audio');
+    btn.title='Play';
+    btn.innerHTML=SPEAKER_SVG;
+    btn.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      toggleBox(btn);
+    });
+    btn.addEventListener('touchstart', function(e){ e.stopPropagation(); }, {passive:true});
+    btn.addEventListener('touchend', function(e){ e.stopPropagation(); }, {passive:true});
+    box.appendChild(btn);
+  }
+
+  async function toggleBox(btn){
+    if(btn.classList.contains('is-playing')){ stopVoice(); return; }
+    stopVoice();
+    const playId=token;
+    activeBtn=btn; setBtnPlaying(btn,true);
+    const pg=book.pages[pageIndex];
+    const clips=pg.clips||[];
+    for(const it of clips){
+      if(playId!==token) return;
+      if(it.pause){ setActive(null); await sleep(Math.max(80, Math.round((it.duration||.45)*1000))); continue; }
+      const el=stage.querySelector('[data-clip="'+it.id+'"]'); setActive(el);
+      const r=await playSrc('audio/'+it.file, it.duration, playId);
+      if(playId!==token || r==='cancel') return;
+      if(r==='blocked'){ setBtnPlaying(btn,false); activeBtn=null; showFallback(()=>toggleBox(btn)); return; }
+      if(r==='error'){
+        await speakFallback(it.speak||it.text||(el?el.textContent:''), playId);
+        if(playId!==token) return;
+      }
+    }
+    if(playId===token){ setActive(null); setBtnPlaying(btn,false); if(activeBtn===btn) activeBtn=null; }
+  }
+
   function renderPage(){
     const pg=book.pages[pageIndex], total=book.pages.length;
     pageMeta.textContent=(pageIndex+1)+' / '+total+kindLabel(pg);
@@ -262,46 +266,9 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
       stage.innerHTML='<div class="page-art logish">'+(pg.html||'')+'</div>';
     }
     prevBtn.disabled=pageIndex<=0; nextBtn.disabled=pageIndex>=total-1; renderDots();
+    injectBoxAudio();
   }
 
-  async function playPageClips(){
-    const pg=book.pages[pageIndex]; const clips=pg.clips||[]; const my=token;
-    await ensureBgm(pg);
-    if((pg.hold || pg.kind==='image') && !clips.some(c=>!c.pause)){
-      const sec = pg.hold_sec != null ? pg.hold_sec : 3;
-      const end = Date.now() + Math.round(sec*1000);
-      while(Date.now() < end){
-        if(my!==token || !readingAll) return false;
-        await sleep(100);
-      }
-      return my===token && readingAll;
-    }
-    for(const it of clips){
-      if(my!==token) return false;
-      if(it.pause){ setActive(null); await sleep(Math.max(80, Math.round((it.duration||.45)*1000))); continue; }
-      const el=stage.querySelector('[data-clip="'+it.id+'"]'); setActive(el);
-      const r=await playSrc('audio/'+it.file, it.duration);
-      if(my!==token || r==='cancel') return false;
-      if(r==='blocked') return 'blocked';
-      if(r==='error'){ // missing or broken clip: try the device voice, then just move on
-        await speakFallback(it.speak||it.text||(el?el.textContent:''));
-        if(my!==token) return false;
-      }
-    }
-    if(my===token) setActive(null);
-    const hold = pg.hold_sec != null ? pg.hold_sec : (pg.kind==='scene' ? 1.0 : 0.6);
-    if(hold > 0){
-      const end = Date.now() + Math.round(hold*1000);
-      while(Date.now() < end){
-        if(my!==token || !readingAll) return false;
-        await sleep(80);
-      }
-    }
-    return my===token && readingAll;
-  }
-
-  // Page turns are never queued behind narration. A turn requested mid-animation
-  // is remembered (latest wins) and applied right after, so nav can never deadlock.
   let pendingTurn=null, turnTarget=0;
   async function goTo(i,dir){
     if(!book) return;
@@ -309,7 +276,7 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     if(turning){ pendingTurn={i,dir}; return; }
     if(i===pageIndex) return;
     turning=true; turnTarget=i;
-    token++; stopVoice();
+    stopVoice();
     try{
       const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
       const out=dir>=0?'turn-out-next':'turn-out-prev'; const inn=dir>=0?'turn-in-next':'turn-in-prev';
@@ -320,59 +287,37 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
       stage.classList.remove(inn);
     } finally { turning=false; }
     if(pendingTurn){ const p=pendingTurn; pendingTurn=null; if(p.i!==pageIndex){ goTo(p.i,p.dir); return; } }
-    if(readingAll) readFromHere();
-    else if(!pageWantsBgm(book.pages[pageIndex])) stopBgm(true);
-  }
-  // Read the current page, then turn to the next one. Not awaited by goTo, so
-  // a manual turn simply cancels this run (token changes) and starts a fresh one.
-  async function readFromHere(isAutoStart){
-    const my=token;
-    let r;
-    try{ r=await playPageClips(); }catch(e){ r=true; }
-    if(my!==token || !readingAll) return;
-    if(r==='blocked'){ setReading(false,{remember:false}); showStartOverlay(true); return; }
-    if(pageIndex<book.pages.length-1) goTo(pageIndex+1,1);
-    else setReading(false,{remember:false});
-  }
-  function setReading(on, opts){
-    opts=opts||{};
-    readingAll=on;
-    if(!on){
-      stopAudio();
-      if(opts.remember!==false){
-        userStopped=true;
-        setAudioOff(true);
-      }
-    } else {
-      userStopped=false;
-      if(audioOff) setAudioOff(false);
-      showStartOverlay(false);
-    }
-    syncAudioBtn();
-  }
-  function toggleRead(){
-    if(readingAll){ setReading(false); return; }
-    setReading(true); token++; stopVoice();
-    readFromHere();
-  }
-  function tryAutoStart(){
-    if(userStopped) return;
-    setReading(true, {remember:false});
-    readFromHere(true);
   }
   const tgt=d=>Math.max(0,Math.min(book?book.pages.length-1:0,(pendingTurn?pendingTurn.i:(turning?turnTarget:pageIndex))+d));
   const next=()=>{ if(book) goTo(tgt(1),1); }, prev=()=>{ if(book) goTo(tgt(-1),-1); };
-  prevBtn.onclick=prev; nextBtn.onclick=next; hitLeft.onclick=prev; hitRight.onclick=next;
-  raToggle.onclick=toggleRead;
-  startBtn.onclick=()=>{ showStartOverlay(false); toggleRead(); };
-  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();next();} if(e.key==='ArrowLeft'){e.preventDefault();prev();} if(e.key===' '){e.preventDefault();toggleRead();} });
+  function hitTurn(dir){
+    return function(e){
+      // Hit overlays sit above the page; peek underneath so the in-box speaker still receives taps
+      const hits=[hitLeft,hitRight];
+      hits.forEach(h=>{ h.style.pointerEvents='none'; });
+      const under=document.elementFromPoint(e.clientX, e.clientY);
+      hits.forEach(h=>{ h.style.pointerEvents=''; });
+      const btn=under && under.closest && under.closest('.box-audio');
+      if(btn){ btn.click(); return; }
+      if(under && under.closest && under.closest('a,.end-actions')) return;
+      if(dir>0) next(); else prev();
+    };
+  }
+  prevBtn.onclick=prev; nextBtn.onclick=next; hitLeft.onclick=hitTurn(-1); hitRight.onclick=hitTurn(1);
+  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();next();} if(e.key==='ArrowLeft'){e.preventDefault();prev();} });
   let tx=null,ty=null; const wrap=document.getElementById('stageWrap');
-  wrap.addEventListener('touchstart',e=>{if(e.target.closest&&e.target.closest('a,.end-actions')){tx=ty=null;return;}const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;},{passive:true});
-  wrap.addEventListener('touchend',e=>{if(tx==null)return;const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=ty=null;if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.2)return; if(dx<0)next(); else prev();},{passive:true});
+  wrap.addEventListener('touchstart',e=>{
+    if(e.target.closest&&e.target.closest('a,.end-actions,.box-audio')){tx=ty=null;return;}
+    const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;
+  },{passive:true});
+  wrap.addEventListener('touchend',e=>{
+    if(tx==null)return;
+    if(e.target.closest&&e.target.closest('.box-audio')){tx=ty=null;return;}
+    const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=ty=null;
+    if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.2)return; if(dx<0)next(); else prev();
+  },{passive:true});
   fetch('audio/manifest.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>{
     book=m; if(!book.pages) throw 0; renderPage();
-    // Opening the mission is the user gesture from the home link — auto-start Read to me
-    setTimeout(()=>{ tryAutoStart(); }, 60);
   }).catch(()=>{stage.innerHTML='<div class="page-art logish"><p>Could not load the log.</p></div>';});
 })();
 </script>

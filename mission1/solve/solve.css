@@ -320,19 +320,32 @@ body { padding-top: calc(3.6rem + env(safe-area-inset-top, 0px)); }
   scroll-margin-top: calc(4.5rem + env(safe-area-inset-top, 0px));
 }
 
-/* Single Read aloud on/off toggle — same spot (top bar, right) on every games page */
-.btn-audio {
-  flex: none; width: 44px; height: 44px; border-radius: 50%; padding: 0; margin-left: 0.1rem;
-  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
-  border: 1px solid rgba(126,184,201,0.6); background: rgba(16,24,30,0.85);
-  color: var(--guide); touch-action: manipulation;
+/* Per-box speaker (instructions, goal, hint, result, finale) */
+.how, .how-box, #how-box, .goal-panel, .happening-panel, .hint-panel, .ox-result, #done, .done-card, .feedback.show {
+  position: relative;
 }
-.btn-audio svg { width: 24px; height: 24px; }
-.btn-audio .ico-off { display: none; }
-.btn-audio[aria-pressed="true"] { background: rgba(126,184,201,0.28); border-color: var(--guide); color: #eaf6fa; box-shadow: 0 0 0 3px rgba(126,184,201,0.35), 0 4px 14px rgba(0,0,0,0.45); }
-.btn-audio.is-off { color: var(--muted); border-color: rgba(232,160,90,0.45); }
-.btn-audio.is-off .ico-spk { display: none; }
-.btn-audio.is-off .ico-off { display: block; }
-.btn-audio.needs-tap { animation: audioPulse 1.4s ease-in-out infinite; }
-@keyframes audioPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(126,184,201,0.55); } 50% { box-shadow: 0 0 0 10px rgba(126,184,201,0); } }
-.btn-speak, .btn-read, .btn-mute, .tap-to-hear { display: none !important; }
+.has-box-audio { position: relative; }
+.how.has-box-audio, #how-box.has-box-audio, .goal-panel.has-box-audio,
+.happening-panel.has-box-audio, .hint-panel.has-box-audio, .ox-result.has-box-audio,
+#done.has-box-audio, .done-card.has-box-audio {
+  padding-right: 3.1rem;
+}
+.box-audio {
+  position: absolute; top: 0.35rem; right: 0.35rem; z-index: 5;
+  flex: none; width: 44px; height: 44px; border-radius: 50%; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+  border: 1px solid rgba(126,184,201,0.6); background: rgba(16,24,30,0.9);
+  color: var(--guide); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+.box-audio svg { width: 22px; height: 22px; pointer-events: none; }
+.box-audio.is-playing, .box-audio[aria-pressed="true"] {
+  background: rgba(126,184,201,0.32); border-color: var(--guide); color: #eaf6fa;
+  box-shadow: 0 0 0 3px rgba(126,184,201,0.4);
+  animation: boxAudioPulse 1.2s ease-in-out infinite;
+}
+@keyframes boxAudioPulse {
+  0%,100% { box-shadow: 0 0 0 3px rgba(126,184,201,0.35); }
+  50% { box-shadow: 0 0 0 8px rgba(126,184,201,0); }
+}
+.box-audio-inline { position: static; margin-left: 0.35rem; }
+.btn-speak, .btn-read, .btn-mute, .tap-to-hear, .btn-audio, #read-instr { display: none !important; }

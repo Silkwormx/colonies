@@ -1,4 +1,4 @@
-/* Colonies · Mission 1 · Solve it — shared helpers + full read-aloud help */
+/* Colonies · Mission 1 · Solve it — shared helpers + per-box read-aloud */
 (function () {
   var KEY = 'colonies_solved_m1';
   var GAMES = [
@@ -37,6 +37,7 @@
     el.className = 'feedback show ' + (kind || '');
     el.innerHTML = html;
     clearTimeout(fbTimer);
+    // Feedback lines are short status text with no clip — no speaker
   }
   function clearFeedback() {
     var el = document.getElementById('feedback');
@@ -44,9 +45,7 @@
   }
 
   var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#2f4a3a" stroke="#8fc0a0" stroke-width="1.2"/><path d="M7 12.5l3.2 3.2L17.2 8.6" fill="none" stroke="#e9f3ea" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  var PLAY_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>';
-  var SPEAKER_SVG = '<svg class="ico-spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
-  var STOP_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1" fill="currentColor"/></svg>';
+  var SPEAKER_SVG = "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9H4z\" fill=\"currentColor\"/><path d=\"M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>";
 
   function finish(opts) {
     var id = document.body.getAttribute('data-game');
@@ -78,15 +77,16 @@
     panel.hidden = false;
     panel.setAttribute('data-result-clip', resultClip || '');
     document.getElementById('again').addEventListener('click', function () { location.reload(); });
-    bindSpeakButtons(panel);
+    if (resultClip) attachBoxAudio(panel.querySelector('.done-card') || panel, function () { return [resultClip]; });
     setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
-    autoSay(resultClip ? [resultClip] : []);
     var st = document.getElementById('solved-flag');
     if (st) { st.innerHTML = CHECK + '<span>Solved</span>'; st.hidden = false; }
   }
 
   function initHeader() {
-    ensureAudioChrome();
+    // Remove any leftover global audio toggle from older cached pages
+    var old = document.getElementById('read-instr');
+    if (old) old.remove();
     var id = document.body.getAttribute('data-game');
     if (!id) return;
     var st = document.getElementById('solved-flag');
@@ -95,7 +95,7 @@
     for (var i = 0; i < GAMES.length; i++) if (GAMES[i].id === id && n) n.textContent = (i + 1) + ' of ' + GAMES.length;
   }
 
-  /* ---------- Single shared audio element, play/stop, sentence highlight ---------- */
+  /* ---------- Single shared audio element; per-box speaker; play-once ---------- */
   var help = {
     byId: {},
     queue: [],
@@ -108,10 +108,7 @@
     happening: {},
     audio: null,
     ready: false,
-    autoSpoken: {},
-    muted: (function () { try { return localStorage.getItem('colonies_audio_off') === '1'; } catch (e) { return false; } })(),
-    pendingAuto: null,
-    openBooted: false
+    playGen: 0
   };
 
   function audioEl() {
@@ -137,56 +134,63 @@
     if (!btn) return;
     btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     btn.classList.toggle('is-playing', !!on);
-    var lab = btn.querySelector('span');
-    if (btn.id === 'read-instr') syncAudioBtn(btn);
-    if (lab && btn.classList.contains('btn-speak') && btn.dataset.label) {
-      lab.textContent = on ? 'Stop' : btn.dataset.label;
-    }
+    btn.setAttribute('aria-label', on ? 'Stop audio' : 'Play audio');
+    btn.title = on ? 'Stop' : 'Play';
   }
 
   function stopAll() {
+    help.playGen++;
     var a = audioEl();
-    try { a.pause(); a.removeAttribute('src'); a.load(); } catch (e) {}
+    try { a.pause(); } catch (e) {}
+    try { a.removeAttribute('src'); a.src = ''; } catch (e) {}
     help.playing = false;
     help.queue = [];
     clearHighlight();
     if (help.activeBtn) setBtnPlaying(help.activeBtn, false);
     help.activeBtn = null;
-    var ri = document.getElementById('read-instr');
-    if (ri) setBtnPlaying(ri, false);
+    document.querySelectorAll('.box-audio.is-playing').forEach(function (b) { setBtnPlaying(b, false); });
   }
 
   function playQueue(ids, btn) {
-    help.stopPending = false;
+    // Always cancel first so a stale ended/error from the previous src cannot chain into this run
     stopAll();
-    if (help.muted) return;
+    var gen = help.playGen;
     var clips = [];
     ids.forEach(function (id) { if (help.byId[id]) clips.push(help.byId[id]); });
     if (!clips.length) return;
     help.queue = clips;
     help.playing = true;
-    help.activeBtn = btn || document.getElementById('read-instr');
-    setBtnPlaying(help.activeBtn, true);
-    playNext();
+    help.activeBtn = btn || null;
+    if (help.activeBtn) setBtnPlaying(help.activeBtn, true);
+    playNext(gen);
   }
 
-  function playNext() {
-    if (!help.playing || !help.queue.length) { stopAll(); return; }
+  function playNext(gen) {
+    if (gen !== help.playGen) return;
+    if (!help.playing || !help.queue.length) {
+      if (gen === help.playGen) stopAll();
+      return;
+    }
     var clip = help.queue.shift();
     clearHighlight();
     var targets = document.querySelectorAll('[data-clip="' + clip.id + '"]');
     targets.forEach(function (el) {
-      if (el.classList.contains('btn-speak') || el.classList.contains('btn-read')) return;
+      if (el.classList.contains('box-audio') || el.classList.contains('btn-speak') || el.classList.contains('btn-read')) return;
       el.classList.add('is-reading');
     });
-    // Also highlight instruction lines
     var line = document.querySelector('.instr-line[data-clip="' + clip.id + '"]');
     if (line) line.classList.add('is-reading');
     var a = audioEl();
     a.setAttribute('playsinline', '');
-    a.src = 'audio/' + clip.file;
+    var file = clip.file;
+    a.src = 'audio/' + file;
     var p = a.play();
-    if (p && p.catch) p.catch(function () { stopAll(); });
+    if (p && p.catch) p.catch(function (err) {
+      if (gen !== help.playGen) return;
+      if (err && err.name === 'AbortError') return;
+      // skip broken clip, continue once
+      playNext(gen);
+    });
   }
 
   function bindAudioEvents() {
@@ -194,15 +198,19 @@
     if (a._helpBound) return;
     a._helpBound = true;
     a.addEventListener('ended', function () {
+      var gen = help.playGen;
       if (!help.playing) return;
-      if (help.queue.length) playNext();
+      if (help.queue.length) playNext(gen);
       else stopAll();
     });
     a.addEventListener('error', function () {
-      if (help.playing) {
-        if (help.queue.length) playNext();
-        else stopAll();
-      }
+      var gen = help.playGen;
+      if (!help.playing) return;
+      // Ignore teardown blanks (src cleared on stop). Only advance on a real clip error.
+      var src = a.getAttribute('src') || a.src || '';
+      if (!src || src === location.href || /\/$/.test(src)) return;
+      if (help.queue.length) playNext(gen);
+      else stopAll();
     });
   }
 
@@ -212,31 +220,59 @@
   }
 
   function speakMany(ids, btn) {
-    if (help.playing && help.activeBtn === btn) { stopAll(); return; }
+    if (btn && help.playing && help.activeBtn === btn) { stopAll(); return; }
     playQueue(ids, btn);
   }
 
+  function attachBoxAudio(host, idsFn) {
+    if (!host) return null;
+    host.classList.add('has-box-audio');
+    var existing = host.querySelector(':scope > .box-audio');
+    if (existing) existing.remove();
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'box-audio';
+    btn.setAttribute('aria-label', 'Play audio');
+    btn.title = 'Play';
+    btn.innerHTML = SPEAKER_SVG;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if (help.playing && help.activeBtn === btn) { stopAll(); return; }
+      var ids = typeof idsFn === 'function' ? idsFn() : (idsFn || []);
+      ids = (ids || []).filter(function (id) { return id && help.byId[id]; });
+      if (!ids.length) return;
+      playQueue(ids, btn);
+    });
+    host.appendChild(btn);
+    return btn;
+  }
+
   function makeSpeakBtn(clipId, label) {
+    // Legacy helper: return a box-audio-styled icon button for a single clip
     var b = document.createElement('button');
     b.type = 'button';
-    b.className = 'btn-speak';
+    b.className = 'box-audio box-audio-inline';
     b.dataset.clip = clipId;
-    b.dataset.label = label || 'Listen';
-    b.setAttribute('aria-label', label || 'Listen');
-    b.innerHTML = PLAY_SVG + '<span>' + (label || 'Listen') + '</span>';
-    b.addEventListener('click', function () { speakClip(clipId, b); });
+    b.setAttribute('aria-label', label || 'Play audio');
+    b.title = 'Play';
+    b.innerHTML = SPEAKER_SVG;
+    b.addEventListener('click', function (e) {
+      e.preventDefault(); e.stopPropagation();
+      speakClip(clipId, b);
+    });
     return b;
   }
 
   function bindSpeakButtons(root) {
+    // No-op for legacy .btn-speak markup; per-box attachBoxAudio is the path now
     (root || document).querySelectorAll('.btn-speak[data-clip]').forEach(function (b) {
       if (b._bound) return;
       b._bound = true;
-      if (!b.dataset.label) {
-        var sp = b.querySelector('span');
-        b.dataset.label = sp ? sp.textContent : 'Listen';
-      }
-      b.addEventListener('click', function () { speakClip(b.dataset.clip, b); });
+      b.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        speakClip(b.dataset.clip, b);
+      });
     });
   }
 
@@ -270,13 +306,9 @@
       '<p class="hint-text" ' + (clipId ? 'data-clip="' + clipId + '"' : '') + '>' + text + '</p>' +
       (more ? '<div class="hint-actions"><button type="button" class="btn-mini" id="hint-more">Another hint</button></div>' : '');
     panel.hidden = false;
-    bindSpeakButtons(panel);
+    if (clipId) attachBoxAudio(panel, function () { return [clipId]; });
     var moreBtn = document.getElementById('hint-more');
     if (moreBtn) moreBtn.addEventListener('click', showHint);
-    // Auto-read each new clue once (replay buttons still work)
-    if (clipId) {
-      autoSay([clipId]);
-    }
   }
 
   /* ---------- Goal + what's-happening panels ---------- */
@@ -290,8 +322,7 @@
         '</div>' +
       '<p class="gp-text" data-clip="' + g.id + '">' + g.text + '</p>';
     el.hidden = false;
-    bindSpeakButtons(el);
-    if (opts.auto !== false) autoSay([g.id]);
+    attachBoxAudio(el, function () { return [g.id]; });
   }
 
   function setHappening(stepKey, extraHtml) {
@@ -306,8 +337,7 @@
       (h ? '<p class="gp-text" data-clip="' + clip + '">' + h.text + '</p>' : '') +
       (extraHtml || '');
     el.hidden = false;
-    bindSpeakButtons(el);
-    if (clip) autoSay([clip]);
+    if (clip) attachBoxAudio(el, function () { return [clip]; });
   }
 
   function setResultLine(host, clipId, html) {
@@ -316,177 +346,26 @@
       '<div class="ox-result">' +
         '<div class="gp-top"><span class="htag">Result</span>' +
         '</div><div class="ox-result-body" data-clip="' + (clipId || '') + '">' + html + '</div></div>';
-    bindSpeakButtons(host);
-    if (clipId) {
-      autoSay([clipId]);
-    }
+    var box = host.querySelector('.ox-result') || host;
+    if (clipId) attachBoxAudio(box, function () { return [clipId]; });
   }
 
-
-  function visible(el) { return !!(el && !el.hidden && el.offsetParent !== null); }
-
-  // What the single Read aloud button reads, based on what is on screen now
-  function contextIds() {
+  function howBoxIds() {
     var ids = [];
-    var done = document.getElementById('done');
-    if (visible(done)) {
-      var rc = done.getAttribute('data-result-clip');
-      if (rc) ids.push(rc);
-      if (ids.length) return ids;
-    }
-    if (help.currentBox && help.currentBox.length) {
-      var cb = help.currentBox.filter(function (id, k) { return help.byId[id] && help.currentBox.indexOf(id) === k; });
-      if (cb.length) return cb;
-    }
-    var extra = [];
-    var results = document.querySelectorAll('.ox-result-body[data-clip]');
-    for (var i = results.length - 1; i >= 0; i--) {
-      if (visible(results[i]) && results[i].getAttribute('data-clip')) { extra.push(results[i].getAttribute('data-clip')); break; }
-    }
-    var hp = document.getElementById('hint-panel');
-    if (visible(hp)) { var ht = hp.querySelector('.hint-text[data-clip]'); if (ht) extra.push(ht.getAttribute('data-clip')); }
-    var gp = document.getElementById('goal-panel');
-    var goalId = null;
-    if (visible(gp)) { var gt = gp.querySelector('.gp-text[data-clip]'); if (gt) goalId = gt.getAttribute('data-clip'); }
-    var hap = document.getElementById('happening-panel');
-    var hapId = null;
-    if (visible(hap)) { var pt = hap.querySelector('.gp-text[data-clip]'); if (pt) hapId = pt.getAttribute('data-clip'); }
-    if (extra.length) {
-      ids = extra; if (goalId) ids.push(goalId);
-    } else {
-      document.querySelectorAll('.instr-line[data-clip]').forEach(function (el) { ids.push(el.getAttribute('data-clip')); });
-      if (goalId) ids.push(goalId);
-      if (hapId) ids.push(hapId);
-    }
+    document.querySelectorAll('#how-text .instr-line[data-clip], .how-text .instr-line[data-clip]').forEach(function (el) {
+      var id = el.getAttribute('data-clip');
+      if (id) ids.push(id);
+    });
     return ids.filter(function (id, k) { return id && help.byId[id] && ids.indexOf(id) === k; });
   }
 
-  function setAudioOff(off) {
-    help.muted = !!off;
-    try { localStorage.setItem('colonies_audio_off', off ? '1' : '0'); } catch (e) {}
-    syncAudioBtn(document.getElementById('read-instr'));
-  }
-
-  function syncAudioBtn(btn) {
-    if (!btn) return;
-    btn.classList.toggle('is-off', !!help.muted);
-    btn.setAttribute('aria-label', help.muted ? 'Audio off. Tap to turn on' : (help.playing ? 'Audio on, reading. Tap to stop' : 'Audio on. Read aloud'));
-    btn.title = help.muted ? 'Audio off' : 'Read aloud';
-  }
-
-  function ensureAudioChrome() {
-    var btn = document.getElementById('read-instr');
-    if (btn) return btn;
-    btn = document.createElement('button');
-    btn.type = 'button';
-    btn.id = 'read-instr';
-    btn.className = 'btn-audio';
-    btn.setAttribute('aria-pressed', 'false');
-    btn.setAttribute('aria-label', 'Read aloud');
-    btn.title = 'Read aloud';
-    btn.innerHTML = SPEAKER_SVG;
-    btn.addEventListener('click', function () {
-      hideTapPrompt();
-      var wasOff = help.muted;
-      if (help.muted) { setAudioOff(false); }
-      else if (help.playing) { stopAll(); setAudioOff(true); return; }
-      var ids;
-      if (help.pendingAuto && help.pendingAuto.length) { ids = help.pendingAuto.slice(); help.pendingAuto = null; }
-      else ids = contextIds();
-      if (ids.length && help.ready) playQueue(ids, btn);
-      else if (!help.muted && !wasOff) setAudioOff(true); // nothing to read here: plain on/off toggle
-    });
-    var nav = document.querySelector('.topbar .topnav') || document.querySelector('.topbar');
-    (nav || document.body).appendChild(btn);
-    syncAudioBtn(btn);
-    return btn;
-  }
-
-  function hideTapPrompt() {
-    var b = document.getElementById('read-instr');
-    if (b) b.classList.remove('needs-tap');
-  }
-
-  function showTapPrompt(ids) {
-    var b = ensureAudioChrome();
-    help.pendingAuto = ids.slice();
-    b.classList.add('needs-tap');
-  }
-
-  // A new text box appeared: remember it as the current box (boxes shown in the
-  // same tick are grouped) and stop any older clip. No auto-play after the first box.
-  var boxTick = false;
-  function autoSay(ids) {
-    ids = (ids || []).filter(Boolean);
-    if (boxTick) help.currentBox = (help.currentBox || []).concat(ids);
-    else help.currentBox = ids.slice();
-    help.stopPending = true;
-    if (boxTick) return;
-    boxTick = true;
-    Promise.resolve().then(function () {
-      boxTick = false;
-      if (help.stopPending) { help.stopPending = false; if (help.playing) stopAll(); }
-    });
-  }
-
-  function tryAutoPlay(ids, reason) {
-    if (help.muted) return;
-    ids = (ids || []).filter(function (id) { return id && help.byId[id]; });
-    if (!ids.length) return;
-    ensureAudioChrome();
-    stopAll();
-    help.queue = ids.map(function (id) { return help.byId[id]; });
-    help.playing = true;
-    help.activeBtn = document.getElementById('read-instr');
-    if (help.activeBtn) setBtnPlaying(help.activeBtn, true);
-    // play first clip; catch autoplay block
-    var clip = help.queue.shift();
-    if (!clip) { stopAll(); return; }
-    clearHighlight();
-    var targets = document.querySelectorAll('[data-clip="' + clip.id + '"]');
-    targets.forEach(function (el) {
-      if (el.classList.contains('btn-speak') || el.classList.contains('btn-read')) return;
-      el.classList.add('is-reading');
-    });
-    var line = document.querySelector('.instr-line[data-clip="' + clip.id + '"]');
-    if (line) line.classList.add('is-reading');
-    var a = audioEl();
-    a.setAttribute('playsinline', '');
-    a.src = 'audio/' + clip.file;
-    var p = a.play();
-    if (p && p.catch) {
-      p.catch(function () {
-        // restore queue including current clip for gesture replay
-        help.queue = [clip].concat(help.queue);
-        help.playing = false;
-        if (help.activeBtn) setBtnPlaying(help.activeBtn, false);
-        showTapPrompt([clip.id].concat(help.queue.map(function (c) { return c.id; })));
-        help.queue = [];
-      });
-    }
-  }
-
-  function bootAutoRead(opts) {
-    if (help.openBooted || help.muted) return;
-    help.openBooted = true;
-    var ids = [];
-    var gKey = opts.goal;
-    if (gKey && help.goals[gKey] && !help.autoSpoken[help.goals[gKey].id]) {
-      help.autoSpoken[help.goals[gKey].id] = true;
-      ids.push(help.goals[gKey].id);
-    }
-    document.querySelectorAll('.instr-line[data-clip]').forEach(function (el) {
-      var id = el.getAttribute('data-clip');
-      if (id && !help.autoSpoken[id]) {
-        help.autoSpoken[id] = true;
-        ids.push(id);
-      }
-    });
-    if (ids.length) tryAutoPlay(ids, 'open');
+  function installHowAudio() {
+    var how = document.getElementById('how-box') || document.querySelector('.how');
+    if (!how) return;
+    attachBoxAudio(how, howBoxIds);
   }
 
   function installHelp(opts) {
-
     opts = opts || {};
     help.hintsMap = opts.hints || {};
     help.goals = opts.goals || {};
@@ -494,25 +373,24 @@
     setHintStep(opts.step || Object.keys(help.hintsMap)[0] || 'default');
     bindAudioEvents();
 
-    var game = document.body.getAttribute('data-game');
-    var btn = ensureAudioChrome();
-    var hintBtn = document.getElementById('hint-btn');
+    // Strip any old global toggle
+    var old = document.getElementById('read-instr');
+    if (old) old.remove();
 
-    ensureAudioChrome();
     fetch('audio/manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (man) {
       (man.clips || []).forEach(function (c) { help.byId[c.id] = c; });
       help.ready = true;
-      bootAutoRead(opts);
+      installHowAudio();
     }).catch(function () {});
 
+    var hintBtn = document.getElementById('hint-btn');
     if (hintBtn && !hintBtn._bound) {
       hintBtn._bound = true;
       hintBtn.addEventListener('click', function () { showHint(); });
     }
-    if (opts.goal) setGoal(opts.goal, { auto: false }); // bootAutoRead speaks opening goal once
+    if (opts.goal) setGoal(opts.goal, { auto: false });
     if (opts.happeningStep) setHappening(opts.happeningStep);
-    help.currentBox = null; // first box = instructions + goal (read on open)
-    help.stopPending = false;
+    // No auto-play. Audio only when a box speaker is tapped.
   }
 
   window.Solve = {
@@ -522,7 +400,9 @@
     installHelp: installHelp, setHintStep: setHintStep, stopInstr: stopAll,
     setGoal: setGoal, setHappening: setHappening, setResultLine: setResultLine,
     speakClip: speakClip, makeSpeakBtn: makeSpeakBtn, bindSpeakButtons: bindSpeakButtons,
-    tryAutoPlay: tryAutoPlay, isMuted: function () { return !!help.muted; }
+    attachBoxAudio: attachBoxAudio,
+    tryAutoPlay: function () { /* no auto-play */ },
+    isMuted: function () { return false; }
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHeader);
   else initHeader();
