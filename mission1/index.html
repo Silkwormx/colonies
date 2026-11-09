@@ -197,11 +197,130 @@
     font-family: system-ui, sans-serif;
     font-size: 0.8rem;
   }
+
+  /* ——— Read aloud ——— */
+  .ra-bar {
+    position: fixed; top: 0.75rem; right: 0.75rem; z-index: 45;
+    display: flex; align-items: center; gap: 0.45rem;
+  }
+  .ra-toggle, .scene-play {
+    appearance: none; border: 1px solid #8a5a32; background: rgba(26,15,10,0.78);
+    color: #f4e6d4; cursor: pointer;
+    font-family: system-ui, -apple-system, sans-serif;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+  }
+  .ra-toggle {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    min-height: 44px; padding: 0.5rem 0.95rem; border-radius: 999px;
+    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+  }
+  .ra-toggle .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #8a5a32; box-shadow: 0 0 0 0 rgba(232,160,90,0.0);
+  }
+  .ra-toggle[aria-pressed="true"] {
+    border-color: var(--accent); color: #1a0f0a;
+    background: linear-gradient(135deg, #e8a05a, #c9783a);
+  }
+  .ra-toggle[aria-pressed="true"] .dot {
+    background: #1a0f0a;
+    box-shadow: 0 0 0 4px rgba(26,15,10,0.12);
+  }
+  .ra-toggle:hover, .ra-toggle:focus-visible,
+  .scene-play:hover, .scene-play:focus-visible {
+    border-color: var(--accent); outline: none;
+  }
+  .scene-play {
+    position: absolute; top: 0.35rem; right: 0.1rem;
+    width: 44px; height: 44px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0; line-height: 0;
+  }
+  .scene-play svg { width: 16px; height: 16px; fill: currentColor; }
+  .scene-play[aria-pressed="true"] {
+    background: rgba(232,160,90,0.18); border-color: var(--accent); color: var(--accent);
+  }
+  .caption { position: relative; padding-right: 3.1rem; }
+  .ra-line, .ra-sci, .ra-guide-label, .ra-guide-title, .ra-guide-p {
+    border-radius: 4px;
+    transition: background 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
+  }
+  .ra-active {
+    background: rgba(232,160,90,0.14);
+    box-shadow: inset 3px 0 0 var(--accent);
+    color: #ffe7c8 !important;
+  }
+  h1.ra-active {
+    background: transparent;
+    box-shadow: none;
+    text-shadow: 0 0 24px rgba(232,160,90,0.35);
+  }
+  .ra-guide-p + .ra-guide-p { margin-top: 0.45rem; }
+  .guide .ra-active { color: #ffe7c8 !important; }
+  .ra-fallback {
+    position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%);
+    z-index: 50; display: none;
+    min-height: 44px; padding: 0.7rem 1.1rem; border-radius: 999px;
+    border: 1px solid var(--accent); background: rgba(26,15,10,0.92);
+    color: var(--fg); font-family: system-ui, sans-serif; font-size: 0.85rem;
+    backdrop-filter: blur(8px);
+  }
+  .ra-fallback.show { display: inline-flex; align-items: center; }
+
+  .scene.ra-leaving {
+    opacity: 0.35;
+    transition: opacity 0.45s ease;
+  }
+  .scene.ra-entering {
+    animation: raEnter 0.55s ease;
+  }
+  @keyframes raEnter {
+    from { opacity: 0.2; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ra-end {
+    display: none;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+    padding: 1.5rem 1.35rem;
+    text-align: center;
+    background: #2a1810;
+    border: 1px solid rgba(232,160,90,0.4);
+    border-radius: 14px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  .ra-end.show { display: block; animation: raEnter 0.5s ease; }
+  .ra-end h2 {
+    font-size: 1.35rem;
+    margin-bottom: 0.45rem;
+  }
+  .ra-end p { color: var(--muted); margin-bottom: 1rem; font-family: system-ui, sans-serif; font-size: 0.95rem; }
+  .ra-end a {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 0.7rem 1.25rem; border-radius: 999px;
+    background: linear-gradient(135deg, #e8a05a, #c9783a);
+    color: #1a0f0a; font-weight: 700; text-decoration: none;
+    font-family: system-ui, sans-serif; letter-spacing: 0.02em;
+  }
+  @media (max-width: 520px) {
+    .home-link { top: 0.65rem; left: 0.65rem; }
+    .ra-bar { top: 0.65rem; right: 0.65rem; }
+    .ra-toggle { padding: 0.5rem 0.75rem; font-size: 0.72rem; }
+  }
 </style>
 </head>
 <body>
 
 <a class="home-link" href="../index.html">← Colonies</a>
+<div class="ra-bar" id="raBar">
+  <button type="button" class="ra-toggle" id="raToggle" aria-pressed="false" aria-label="Read to me">
+    <span class="dot" aria-hidden="true"></span>
+    <span class="ra-label">Read to me</span>
+  </button>
+</div>
+<button type="button" class="ra-fallback" id="raFallback">Sound off? Tap to enable</button>
+
 <style>
   .home-link {
     position: fixed; top: 0.75rem; left: 0.75rem; z-index: 40;
@@ -224,25 +343,29 @@
 </style>
 
 
-<header class="hero">
+<header class="hero" id="hero">
   <div class="eyebrow">Colonies · Mission 1</div>
-  <h1>Can't Breathe</h1>
-  <p>Kepler and Comet are sent ahead to make Mars livable. The pod landed. The manual didn't. Six hours of oxygen.</p>
+  <h1 class="ra-line" data-clip="hero_01">Can't Breathe</h1>
+  <p class="ra-line" data-clip="hero_02">Kepler and Comet are sent ahead to make Mars livable. The pod landed. The manual didn't. Six hours of oxygen.</p>
   <div class="scroll-hint">Scroll ↓</div>
 </header>
 
 <section class="scene" id="s01">
   <figure><img src="scene01.jpg" alt="Move-in day: Kepler by the wrecked pod with a dropping oxygen gauge" loading="eager" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s01" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p class="who">Comet: “Five-star landing!”</p>
-      <p class="who">Kepler: “Six hours of air.”</p>
+      <p class="ra-line who" data-clip="s01_01">Comet: “Five-star landing!”</p>
+      <p class="ra-line who" data-clip="s01_02">Kepler: “Six hours of air.”</p>
     </div>
-    <p class="science">Mars air is about 95% carbon dioxide and far too thin to breathe.</p>
+    <p class="science ra-sci" data-clip="s01_03">Mars air is about 95% carbon dioxide and far too thin to breathe.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">Mars Air</div>
-      <p>Technically present. Not recommended. Surface pressure is about one percent of Earth's, which is a polite way of saying the sky is mostly a suggestion.</p>
+      <div class="label ra-guide-label" data-clip="s01_05">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s01_06">Mars Air</div>
+      <p class="ra-guide-p" data-clip="s01_07">Technically present. Not recommended.</p>
+      <p class="ra-guide-p" data-clip="s01_08">Surface pressure is less than one percent of Earth's, which is a polite way of saying the sky is mostly a suggestion.</p>
     </div>
   </div>
 </section>
@@ -250,15 +373,19 @@
 <section class="scene" id="s02">
   <figure><img src="scene02.jpg" alt="Comet reaches for helmet latch; Kepler stops him" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s02" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p class="who">Comet: “Let's air the place out.”</p>
-      <p class="who">Kepler: “That's not airing out. That's checking out.”</p>
+      <p class="ra-line who" data-clip="s02_01">Comet: “Let's air the place out.”</p>
+      <p class="ra-line who" data-clip="s02_02">Kepler: “That's not airing out. That's checking out.”</p>
     </div>
-    <p class="science">One breath of Martian air would not sustain you. Keep the helmet on.</p>
+    <p class="science ra-sci" data-clip="s02_03">One breath of Martian air would not sustain you. Keep the helmet on.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">Helmets</div>
-      <p>On Mars, “fresh air” is a marketing term with no product behind it. The atmosphere is thin enough that even a polite breeze arrives late and underwhelmed.</p>
+      <div class="label ra-guide-label" data-clip="s02_05">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s02_06">Helmets</div>
+      <p class="ra-guide-p" data-clip="s02_07">On Mars, “fresh air” is a marketing term with no product behind it.</p>
+      <p class="ra-guide-p" data-clip="s02_08">The atmosphere is thin enough that even a polite breeze arrives late and underwhelmed.</p>
     </div>
   </div>
 </section>
@@ -266,16 +393,21 @@
 <section class="scene" id="s03">
   <figure><img src="scene03.jpg" alt="First principles: Kepler plans with ice, sunlight, scrap; Comet offers snacks" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s03" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p>Need: oxygen. Have: ice, sunlight, scrap.</p>
-      <p class="who">Comet: “Snacks.”</p>
-      <p class="who">Kepler: “Later.”</p>
+      <p class="ra-line" data-clip="s03_01">Need: oxygen. Have: ice, sunlight, scrap.</p>
+      <p class="ra-line who" data-clip="s03_02">Comet: “Snacks.”</p>
+      <p class="ra-line who" data-clip="s03_03">Kepler: “Later.”</p>
     </div>
-    <p class="science">Oxygen can be made from water ice by electrolysis — or from CO₂, as NASA's MOXIE did on Perseverance.</p>
+    <p class="science ra-sci" data-clip="s03_04">Oxygen can be made from water ice by electrolysis — or from CO₂, as NASA's MOXIE did on Perseverance.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">First Principles</div>
-      <p>Ask what the problem actually needs. Mars soil can contain perchlorates — salty compounds hostile to Earth microbes and inconvenient for farming. The planet restocks itself. The labels are missing.</p>
+      <div class="label ra-guide-label" data-clip="s03_06">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s03_07">First Principles</div>
+      <p class="ra-guide-p" data-clip="s03_08">Ask what the problem actually needs.</p>
+      <p class="ra-guide-p" data-clip="s03_09">Mars soil can contain perchlorates — salty compounds hostile to Earth microbes and inconvenient for farming.</p>
+      <p class="ra-guide-p" data-clip="s03_10">The planet restocks itself. The labels are missing.</p>
     </div>
   </div>
 </section>
@@ -283,15 +415,19 @@
 <section class="scene" id="s04">
   <figure><img src="scene04.jpg" alt="They dig and find water ice under red dust" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s04" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p class="who">Comet: “We're rich!”</p>
-      <p class="who">Kepler: “We're breathing. Out here, same thing.”</p>
+      <p class="ra-line who" data-clip="s04_01">Comet: “We're rich!”</p>
+      <p class="ra-line who" data-clip="s04_02">Kepler: “We're breathing. Out here, same thing.”</p>
     </div>
-    <p class="science">Water ice lies under Martian dust in many places. The red color is iron oxide — basically rust.</p>
+    <p class="science ra-sci" data-clip="s04_03">Water ice lies under Martian dust in many places. The red color is iron oxide — basically rust.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">Ice</div>
-      <p>The most valuable substance on Mars. Also frozen water. Both are true. Dig under the rust and you may find the colony's first real paycheck.</p>
+      <div class="label ra-guide-label" data-clip="s04_05">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s04_06">Ice</div>
+      <p class="ra-guide-p" data-clip="s04_07">The most valuable substance on Mars. Also frozen water. Both are true.</p>
+      <p class="ra-guide-p" data-clip="s04_08">Dig under the rust and you may find the colony's first real paycheck.</p>
     </div>
   </div>
 </section>
@@ -299,15 +435,19 @@
 <section class="scene" id="s05">
   <figure><img src="scene05.jpg" alt="Comet's fan experiment; Kepler facepalms with ice" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s05" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p class="who">Comet: “If the dust goes fast enough it's wind, and wind is basically air.”</p>
-      <p class="who">Kepler: “Three wrong things in one sentence.”</p>
+      <p class="ra-line who" data-clip="s05_01">Comet: “If the dust goes fast enough it's wind, and wind is basically air.”</p>
+      <p class="ra-line who" data-clip="s05_02">Kepler: “Three wrong things in one sentence.”</p>
     </div>
-    <p class="science">Blowing regolith around does not make oxygen. Chemistry does.</p>
+    <p class="science ra-sci" data-clip="s05_03">Blowing regolith around does not make oxygen. Chemistry does.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">The Fan</div>
-      <p>The colony's first invention. It is no longer considered an invention. Mars dust is fine enough to get into everything; it does not, however, become breathable when accelerated.</p>
+      <div class="label ra-guide-label" data-clip="s05_05">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s05_06">The Fan</div>
+      <p class="ra-guide-p" data-clip="s05_07">The colony's first invention. It is no longer considered an invention.</p>
+      <p class="ra-guide-p" data-clip="s05_08">Mars dust is fine enough to get into everything; it does not, however, become breathable when accelerated.</p>
     </div>
   </div>
 </section>
@@ -315,14 +455,18 @@
 <section class="scene" id="s06">
   <figure><img src="scene06.jpg" alt="Building a solar electrolysis rig from scraps" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s06" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p class="who">Kepler: “Everything we need is already here. It's just in the wrong order.”</p>
+      <p class="ra-line who" data-clip="s06_01">Kepler: “Everything we need is already here. It's just in the wrong order.”</p>
     </div>
-    <p class="science">Electricity splits water into hydrogen and oxygen. A scavenged solar panel can run the current.</p>
+    <p class="science ra-sci" data-clip="s06_02">Electricity splits water into hydrogen and oxygen. A scavenged solar panel can run the current.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">Electrolysis</div>
-      <p>Sunlight in. Water split. Oxygen out. Perseverance's MOXIE later proved you can also wring oxygen from the CO₂ air itself — which is cheating, and therefore science.</p>
+      <div class="label ra-guide-label" data-clip="s06_04">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s06_05">Electrolysis</div>
+      <p class="ra-guide-p" data-clip="s06_06">Sunlight in. Water split. Oxygen out.</p>
+      <p class="ra-guide-p" data-clip="s06_07">Perseverance's MOXIE later proved you can also wring oxygen from the CO₂ air itself — which is cheating, and therefore science.</p>
     </div>
   </div>
 </section>
@@ -330,16 +474,20 @@
 <section class="scene" id="s07">
   <figure><img src="scene07.jpg" alt="Kepler rings the brass colony bell; Comet holds the gauge" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s07" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p>First ring: dull. Leak. They patch it.</p>
-      <p>Second ring: clear.</p>
-      <p class="who">Kepler: “Seal holds.”</p>
+      <p class="ra-line" data-clip="s07_01">First ring: dull. Leak. They patch it.</p>
+      <p class="ra-line" data-clip="s07_02">Second ring: clear.</p>
+      <p class="ra-line who" data-clip="s07_03">Kepler: “Seal holds.”</p>
     </div>
-    <p class="science">Ring test: a sealed structure rings clear; a crack sounds dull. On Mars, sound is quieter and high/low pitches travel at different speeds.</p>
+    <p class="science ra-sci" data-clip="s07_04">Ring test: a sealed structure rings clear; a crack sounds dull. On Mars, sound is quieter and high/low pitches travel at different speeds.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">Ring Test</div>
-      <p>A method of asking a building if it is okay. Buildings are surprisingly honest. On Mars, sound travels slower and arrives softer; even a good ring can sound like it took the scenic route.</p>
+      <div class="label ra-guide-label" data-clip="s07_06">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s07_07">Ring Test</div>
+      <p class="ra-guide-p" data-clip="s07_08">A method of asking a building if it is okay. Buildings are surprisingly honest.</p>
+      <p class="ra-guide-p" data-clip="s07_09">On Mars, sound travels slower and arrives softer; even a good ring can sound like it took the scenic route.</p>
     </div>
   </div>
 </section>
@@ -347,16 +495,20 @@
 <section class="scene" id="s08">
   <figure><img src="scene08.jpg" alt="First breath: Comet helmet-off inside sealed bubble with a sprout" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s08" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <span class="reveal-badge">Build reveal</span>
     <div class="lines">
-      <p class="who">Comet: “Wrong planet?”</p>
-      <p class="who">Kepler: “Right start.”</p>
+      <p class="ra-line who" data-clip="s08_01">Comet: “Wrong planet?”</p>
+      <p class="ra-line who" data-clip="s08_02">Kepler: “Right start.”</p>
     </div>
-    <p class="science">Habitats must stay sealed. Nothing grows in open Martian regolith — only inside a pressurized, protected space.</p>
+    <p class="science ra-sci" data-clip="s08_03">Habitats must stay sealed. Nothing grows in open Martian regolith — only inside a pressurized, protected space.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">First Breath</div>
-      <p>Available indoors only. Outdoors remains a museum exhibit. The sprout agrees, which is why it lives in glass.</p>
+      <div class="label ra-guide-label" data-clip="s08_05">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s08_06">First Breath</div>
+      <p class="ra-guide-p" data-clip="s08_07">Available indoors only. Outdoors remains a museum exhibit.</p>
+      <p class="ra-guide-p" data-clip="s08_08">The sprout agrees, which is why it lives in glass.</p>
     </div>
   </div>
 </section>
@@ -364,15 +516,19 @@
 <section class="scene" id="s09">
   <figure><img src="scene09.jpg" alt="Blue sunset; Kepler sketches a forest under glass; dust storm teaser" loading="lazy" /></figure>
   <div class="caption">
+    <button type="button" class="scene-play" data-scene="s09" aria-label="Play this scene" aria-pressed="false">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    </button>
     <div class="lines">
-      <p class="who">Kepler: “Someday, a forest under glass.”</p>
-      <p>Horizon: weather coming.</p>
+      <p class="ra-line who" data-clip="s09_01">Kepler: “Someday, a forest under glass.”</p>
+      <p class="ra-line" data-clip="s09_02">Horizon: weather coming.</p>
     </div>
-    <p class="science">Fine dust makes Mars sunsets blue near the sun. Heat, shielding, and power still needed before any forest under glass.</p>
+    <p class="science ra-sci" data-clip="s09_03">Fine dust makes Mars sunsets blue near the sun. Heat, shielding, and power still needed before any forest under glass.</p>
     <div class="guide">
-      <div class="label">The Colony Guide</div>
-      <div class="title">Blue Sunsets</div>
-      <p>On Mars, dusk can turn blue near the sun while the rest of the sky stays peach. Fine dust scatters the light. The planet has a sense of irony, and a dust storm waiting on the horizon.</p>
+      <div class="label ra-guide-label" data-clip="s09_05">The Colony Guide</div>
+      <div class="title ra-guide-title" data-clip="s09_06">Blue Sunsets</div>
+      <p class="ra-guide-p" data-clip="s09_07">On Mars, dusk can turn blue near the sun while the rest of the sky stays peach. Fine dust scatters the light.</p>
+      <p class="ra-guide-p" data-clip="s09_08">The planet has a sense of irony, and a dust storm waiting on the horizon.</p>
     </div>
   </div>
 </section>
@@ -386,6 +542,12 @@
   </div>
 </section>
 
+
+<section class="ra-end" id="raEnd" aria-live="polite">
+  <h2>Mission 1 narrated</h2>
+  <p>Air is solved. Ready for the problems?</p>
+  <a href="solve/index.html">Solve it</a>
+</section>
 
 <section class="thanks" id="thanks">
   <p>Mission 1 was made possible by everyone who fed the colony.</p>
@@ -401,6 +563,240 @@
     const read = JSON.parse(localStorage.getItem(key) || '[]');
     if (!read.includes('m1')) { read.push('m1'); localStorage.setItem(key, JSON.stringify(read)); }
   } catch(e) {}
+
+  const BASE = 'audio/';
+  const playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  const pauseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zm7 0h3v14h-3z"/></svg>';
+  const SCENE_ORDER = ['s01','s02','s03','s04','s05','s06','s07','s08','s09'];
+
+  const audio = document.createElement('audio');
+  audio.setAttribute('playsinline', '');
+  audio.preload = 'auto';
+  audio.style.display = 'none';
+  document.body.appendChild(audio);
+
+  let manifest = null;
+  let token = 0;
+  let mode = 'idle'; // idle | scene | all
+  let currentScene = null;
+
+  const toggle = document.getElementById('raToggle');
+  const fallback = document.getElementById('raFallback');
+  const endCard = document.getElementById('raEnd');
+  const sceneBtns = Array.from(document.querySelectorAll('.scene-play'));
+
+  function setActive(el) {
+    document.querySelectorAll('.ra-active').forEach((n) => n.classList.remove('ra-active'));
+    if (el) {
+      el.classList.add('ra-active');
+      try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    }
+  }
+
+  function setSceneBtn(scene, playing) {
+    sceneBtns.forEach((b) => {
+      const on = playing && b.dataset.scene === scene;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.innerHTML = on ? pauseIcon : playIcon;
+      b.setAttribute('aria-label', on ? 'Pause this scene' : 'Play this scene');
+    });
+  }
+
+  function setToggle(on) {
+    toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    toggle.querySelector('.ra-label').textContent = on ? 'Pause' : 'Read to me';
+  }
+
+  function clearSceneFx() {
+    document.querySelectorAll('.scene.ra-leaving, .scene.ra-entering').forEach((n) => {
+      n.classList.remove('ra-leaving', 'ra-entering');
+    });
+  }
+
+  function stopAll() {
+    token++;
+    try { audio.pause(); } catch (e) {}
+    try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {}
+    mode = 'idle';
+    currentScene = null;
+    setActive(null);
+    setSceneBtn(null, false);
+    setToggle(false);
+    clearSceneFx();
+  }
+
+  function showFallback(retry) {
+    fallback.classList.add('show');
+    fallback.onclick = () => {
+      fallback.classList.remove('show');
+      if (retry) retry();
+    };
+  }
+
+  function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+  }
+
+  function playSrc(src) {
+    return new Promise((resolve) => {
+      let done = false;
+      const my = token;
+      const finish = (ok) => {
+        if (done || my !== token) return;
+        done = true;
+        audio.removeEventListener('ended', onEnd);
+        audio.removeEventListener('error', onErr);
+        resolve(ok);
+      };
+      const onEnd = () => finish(true);
+      const onErr = () => finish(false);
+      audio.addEventListener('ended', onEnd);
+      audio.addEventListener('error', onErr);
+      try {
+        audio.src = src;
+        audio.currentTime = 0;
+        const p = audio.play();
+        if (p && p.catch) p.catch((e) => {
+          if (my !== token) return;
+          if (e && e.name === 'AbortError') return;
+          showFallback(() => playSrc(src).then(resolve));
+          finish(false);
+        });
+      } catch (e) {
+        showFallback(() => playSrc(src).then(resolve));
+        finish(false);
+      }
+    });
+  }
+
+  function speakFallback(text) {
+    return new Promise((resolve) => {
+      try {
+        if (!window.speechSynthesis || !text) return resolve(false);
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 0.92;
+        u.onend = () => resolve(true);
+        u.onerror = () => resolve(false);
+        speechSynthesis.cancel();
+        speechSynthesis.speak(u);
+      } catch (e) { resolve(false); }
+    });
+  }
+
+  async function playQueue(items) {
+    const my = token;
+    for (const it of items) {
+      if (my !== token) return false;
+      if (it.pause) {
+        setActive(null);
+        await sleep(450);
+        continue;
+      }
+      const el = document.querySelector('[data-clip="' + it.id + '"]');
+      setActive(el);
+      let ok = await playSrc(BASE + it.file);
+      if (my !== token) return false;
+      if (!ok) {
+        ok = await speakFallback(it.text || (el ? el.textContent : ''));
+        if (my !== token) return false;
+        if (!ok) return false;
+      }
+      await sleep(120);
+    }
+    if (my === token) setActive(null);
+    return my === token;
+  }
+
+  function sceneItems(sceneId) {
+    return (manifest && manifest.scenes[sceneId]) ? manifest.scenes[sceneId] : [];
+  }
+
+  async function pageTurnTo(sceneId, prevId) {
+    const next = document.getElementById(sceneId);
+    const prev = prevId ? document.getElementById(prevId) : null;
+    if (prev) prev.classList.add('ra-leaving');
+    if (next) {
+      try { next.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+      next.classList.add('ra-entering');
+    }
+    await sleep(520);
+    clearSceneFx();
+  }
+
+  async function playScene(sceneId) {
+    if (mode === 'scene' && currentScene === sceneId) {
+      stopAll();
+      return;
+    }
+    if (endCard) endCard.classList.remove('show');
+    stopAll();
+    mode = 'scene';
+    currentScene = sceneId;
+    setSceneBtn(sceneId, true);
+    const section = document.getElementById(sceneId);
+    if (section) try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    const ok = await playQueue(sceneItems(sceneId));
+    if (mode === 'scene' && currentScene === sceneId) {
+      setSceneBtn(sceneId, false);
+      mode = 'idle';
+      currentScene = null;
+    }
+    return ok;
+  }
+
+  async function playAll() {
+    // Pause stops auto-advance
+    if (mode === 'all') {
+      stopAll();
+      return;
+    }
+    if (!manifest) return;
+    if (endCard) endCard.classList.remove('show');
+    stopAll();
+    mode = 'all';
+    setToggle(true);
+
+    // Hero intro
+    const hero = document.getElementById('hero');
+    if (hero) try { hero.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+    if (manifest.scenes.hero) {
+      const okHero = await playQueue(manifest.scenes.hero);
+      if (!okHero || mode !== 'all') { if (mode === 'all') stopAll(); return; }
+      await sleep(220);
+    }
+
+    let prev = null;
+    for (const sid of SCENE_ORDER) {
+      if (mode !== 'all') return;
+      await pageTurnTo(sid, prev);
+      if (mode !== 'all') return;
+      currentScene = sid;
+      setSceneBtn(sid, true);
+      const ok = await playQueue(sceneItems(sid));
+      setSceneBtn(sid, false);
+      if (!ok || mode !== 'all') { if (mode === 'all') stopAll(); return; }
+      prev = sid;
+      await sleep(180);
+    }
+
+    if (mode === 'all') {
+      mode = 'idle';
+      currentScene = null;
+      setToggle(false);
+      setActive(null);
+      if (endCard) {
+        endCard.classList.add('show');
+        try { endCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+      }
+    }
+  }
+
+  toggle.addEventListener('click', () => { playAll(); });
+  sceneBtns.forEach((b) => b.addEventListener('click', () => { playScene(b.dataset.scene); }));
+
+  fetch(BASE + 'manifest.json').then((r) => r.json()).then((m) => { manifest = m; }).catch(() => {
+    console.warn('audio manifest missing');
+  });
 })();
 </script>
 

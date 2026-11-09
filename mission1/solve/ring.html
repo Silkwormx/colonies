@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#140c08" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Ring Test · Solve it · Colonies</title>
+<link rel="manifest" href="../../manifest.json" />
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="solve.css" />
+<style>
+.goal { font-family: Fraunces, Georgia, serif; font-size: 1.1rem; margin-bottom: 0.6rem; }
+.domes { display: grid; grid-template-columns: 1fr; gap: 0.8rem; }
+.domes.two { grid-template-columns: 1fr 1fr; }
+.dome {
+  position: relative; border: 1px solid rgba(232,160,90,0.22); border-radius: 18px; background: radial-gradient(ellipse at 50% 100%, rgba(150,80,45,0.35), transparent 70%), rgba(20,12,8,0.45);
+  padding: 0.6rem 0.6rem 0.7rem; cursor: pointer; text-align: center; overflow: hidden; touch-action: manipulation; width: 100%;
+}
+.dome:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dome svg { display: block; width: 100%; max-width: 320px; margin: 0 auto; overflow: visible; }
+.domes.two .dome svg { max-width: 200px; }
+.dome .cap { display: block; margin-top: 0.3rem; font-size: 0.82rem; color: var(--muted); }
+.dome .cap b { color: var(--fg); }
+.ring-len { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.06); overflow: hidden; margin: 0.45rem auto 0; max-width: 240px; }
+.ring-len i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #a9d8e4, #5f98a8); }
+.ripple { fill: none; stroke: #e8d2b0; stroke-width: 1.4; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.dome.ringing.clear .ripple { animation: rip 1.6s ease-out infinite; }
+.dome.ringing.dull .ripple { animation: ripd .28s ease-out 1; stroke: #c9783a; }
+.dome.ringing .ripple:nth-of-type(2) { animation-delay: .4s; } .dome.ringing .ripple:nth-of-type(3) { animation-delay: .8s; }
+.dome.ringing.dull .ripple:nth-of-type(n+2) { animation: none; }
+@keyframes rip { 0% { opacity: .8; transform: scale(.85); } 100% { opacity: 0; transform: scale(1.35); } }
+@keyframes ripd { 0% { opacity: .9; transform: scale(.9) translateX(-2px); } 50% { transform: scale(1) translateX(2px); } 100% { opacity: 0; transform: scale(1.05); } }
+.dome.ringing.dull svg .shell { animation: jit .25s linear 1; }
+@keyframes jit { 25% { transform: translateX(-1.5px); } 75% { transform: translateX(1.5px); } }
+.seg { cursor: pointer; }
+.seg:hover path, .seg.hot path { fill: rgba(233,210,176,0.22); }
+.patch { opacity: 0; transition: opacity .4s; }
+.patched .patch { opacity: 1; }
+.answers { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.9rem; }
+.answers .choice { text-align: center; }
+.answers.three { grid-template-columns: repeat(3, 1fr); }
+.comet-gauge { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; font-size: 0.85rem; color: var(--muted); }
+.comet-gauge img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.comet-gauge > div { flex: 1; display: grid; gap: 0.2rem; }
+.g-bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.g-bar i { display: block; height: 100%; width: 100%; background: linear-gradient(90deg, #5f98a8, #a9d8e4); transition: width 1.4s ease; }
+.mars .dome { background: radial-gradient(ellipse at 50% 100%, rgba(190,100,55,0.4), transparent 70%), rgba(40,20,12,0.5); }
+
+</style>
+</head>
+<body data-game="ring">
+<nav class="topbar"><a class="pill" href="index.html">&larr; Solve it</a><a class="pill" href="../index.html">Read Mission 1</a></nav>
+<main class="wrap">
+  <header class="game-head">
+    <div class="eyebrow">Mission 1 &middot; Solve it &middot; <span id="game-num"></span></div>
+    <h1>Ring Test</h1>
+    <p class="setup">A method of asking a building if it is okay. Buildings are surprisingly honest.</p>
+    <p class="how"><b>How to play</b>Tap the habitat to ring it. A sealed shell rings clear and long; a crack makes it dull and short. Then make the call. Sound on? If not, watch the ripples.</p>
+    <div class="solved-flag" id="solved-flag" hidden></div>
+  </header>
+  <section class="stage" id="stage">
+    <div class="status"><span id="round-label"><strong>Round 1 of 3</strong></span><span id="air-tag">Inside the pod’s test bay</span></div>
+    <p class="goal" id="goal"></p>
+    <div class="domes" id="domes"></div>
+    <div class="answers" id="answers"></div>
+    <div class="comet-gauge" id="cg" hidden><img src="../../art/comet_portrait.jpg" alt="" /><div><span>Comet’s helmet</span><span class="g-bar"><i id="cg-fill"></i></span></div></div>
+
+  </section>
+  <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  <div id="done" hidden></div>
+  <nav class="foot-links"><a class="pill" href="index.html">All five problems</a><a class="pill" href="../index.html">Back to the story</a></nav>
+</main>
+<script src="solve.js"></script>
+<script src="ring.js"></script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+{
+  "voices": {
+    "narrator": {
+      "engine": "kokoro",
+      "voice": "am_eric",
+      "speed": 1.0,
+      "lang": "en-us",
+      "role": "Colony Guide / story narrator \u2014 natural Kokoro am_eric"
+    },
+    "kepler": {
+      "engine": "kokoro",
+      "voice": "am_onyx",
+      "speed": 1.0,
+      "lang": "en-us",
+      "role": "Kepler \u2014 calm, low, deadpan (Kokoro am_onyx)"
+    },
+    "comet": {
+      "engine": "kokoro",
+      "voice": "am_puck",
+      "speed": 1.08,
+      "lang": "en-us",
+      "role": "Comet \u2014 quick, bright (Kokoro am_puck)"
+    }
+  },
+  "wer": 15.55,
+  "n": 67,
+  "misses": [
+    {
+      "id": "hero_02",
+      "ref": "kepler and comet are sent ahead to make mars livable the pod landed the manual didn't six hours of oxygen",
+      "hyp": "kepler and comet are sent ahead to make mars livable the pod landed the"
+    },
+    {
+      "id": "s01_08",
+      "ref": "surface pressure is about one percent of earth's which is a polite way of saying the sky is mostly a suggestion",
+      "hyp": "surface pressure is about one percent of earth's which is a saying saying the sky is mostly a suggestion"
+    },
+    {
+      "id": "s02_01",
+      "ref": "let's air the place out",
+      "hyp": "let's hear the place out"
+    },
+    {
+      "id": "s02_03",
+      "ref": "one breath of martian air would not sustain you keep the helmet on",
+      "hyp": "one breath would not sustain you keep the helmet on"
+    },
+    {
+      "id": "s02_08",
+      "ref": "the atmosphere is thin enough that even a polite breeze arrives late and underwhelmed",
+      "hyp": "the atmosphere is thin enough that even a polite breeze arrives whelmed"
+    },
+    {
+      "id": "s03_02",
+      "ref": "snacks",
+      "hyp": "thanks for watching"
+    },
+    {
+      "id": "s03_04",
+      "ref": "oxygen can be made from water ice by electrolysis or from carbon dioxide as nasa's moxie did on perseverance",
+      "hyp": "or from carbon dioxide as nasa moxie did on perseverance"
+    },
+    {
+      "id": "s03_07",
+      "ref": "first principles",
+      "hyp": "versed principles"
+    },
+    {
+      "id": "s03_10",
+      "ref": "the planet restocks itself the labels are missing",
+      "hyp": "the planet restockses itself the labels are missing"
+    },
+    {
+      "id": "s04_06",
+      "ref": "ice",
+      "hyp": "lies"
+    },
+    {
+      "id": "s05_01",
+      "ref": "if the dust goes fast enough it's wind and wind is basically air",
+      "hyp": "if if the dust goes fast enough it's wind and wind is basically air"
+    },
+    {
+      "id": "s05_02",
+      "ref": "three wrong things in one sentence",
+      "hyp": "three wrong three wrong three wrong three wrong three wrong three wrong three wrong three wrong three wrong three wrong one one one one one one one one one one one"
+    },
+    {
+      "id": "s05_03",
+      "ref": "blowing regolith around does not make oxygen chemistry does",
+      "hyp": "blowing regolith around does not make oxygen"
+    },
+    {
+      "id": "s05_06",
+      "ref": "the fan",
+      "hyp": "thank you for watching i'll see you in the next video bye"
+    },
+    {
+      "id": "s06_04",
+      "ref": "the colony guide",
+      "hyp": "the colony"
+    },
+    {
+      "id": "s06_07",
+      "ref": "perseverance's moxie later proved you can also wring oxygen from the carbon dioxide air itself which is cheating and therefore science",
+      "hyp": "perseverance's moxie later proved you can also wring oxygen from the carbon dioxide air itself which is cheating and there for science"
+    },
+    {
+      "id": "s07_03",
+      "ref": "seal holds",
+      "hyp": "seal hold"
+    },
+    {
+      "id": "s08_05",
+      "ref": "the colony guide",
+      "hyp": ""
+    },
+    {
+      "id": "s09_06",
+      "ref": "blue sunsets",
+      "hyp": "blue sunset"
+    },
+    {
+      "id": "s09_07",
+      "ref": "on mars dusk can turn blue near the sun while the rest of the sky stays peach fine dust scatters the light",
+      "hyp": "on mars dust can turn blue near the sun while the rest of the sky stays peach fine dust sc"
+    }
+  ],
+  "by": {
+    "narrator": {
+      "n": 52,
+      "exact": 37,
+      "misses": [
+        {
+          "id": "hero_02",
+          "ref": "kepler and comet are sent ahead to make mars livable the pod landed the manual didn't six hours of oxygen",
+          "hyp": "kepler and comet are sent ahead to make mars livable the pod landed the"
+        },
+        {
+          "id": "s01_08",
+          "ref": "surface pressure is about one percent of earth's which is a polite way of saying the sky is mostly a suggestion",
+          "hyp": "surface pressure is about one percent of earth's which is a saying saying the sky is mostly a suggestion"
+        },
+        {
+          "id": "s02_03",
+          "ref": "one breath of martian air would not sustain you keep the helmet on",
+          "hyp": "one breath would not sustain you keep the helmet on"
+        },
+        {
+          "id": "s02_08",
+          "ref": "the atmosphere is thin enough that even a polite breeze arrives late and underwhelmed",
+          "hyp": "the atmosphere is thin enough that even a polite breeze arrives whelmed"
+        },
+        {
+          "id": "s03_04",
+          "ref": "oxygen can be made from water ice by electrolysis or from carbon dioxide as nasa's moxie did on perseverance",
+          "hyp": "or from carbon dioxide as nasa moxie did on perseverance"
+        },
+        {
+          "id": "s03_07",
+          "ref": "first principles",
+          "hyp": "versed principles"
+        },
+        {
+          "id": "s03_10",
+          "ref": "the planet restocks itself the labels are missing",
+          "hyp": "the planet restockses itself the labels are missing"
+        },
+        {
+          "id": "s04_06",
+          "ref": "ice",
+          "hyp": "lies"
+        },
+        {
+          "id": "s05_03",
+          "ref": "blowing regolith around does not make oxygen chemistry does",
+          "hyp": "blowing regolith around does not make oxygen"
+        },
+        {
+          "id": "s05_06",
+          "ref": "the fan",
+          "hyp": "thank you for watching i'll see you in the next video bye"
+        },
+        {
+          "id": "s06_04",
+          "ref": "the colony guide",
+          "hyp": "the colony"
+        },
+        {
+          "id": "s06_07",
+          "ref": "perseverance's moxie later proved you can also wring oxygen from the carbon dioxide air itself which is cheating and therefore science",
+          "hyp": "perseverance's moxie later proved you can also wring oxygen from the carbon dioxide air itself which is cheating and there for science"
+        },
+        {
+          "id": "s08_05",
+          "ref": "the colony guide",
+          "hyp": ""
+        },
+        {
+          "id": "s09_06",
+          "ref": "blue sunsets",
+          "hyp": "blue sunset"
+        },
+        {
+          "id": "s09_07",
+          "ref": "on mars dusk can turn blue near the sun while the rest of the sky stays peach fine dust scatters the light",
+          "hyp": "on mars dust can turn blue near the sun while the rest of the sky stays peach fine dust sc"
+        }
+      ]
+    },
+    "comet": {
+      "n": 6,
+      "exact": 3,
+      "misses": [
+        {
+          "id": "s02_01",
+          "ref": "let's air the place out",
+          "hyp": "let's hear the place out"
+        },
+        {
+          "id": "s03_02",
+          "ref": "snacks",
+          "hyp": "thanks for watching"
+        },
+        {
+          "id": "s05_01",
+          "ref": "if the dust goes fast enough it's wind and wind is basically air",
+          "hyp": "if if the dust goes fast enough it's wind and wind is basically air"
+        }
+      ]
+    },
+    "kepler": {
+      "n": 9,
+      "exact": 7,
+      "misses": [
+        {
+          "id": "s05_02",
+          "ref": "three wrong things in one sentence",
+          "hyp": "three wrong three wrong three wrong three wrong three wrong three wrong three wrong three wrong three wrong three wrong one one one one one one one one one one one"
+        },
+        {
+          "id": "s07_03",
+          "ref": "seal holds",
+          "hyp": "seal hold"
+        }
+      ]
+    }
+  },
+  "kepler_eval": [
+    {
+      "voice": "am_onyx",
+      "speed": 1.0,
+      "n": 8,
+      "wer": 9.09,
+      "exact": 6,
+      "misses": [
+        [
+          "that's not airing out that's checking out",
+          "that's not airing out that's checking checking out"
+        ],
+        [
+          "seal holds",
+          "hold"
+        ]
+      ]
+    },
+    {
+      "voice": "am_michael",
+      "speed": 1.0,
+      "n": 8,
+      "wer": 15.15,
+      "exact": 6,
+      "misses": [
+        [
+          "seal holds",
+          "see you soon"
+        ],
+        [
+          "someday a forest under glass",
+          "forest under glass"
+        ]
+      ]
+    }
+  ],
+  "comet_eval": [
+    {
+      "voice": "am_puck",
+      "speed": 1.08,
+      "n": 6,
+      "wer": 7.69,
+      "exact": 4,
+      "misses": [
+        [
+          "let's air the place out",
+          "let's hear the place out"
+        ],
+        [
+          "snacks",
+          "next"
+        ]
+      ]
+    },
+    {
+      "voice": "am_fenrir",
+      "speed": 1.08,
+      "n": 6,
+      "wer": 30.77,
+      "exact": 2,
+      "misses": [
+        [
+          "let's air the place out",
+          ""
+        ],
+        [
+          "snacks",
+          "next"
+        ],
+        [
+          "we're rich",
+          "rich"
+        ],
+        [
+          "if the dust goes fast enough it's wind and wind is basically air",
+          "if the dust goes goes fast enough it's wind and wind is basically air"
+        ]
+      ]
+    },
+    {
+      "voice": "am_liam",
+      "speed": 1.08,
+      "n": 6,
+      "wer": 69.23,
+      "exact": 2,
+      "misses": [
+        [
+          "five star landing",
+          "it's our landing"
+        ],
+        [
+          "we're rich",
+          ""
+        ],
+        [
+          "if the dust goes fast enough it's wind and wind is basically air",
+          "an"
+        ],
+        [
+          "wrong planet",
+          "wrong planets"
+        ]
+      ]
+    }
+  ],
+  "note": "Kokoro am_eric narrator at natural speed 1.0. Nobody has listened yet; WER is machine proxy."
+}

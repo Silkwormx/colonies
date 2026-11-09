@@ -1,0 +1,580 @@
+{
+  "voices": {
+    "narrator": {
+      "engine": "kokoro",
+      "voice": "am_eric",
+      "speed": 1.0,
+      "lang": "en-us",
+      "role": "Colony Guide / story narrator \u2014 natural Kokoro am_eric"
+    },
+    "kepler": {
+      "engine": "kokoro",
+      "voice": "am_onyx",
+      "speed": 1.0,
+      "lang": "en-us",
+      "role": "Kepler \u2014 calm, low, deadpan (Kokoro am_onyx)"
+    },
+    "comet": {
+      "engine": "kokoro",
+      "voice": "am_puck",
+      "speed": 1.08,
+      "lang": "en-us",
+      "role": "Comet \u2014 quick, bright (Kokoro am_puck)"
+    }
+  },
+  "scenes": {
+    "hero": [
+      {
+        "id": "hero_01",
+        "speaker": "narrator",
+        "text": "Can't Breathe.",
+        "file": "hero_01.mp3",
+        "duration": 1.152
+      },
+      {
+        "id": "hero_02",
+        "speaker": "narrator",
+        "text": "Kepler and Comet are sent ahead to make Mars livable. The pod landed. The manual didn't. Six hours of oxygen.",
+        "file": "hero_02.mp3",
+        "duration": 5.784
+      }
+    ],
+    "s01": [
+      {
+        "id": "s01_01",
+        "speaker": "comet",
+        "text": "Five-star landing!",
+        "file": "s01_01.mp3",
+        "duration": 1.176
+      },
+      {
+        "id": "s01_02",
+        "speaker": "kepler",
+        "text": "Six hours of air.",
+        "file": "s01_02.mp3",
+        "duration": 2.064
+      },
+      {
+        "id": "s01_03",
+        "speaker": "narrator",
+        "text": "Mars air is about ninety-five percent carbon dioxide and far too thin to breathe.",
+        "file": "s01_03.mp3",
+        "duration": 4.488
+      },
+      {
+        "id": "s01_04",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s01_05",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s01_05.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s01_06",
+        "speaker": "narrator",
+        "text": "Mars Air.",
+        "file": "s01_06.mp3",
+        "duration": 1.032
+      },
+      {
+        "id": "s01_07",
+        "speaker": "narrator",
+        "text": "Technically present. Not recommended.",
+        "file": "s01_07.mp3",
+        "duration": 2.232
+      },
+      {
+        "id": "s01_08",
+        "speaker": "narrator",
+        "text": "Surface pressure is less than one percent of Earth's, which is a polite way of saying the sky is mostly a suggestion.",
+        "file": "s01_08.mp3",
+        "duration": 6.12
+      }
+    ],
+    "s02": [
+      {
+        "id": "s02_01",
+        "speaker": "comet",
+        "text": "Let's air the place out.",
+        "file": "s02_01.mp3",
+        "duration": 1.08
+      },
+      {
+        "id": "s02_02",
+        "speaker": "kepler",
+        "text": "That's not airing out. That's checking out.",
+        "file": "s02_02.mp3",
+        "duration": 2.544
+      },
+      {
+        "id": "s02_03",
+        "speaker": "narrator",
+        "text": "One breath of Martian air would not sustain you. Keep the helmet on.",
+        "file": "s02_03.mp3",
+        "duration": 3.36
+      },
+      {
+        "id": "s02_04",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s02_05",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s02_05.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s02_06",
+        "speaker": "narrator",
+        "text": "Helmets.",
+        "file": "s02_06.mp3",
+        "duration": 0.864
+      },
+      {
+        "id": "s02_07",
+        "speaker": "narrator",
+        "text": "On Mars, fresh air is a marketing term with no product behind it.",
+        "file": "s02_07.mp3",
+        "duration": 3.504
+      },
+      {
+        "id": "s02_08",
+        "speaker": "narrator",
+        "text": "The atmosphere is thin enough that even a polite breeze arrives late and underwhelmed.",
+        "file": "s02_08.mp3",
+        "duration": 4.512
+      }
+    ],
+    "s03": [
+      {
+        "id": "s03_01",
+        "speaker": "narrator",
+        "text": "Need: oxygen. Have: ice, sunlight, scrap.",
+        "file": "s03_01.mp3",
+        "duration": 2.352
+      },
+      {
+        "id": "s03_02",
+        "speaker": "comet",
+        "text": "Snacks.",
+        "file": "s03_02.mp3",
+        "duration": 0.696
+      },
+      {
+        "id": "s03_03",
+        "speaker": "kepler",
+        "text": "Later.",
+        "file": "s03_03.mp3",
+        "duration": 0.744
+      },
+      {
+        "id": "s03_04",
+        "speaker": "narrator",
+        "text": "Oxygen can be made from water ice by electrolysis, or from carbon dioxide, as NASA's MOXIE did on Perseverance.",
+        "file": "s03_04.mp3",
+        "duration": 6.744
+      },
+      {
+        "id": "s03_05",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s03_06",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s03_06.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s03_07",
+        "speaker": "narrator",
+        "text": "First Principles.",
+        "file": "s03_07.mp3",
+        "duration": 1.272
+      },
+      {
+        "id": "s03_08",
+        "speaker": "narrator",
+        "text": "Ask what the problem actually needs.",
+        "file": "s03_08.mp3",
+        "duration": 2.088
+      },
+      {
+        "id": "s03_09",
+        "speaker": "narrator",
+        "text": "Mars soil can contain perchlorates \u2014 salty compounds hostile to Earth microbes and inconvenient for farming.",
+        "file": "s03_09.mp3",
+        "duration": 5.76
+      },
+      {
+        "id": "s03_10",
+        "speaker": "narrator",
+        "text": "The planet restocks itself. The labels are missing.",
+        "file": "s03_10.mp3",
+        "duration": 2.712
+      }
+    ],
+    "s04": [
+      {
+        "id": "s04_01",
+        "speaker": "comet",
+        "text": "We're rich!",
+        "file": "s04_01.mp3",
+        "duration": 0.744
+      },
+      {
+        "id": "s04_02",
+        "speaker": "kepler",
+        "text": "We're breathing. Out here, same thing.",
+        "file": "s04_02.mp3",
+        "duration": 2.376
+      },
+      {
+        "id": "s04_03",
+        "speaker": "narrator",
+        "text": "Water ice lies under Martian dust in many places. The red color is iron oxide \u2014 basically rust.",
+        "file": "s04_03.mp3",
+        "duration": 5.952
+      },
+      {
+        "id": "s04_04",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s04_05",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s04_05.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s04_06",
+        "speaker": "narrator",
+        "text": "Ice.",
+        "file": "s04_06.mp3",
+        "duration": 0.744
+      },
+      {
+        "id": "s04_07",
+        "speaker": "narrator",
+        "text": "The most valuable substance on Mars. Also frozen water. Both are true.",
+        "file": "s04_07.mp3",
+        "duration": 4.056
+      },
+      {
+        "id": "s04_08",
+        "speaker": "narrator",
+        "text": "Dig under the rust and you may find the colony's first real paycheck.",
+        "file": "s04_08.mp3",
+        "duration": 3.48
+      }
+    ],
+    "s05": [
+      {
+        "id": "s05_01",
+        "speaker": "comet",
+        "text": "If the dust goes fast enough it's wind, and wind is basically air.",
+        "file": "s05_01.mp3",
+        "duration": 3.48
+      },
+      {
+        "id": "s05_02",
+        "speaker": "kepler",
+        "text": "Three wrong things in one sentence.",
+        "file": "s05_02.mp3",
+        "duration": 2.688
+      },
+      {
+        "id": "s05_03",
+        "speaker": "narrator",
+        "text": "Blowing regolith around does not make oxygen. Chemistry does.",
+        "file": "s05_03.mp3",
+        "duration": 3.504
+      },
+      {
+        "id": "s05_04",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s05_05",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s05_05.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s05_06",
+        "speaker": "narrator",
+        "text": "The Fan.",
+        "file": "s05_06.mp3",
+        "duration": 0.816
+      },
+      {
+        "id": "s05_07",
+        "speaker": "narrator",
+        "text": "The colony's first invention. It is no longer considered an invention.",
+        "file": "s05_07.mp3",
+        "duration": 3.816
+      },
+      {
+        "id": "s05_08",
+        "speaker": "narrator",
+        "text": "Mars dust is fine enough to get into everything; it does not, however, become breathable when accelerated.",
+        "file": "s05_08.mp3",
+        "duration": 5.64
+      }
+    ],
+    "s06": [
+      {
+        "id": "s06_01",
+        "speaker": "kepler",
+        "text": "Everything we need is already here. It's just in the wrong order.",
+        "file": "s06_01.mp3",
+        "duration": 3.336
+      },
+      {
+        "id": "s06_02",
+        "speaker": "narrator",
+        "text": "Electricity splits water into hydrogen and oxygen. A scavenged solar panel can run the current.",
+        "file": "s06_02.mp3",
+        "duration": 5.688
+      },
+      {
+        "id": "s06_03",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s06_04",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s06_04.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s06_05",
+        "speaker": "narrator",
+        "text": "Electrolysis.",
+        "file": "s06_05.mp3",
+        "duration": 1.32
+      },
+      {
+        "id": "s06_06",
+        "speaker": "narrator",
+        "text": "Sunlight in. Water split. Oxygen out.",
+        "file": "s06_06.mp3",
+        "duration": 2.136
+      },
+      {
+        "id": "s06_07",
+        "speaker": "narrator",
+        "text": "Perseverance's MOXIE later proved you can also wring oxygen from the carbon dioxide air itself \u2014 which is cheating, and therefore science.",
+        "file": "s06_07.mp3",
+        "duration": 7.536
+      }
+    ],
+    "s07": [
+      {
+        "id": "s07_01",
+        "speaker": "narrator",
+        "text": "First ring: dull. Leak. They patch it.",
+        "file": "s07_01.mp3",
+        "duration": 1.848
+      },
+      {
+        "id": "s07_02",
+        "speaker": "narrator",
+        "text": "Second ring: clear.",
+        "file": "s07_02.mp3",
+        "duration": 1.512
+      },
+      {
+        "id": "s07_03",
+        "speaker": "kepler",
+        "text": "Seal holds.",
+        "file": "s07_03.mp3",
+        "duration": 1.272
+      },
+      {
+        "id": "s07_04",
+        "speaker": "narrator",
+        "text": "Ring test: a sealed structure rings clear; a crack sounds dull. On Mars, sound is quieter and high and low pitches travel at different speeds.",
+        "file": "s07_04.mp3",
+        "duration": 7.68
+      },
+      {
+        "id": "s07_05",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s07_06",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s07_06.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s07_07",
+        "speaker": "narrator",
+        "text": "Ring Test.",
+        "file": "s07_07.mp3",
+        "duration": 1.008
+      },
+      {
+        "id": "s07_08",
+        "speaker": "narrator",
+        "text": "A method of asking a building if it is okay. Buildings are surprisingly honest.",
+        "file": "s07_08.mp3",
+        "duration": 4.248
+      },
+      {
+        "id": "s07_09",
+        "speaker": "narrator",
+        "text": "On Mars, sound travels slower and arrives softer; even a good ring can sound like it took the scenic route.",
+        "file": "s07_09.mp3",
+        "duration": 5.664
+      }
+    ],
+    "s08": [
+      {
+        "id": "s08_01",
+        "speaker": "comet",
+        "text": "Wrong planet?",
+        "file": "s08_01.mp3",
+        "duration": 0.912
+      },
+      {
+        "id": "s08_02",
+        "speaker": "kepler",
+        "text": "Right start.",
+        "file": "s08_02.mp3",
+        "duration": 1.152
+      },
+      {
+        "id": "s08_03",
+        "speaker": "narrator",
+        "text": "Habitats must stay sealed. Nothing grows in open Martian regolith \u2014 only inside a pressurized, protected space.",
+        "file": "s08_03.mp3",
+        "duration": 6.552
+      },
+      {
+        "id": "s08_04",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s08_05",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s08_05.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s08_06",
+        "speaker": "narrator",
+        "text": "First Breath.",
+        "file": "s08_06.mp3",
+        "duration": 1.008
+      },
+      {
+        "id": "s08_07",
+        "speaker": "narrator",
+        "text": "Available indoors only. Outdoors remains a museum exhibit.",
+        "file": "s08_07.mp3",
+        "duration": 3.504
+      },
+      {
+        "id": "s08_08",
+        "speaker": "narrator",
+        "text": "The sprout agrees, which is why it lives in glass.",
+        "file": "s08_08.mp3",
+        "duration": 2.496
+      }
+    ],
+    "s09": [
+      {
+        "id": "s09_01",
+        "speaker": "kepler",
+        "text": "Someday, a forest under glass.",
+        "file": "s09_01.mp3",
+        "duration": 2.376
+      },
+      {
+        "id": "s09_02",
+        "speaker": "narrator",
+        "text": "Horizon: weather coming.",
+        "file": "s09_02.mp3",
+        "duration": 1.776
+      },
+      {
+        "id": "s09_03",
+        "speaker": "narrator",
+        "text": "Fine dust makes Mars sunsets blue near the sun. Heat, shielding, and power still needed before any forest under glass.",
+        "file": "s09_03.mp3",
+        "duration": 6.456
+      },
+      {
+        "id": "s09_04",
+        "speaker": "pause",
+        "text": "",
+        "file": "silence_450.mp3",
+        "pause": true
+      },
+      {
+        "id": "s09_05",
+        "speaker": "narrator",
+        "text": "The Colony Guide.",
+        "file": "s09_05.mp3",
+        "duration": 1.464
+      },
+      {
+        "id": "s09_06",
+        "speaker": "narrator",
+        "text": "Blue Sunsets.",
+        "file": "s09_06.mp3",
+        "duration": 1.2
+      },
+      {
+        "id": "s09_07",
+        "speaker": "narrator",
+        "text": "On Mars, dusk can turn blue near the sun while the rest of the sky stays peach. Fine dust scatters the light.",
+        "file": "s09_07.mp3",
+        "duration": 5.76
+      },
+      {
+        "id": "s09_08",
+        "speaker": "narrator",
+        "text": "The planet has a sense of irony, and a dust storm waiting on the horizon.",
+        "file": "s09_08.mp3",
+        "duration": 3.816
+      }
+    ]
+  },
+  "engine": "kokoro-onnx"
+}

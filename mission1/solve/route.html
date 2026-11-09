@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#140c08" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Route the Habitat · Solve it · Colonies</title>
+<link rel="manifest" href="../../manifest.json" />
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="solve.css" />
+<style>
+.goal { font-family: Fraunces, Georgia, serif; font-size: 1.1rem; margin-bottom: 0.6rem; }
+.board-wrap { max-width: 460px; margin: 0 auto; }
+.board { display: block; width: 100%; height: auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+.node { cursor: pointer; }
+.node .ring { fill: url(#nodeg); stroke: rgba(232,160,90,0.55); stroke-width: 1.5; transition: stroke .2s, stroke-width .2s; }
+.node .ico { pointer-events: none; }
+.node text { fill: #f6eadc; font-family: "Source Sans 3", system-ui, sans-serif; font-size: 12.5px; font-weight: 600; text-anchor: middle; pointer-events: none; paint-order: stroke; stroke: rgba(20,12,8,0.85); stroke-width: 3px; }
+.node.sel .ring { stroke: #f2d9a8; stroke-width: 3.5; }
+.node.start .ring { stroke: #a9d8e4; stroke-width: 3; }
+.node.bad .ring { animation: badn .45s ease; }
+@keyframes badn { 30% { stroke: #e8a05a; stroke-width: 5; } }
+.node.hidden { display: none; }
+.node.done .ring { stroke: #8fc0a0; }
+.link { fill: none; stroke-width: 5; stroke-linecap: round; }
+.link.pipe { stroke: #a9d8e4; }
+.link.pipe.o2 { stroke: #a9d8e4; }
+.link.wire { stroke: #e8a05a; stroke-width: 3.5; stroke-dasharray: 2 6; }
+.link.h2 { stroke: #c9b8a4; stroke-dasharray: 1 7; }
+.link.fan { stroke: #8fc0a0; }
+.flowing .link.pipe { stroke-dasharray: 10 8; animation: flow 1s linear infinite; }
+.flowing .link.wire { animation: flow .8s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -36; } }
+.hab-glow { opacity: 0; transition: opacity 1.2s; }
+.flowing .hab-glow { opacity: 1; }
+.r3-row { text-align: center; margin-top: 0.9rem; }
+.reveal { margin-top: 1.2rem; animation: rise .5s ease both; }
+.reveal figure img { border-radius: 16px; box-shadow: var(--shadow); }
+.reveal figcaption { text-align: center; font-family: Fraunces, Georgia, serif; font-style: italic; color: var(--muted); margin-top: 0.5rem; }
+.real { margin-top: 1.1rem; border-left: 3px solid var(--guide); background: linear-gradient(90deg, rgba(126,184,201,0.08), transparent); border-radius: 0 14px 14px 0; padding: 0.9rem 1rem; }
+.real .label { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--guide); }
+.real h2 { font-size: 1.35rem; margin: 0.2rem 0 0.6rem; }
+.real dt { font-weight: 700; color: var(--accent); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.6rem; }
+.real dd { font-size: 0.97rem; }
+
+</style>
+</head>
+<body data-game="route">
+<nav class="topbar"><a class="pill" href="index.html">&larr; Solve it</a><a class="pill" href="../index.html">Read Mission 1</a></nav>
+<main class="wrap">
+  <header class="game-head">
+    <div class="eyebrow">Mission 1 &middot; Solve it &middot; <span id="game-num"></span></div>
+    <h1>Route the Habitat</h1>
+    <p class="setup">Everything they need is already here. It is just in the wrong order.</p>
+    <p class="how"><b>How to play</b>Drag from one station to the next, or tap them one after another, to lay pipe and cable. Three rounds: the air, the power, the seal.</p>
+    <div class="solved-flag" id="solved-flag" hidden></div>
+  </header>
+  <section class="stage" id="stage">
+    <div class="status"><span id="round-label"><strong>Round 1 of 3</strong> · The air</span><span id="links-tag"></span></div>
+    <p class="goal" id="goal"></p>
+    <div class="board-wrap">
+      <svg class="board" id="board" viewBox="0 0 360 440" role="group" aria-label="Habitat map">
+        <defs>
+          <radialGradient id="ground" cx="50%" cy="60%" r="70%"><stop offset="0" stop-color="#5a2f1c"/><stop offset="1" stop-color="#24140c"/></radialGradient>
+          <radialGradient id="nodeg" cx="40%" cy="35%"><stop offset="0" stop-color="#4a3022"/><stop offset="1" stop-color="#22140c"/></radialGradient>
+          <radialGradient id="hab" cx="50%" cy="30%"><stop offset="0" stop-color="rgba(200,230,240,0.35)"/><stop offset="1" stop-color="rgba(126,184,201,0.08)"/></radialGradient>
+        </defs>
+        <rect x="0" y="0" width="360" height="440" rx="18" fill="url(#ground)"/>
+        <g opacity=".18" fill="#e8a05a"><circle cx="40" cy="140" r="2"/><circle cx="320" cy="300" r="2.4"/><circle cx="200" cy="420" r="1.8"/><circle cx="120" cy="120" r="1.6"/><circle cx="330" cy="150" r="1.6"/><circle cx="20" cy="400" r="2"/></g>
+        <g id="links"></g>
+        <path id="preview" d="" fill="none" stroke="#e8d2b0" stroke-width="3" stroke-dasharray="6 6" opacity=".6"/>
+        <g id="nodes"></g>
+      </svg>
+    </div>
+    <div class="r3-row" id="r3-row" hidden><button class="btn primary" id="ring-btn" type="button">Ring-test the habitat</button></div>
+    <div class="reveal" id="reveal" hidden>
+      <figure><img src="../scene08.jpg" alt="Inside the sealed bubble, Comet breathes with his helmet off beside a sprout" /><figcaption>First breath. Available indoors only.</figcaption></figure>
+      <div class="real">
+        <div class="label">The Colony Guide</div>
+        <h2>How real Mars habitats tackle this</h2>
+        <dl>
+          <dt>Water ice</dt><dd>Orbiters have mapped buried ice across large parts of Mars, some of it just under the dust. Phoenix dug down to some in 2008. “Land near the ice” is rule one.</dd>
+          <dt>Oxygen from the air</dt><dd>MOXIE, a car-battery-sized experiment on Perseverance, pulled oxygen out of Martian CO<sub>2</sub> 16 times from 2021 to 2023. About 122 grams in total. Small, but it was real oxygen, made on Mars.</dd>
+          <dt>Regolith shielding</dt><dd>Mars has thin air and no global magnetic field, so the surface takes far more radiation than Earth. Many designs bury the habitat under a few metres of local soil, or print walls from it. The dirt is free, delivery included.</dd>
+          <dt>Pressure vessel</dt><dd>At Earth pressure, air pushes on every square metre of wall with the weight of about ten tonnes, and Mars barely pushes back. That is why habitat designs are domes, cylinders and inflatables: curves carry the load.</dd>
+          <dt>Cold</dt><dd>The average surface temperature is around −60 °C. Insulation, heaters and the same soil used for shielding keep the inside livable. Heat, like oxygen, has to be made and then kept.</dd>
+        </dl>
+      </div>
+    </div>
+
+  </section>
+  <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  <div id="done" hidden></div>
+  <nav class="foot-links"><a class="pill" href="index.html">All five problems</a><a class="pill" href="../index.html">Back to the story</a></nav>
+</main>
+<script src="solve.js"></script>
+<script src="route.js"></script>
+</body>
+</html>

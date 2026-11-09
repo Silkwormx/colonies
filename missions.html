@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1a0f0a" />
+<meta name="description" content="Explore the six Colonies missions on Mars." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Colonies — Explore a mission</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #140c08;
+  --bg-elev: #1f130d;
+  --card: #27180f;
+  --fg: #f6eadc;
+  --muted: #c9a88a;
+  --soft: #a8886c;
+  --accent: #e8a05a;
+  --accent-deep: #c9783a;
+  --line: rgba(232, 160, 90, 0.22);
+  --shadow: 0 18px 50px rgba(0,0,0,0.45);
+  --radius: 22px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  line-height: 1.5;
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: rgba(20,12,8,0.82);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.back {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 44px; padding: 0.45rem 0.9rem;
+  border: 1px solid #8a5a32; border-radius: 999px;
+  font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--fg); background: rgba(26,15,10,0.55);
+}
+.back:hover, .back:focus-visible { border-color: var(--accent); outline: none; }
+.topbar .brand {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: var(--muted);
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.75rem 1.25rem 3rem;
+}
+.page-head {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+.page-head .eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 0.65rem;
+}
+.page-head h1 {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 7vw, 3.1rem);
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  margin-bottom: 0.55rem;
+}
+.page-head p {
+  color: var(--muted);
+  max-width: 28rem;
+  margin: 0 auto;
+  font-size: 1.02rem;
+}
+
+.gallery {
+  display: grid;
+  gap: 1.15rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+}
+@media (min-width: 980px) {
+  .gallery { grid-template-columns: repeat(3, 1fr); gap: 1.35rem; }
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  color: inherit;
+  display: flex; flex-direction: column;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  min-height: 100%;
+}
+.card.open:hover, .card.open:focus-within {
+  transform: translateY(-5px);
+  box-shadow: 0 26px 60px rgba(0,0,0,0.55);
+  border-color: rgba(232,160,90,0.45);
+}
+.card-art {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #2a1810;
+}
+.card-art img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.card.open:hover .card-art img { transform: scale(1.04); }
+.card.locked .card-art::after {
+  content: "";
+  position: absolute; inset: 0;
+  backdrop-filter: blur(7px) saturate(0.85);
+  -webkit-backdrop-filter: blur(7px) saturate(0.85);
+  background: linear-gradient(180deg, rgba(30,18,12,0.25), rgba(20,12,8,0.55));
+}
+.frost-label {
+  position: absolute; z-index: 2; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 700; color: var(--fg);
+  background: rgba(26,15,10,0.55);
+  border: 1px solid rgba(244,230,212,0.25);
+  padding: 0.55rem 0.9rem; border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+.card-body {
+  padding: 1.1rem 1.15rem 1.25rem;
+  display: flex; flex-direction: column; gap: 0.35rem; flex: 1;
+}
+.card-num {
+  font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+}
+.card-body h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.32rem; font-weight: 600; line-height: 1.15;
+}
+.card-body p {
+  color: var(--muted); font-size: 0.96rem; margin-top: 0.1rem;
+  flex: 1;
+}
+.actions {
+  display: flex; flex-wrap: wrap; gap: 0.55rem;
+  margin-top: 0.95rem;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; min-width: 44px;
+  padding: 0.65rem 1.05rem;
+  border-radius: 999px;
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: #1a0f0a;
+}
+.btn-primary:hover, .btn-primary:focus-visible {
+  filter: brightness(1.05);
+  outline: none;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--fg);
+  border-color: rgba(232,160,90,0.45);
+}
+.btn-ghost:hover, .btn-ghost:focus-visible {
+  border-color: var(--accent);
+  background: rgba(232,160,90,0.08);
+  outline: none;
+}
+.coming {
+  margin-top: 0.95rem;
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--soft); font-weight: 600;
+}
+
+.foot {
+  text-align: center;
+  padding: 0.5rem 1.25rem calc(2rem + var(--safe-b));
+  color: var(--soft);
+  font-size: 0.88rem;
+}
+.foot a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.foot a:hover, .foot a:focus-visible { color: #f0c08a; outline: none; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back" href="index.html">← Colonies</a>
+    <div class="brand">Colonies</div>
+  </div>
+
+  <main class="page">
+    <header class="page-head">
+      <div class="eyebrow">Six problems on Mars</div>
+      <h1>Explore a mission</h1>
+      <p>One Mars problem at a time. Mission 1 is open. The rest arrive when they're finished.</p>
+    </header>
+
+    <div class="gallery" id="gallery">
+      <article class="card open" data-mission="m1">
+        <div class="card-art">
+          <img src="covers/m1.jpg" alt="Mission 1 cover: oxygen gauge at the landing pod" />
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 01</div>
+          <h2>Can't Breathe</h2>
+          <p>Six hours of air. The manual didn't land.</p>
+          <div class="actions">
+            <a class="btn btn-primary" href="mission1/index.html">Read the story</a>
+            <a class="btn btn-ghost" href="mission1/solve/index.html">Solve it</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m2.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 02</div>
+          <h2>Too Cold</h2>
+          <p>Air is solved. Heat is not. Nights here have opinions.</p>
+          <div class="coming">Coming soon</div>
+        </div>
+      </article>
+
+      <article class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m3.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 03</div>
+          <h2>Radiation</h2>
+          <p>The sky forgets to filter. Dirt becomes architecture.</p>
+          <div class="coming">Coming soon</div>
+        </div>
+      </article>
+
+      <article class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m4.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 04</div>
+          <h2>No Soil</h2>
+          <p>Regolith is not dirt. The first sprout negotiates terms.</p>
+          <div class="coming">Coming soon</div>
+        </div>
+      </article>
+
+      <article class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m5.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 05</div>
+          <h2>Dust Storm</h2>
+          <p>The horizon stands up and walks toward the panels.</p>
+          <div class="coming">Coming soon</div>
+        </div>
+      </article>
+
+      <article class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m6.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 06</div>
+          <h2>The Dome</h2>
+          <p>Glass rises. Someday, a forest under it.</p>
+          <div class="coming">Coming soon</div>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <a href="support.html">Feed the colony</a>
+    <div style="margin-top:0.55rem;font-size:0.78rem;letter-spacing:0.04em;">Colonies · six missions</div>
+  </footer>
+
+<script>
+(function(){
+  try {
+    const read = JSON.parse(localStorage.getItem('colonies_read_missions') || '[]');
+    document.querySelectorAll('[data-mission]').forEach((el) => {
+      if (read.includes(el.dataset.mission)) el.classList.add('read');
+    });
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

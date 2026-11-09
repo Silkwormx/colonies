@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#140c08" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Make Enough Oxygen · Solve it · Colonies</title>
+<link rel="manifest" href="../../manifest.json" />
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="solve.css" />
+<style>
+.tanks { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.8rem; }
+.tank { display: flex; align-items: center; gap: 0.55rem; background: rgba(20,12,8,0.5); border: 1px solid rgba(232,160,90,0.2); border-radius: 14px; padding: 0.45rem 0.6rem; transition: border-color .3s, box-shadow .3s; }
+.tank.active { border-color: var(--guide); box-shadow: 0 0 0 1px rgba(126,184,201,0.35); }
+.tank img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(232,160,90,0.4); }
+.tank-meta { flex: 1; min-width: 0; display: grid; gap: 0.15rem; }
+.tank .nm { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.tank .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.tank .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #5f98a8, #a9d8e4); transition: width .35s ease; }
+.tank .tx { font-size: 0.8rem; color: var(--muted); }
+.tank.bump { animation: bump .35s ease; }
+@keyframes bump { 50% { transform: scale(1.03); } }
+.rig { position: relative; }
+.cell {
+  position: relative; height: 320px; border-radius: 18px 18px 26px 26px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(232,160,90,0.08), rgba(20,12,8,0.2));
+  border: 2px solid rgba(220,200,180,0.25);
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5), inset 8px 0 18px rgba(255,255,255,0.04);
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+}
+.water { position: absolute; left: 0; right: 0; bottom: 0; height: 78%; background: linear-gradient(180deg, rgba(126,184,201,0.22), rgba(60,110,128,0.35)); border-top: 1px solid rgba(169,216,228,0.4); }
+.rod { position: absolute; bottom: 0; width: 16px; height: 34%; border-radius: 6px 6px 0 0; background: linear-gradient(90deg, #4a4038, #8a7a68, #4a4038); }
+.rod.neg { left: 22%; } .rod.pos { right: 22%; }
+.rod span { position: absolute; top: -26px; left: 50%; transform: translateX(-50%); font-weight: 700; color: var(--muted); }
+.sky-note { position: absolute; top: 6px; left: 0; right: 0; text-align: center; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(201,168,138,0.45); pointer-events: none; }
+.rig-labels { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; padding: 0 0.2rem; }
+.panel-wire { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; color: var(--soft); font-size: 0.8rem; }
+.panel-wire svg { width: 96px; }
+.bub {
+  position: absolute; left: 0; top: 0; width: 48px; height: 48px; margin: -24px 0 0 -24px; border-radius: 50%;
+  border: 0; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; touch-action: manipulation; will-change: transform;
+}
+.bub.o2 { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.75), rgba(169,216,228,0.5) 35%, rgba(80,140,160,0.45) 75%); color: #10303a; box-shadow: 0 0 0 1px rgba(200,235,245,0.6), 0 0 14px rgba(126,184,201,0.35); }
+.bub.h2 { background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), rgba(210,190,170,0.35) 40%, rgba(120,100,85,0.35) 80%); color: #3a2a20; box-shadow: 0 0 0 1px rgba(230,210,190,0.45); }
+.bub.pop { animation: pop .3s ease forwards; pointer-events: none; }
+.bub.nope { animation: nope .5s ease forwards; pointer-events: none; }
+@keyframes pop { to { opacity: 0; scale: 1.6; } }
+@keyframes nope { 30% { scale: 1.15; } to { opacity: 0; scale: 0.4; } }
+.quiz { margin-top: 1rem; }
+.quiz .q { font-family: Fraunces, Georgia, serif; font-size: 1.15rem; margin-bottom: 0.7rem; }
+.choices { display: grid; gap: 0.5rem; }
+.paused .bub { pointer-events: none; opacity: 0.4; }
+
+</style>
+</head>
+<body data-game="oxygen">
+<nav class="topbar"><a class="pill" href="index.html">&larr; Solve it</a><a class="pill" href="../index.html">Read Mission 1</a></nav>
+<main class="wrap">
+  <header class="game-head">
+    <div class="eyebrow">Mission 1 &middot; Solve it &middot; <span id="game-num"></span></div>
+    <h1>Make Enough Oxygen</h1>
+    <p class="setup">Two ants, two helmets, one jar of melted ice and a solar panel nobody asked permission to borrow.</p>
+    <p class="how"><b>How to play</b>Electricity splits the water. Tap the oxygen bubbles (O<sub>2</sub>) to send them to a helmet tank. Let the hydrogen (H<sub>2</sub>) float away.</p>
+    <div class="solved-flag" id="solved-flag" hidden></div>
+  </header>
+  <section class="stage" id="stage">
+    <div class="status"><span id="round-label"><strong>Round 1 of 3</strong> · Fill Kepler’s tank</span><span>Hydrogen released: <strong id="h-count">0</strong></span></div>
+    <div class="tanks">
+      <div class="tank" id="tank-k"><img src="../../art/kepler_portrait.jpg" alt="" /><div class="tank-meta"><span class="nm">Kepler</span><span class="bar"><i></i></span><span class="tx">0 of 6</span></div></div>
+      <div class="tank" id="tank-c"><img src="../../art/comet_portrait.jpg" alt="" /><div class="tank-meta"><span class="nm">Comet</span><span class="bar"><i></i></span><span class="tx">0 of 6</span></div></div>
+    </div>
+    <div class="rig" id="rig">
+      <div class="cell" id="cell">
+        <div class="water"></div>
+        <div class="rod neg"><span>−</span></div>
+        <div class="rod pos"><span>+</span></div>
+        <div class="sky-note" id="sky-note">Escaping to Mars</div>
+      </div>
+      <div class="rig-labels"><span>Cathode (−) makes H<sub>2</sub></span><span>Anode (+) makes O<sub>2</sub></span></div>
+      <div class="panel-wire"><svg viewBox="0 0 120 40" aria-hidden="true"><rect x="4" y="6" width="58" height="26" rx="2" fill="#2a3a52" stroke="#8aa0b8" stroke-width="1"/><path d="M4 15h58M4 23h58M19 6v26M33 6v26M47 6v26" stroke="#8aa0b8" stroke-width=".6" opacity=".7"/><path d="M62 19 C80 19 84 30 116 30" fill="none" stroke="#c9783a" stroke-width="2"/></svg><span>Borrowed solar panel</span></div>
+    </div>
+    <div class="quiz" id="quiz" hidden>
+      <p class="q">Kepler counts. For every O<sub>2</sub> you kept, how many H<sub>2</sub> left the cell?</p>
+      <div class="choices">
+        <button class="choice" data-a="half">Half as many</button>
+        <button class="choice" data-a="same">The same number</button>
+        <button class="choice" data-a="two">Twice as many</button>
+      </div>
+    </div>
+
+  </section>
+  <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  <div id="done" hidden></div>
+  <nav class="foot-links"><a class="pill" href="index.html">All five problems</a><a class="pill" href="../index.html">Back to the story</a></nav>
+</main>
+<script src="solve.js"></script>
+<script src="oxygen.js"></script>
+</body>
+</html>

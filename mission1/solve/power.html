@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#140c08" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Power Budget · Solve it · Colonies</title>
+<link rel="manifest" href="../../manifest.json" />
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="solve.css" />
+<style>
+.goal { font-family: Fraunces, Georgia, serif; font-size: 1.1rem; margin-bottom: 0.8rem; }
+.supply { display: grid; grid-template-columns: 120px 1fr; gap: 0.8rem; align-items: center; margin-bottom: 0.9rem; }
+.panel-art { position: relative; border-radius: 12px; background: linear-gradient(180deg, rgba(232,160,90,0.18), rgba(20,12,8,0.3)); transition: background .6s; }
+.night .panel-art { background: linear-gradient(180deg, #0e1420, #140c08); }
+.night #sunball { opacity: 0; }
+.panel-art svg { display: block; width: 100%; }
+.dust-layer { position: absolute; inset: 0; }
+.dust {
+  position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border: 0; border-radius: 50%; cursor: pointer;
+  background: radial-gradient(circle, rgba(196,120,70,0.95) 0%, rgba(170,96,56,0.85) 45%, rgba(150,80,45,0) 72%);
+  touch-action: manipulation;
+}
+.dust.gone { animation: puff .35s ease forwards; pointer-events: none; }
+@keyframes puff { to { opacity: 0; transform: scale(1.6) translateX(18px); } }
+.meter-top { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--muted); gap: 0.4rem; flex-wrap: wrap; }
+.meter-top strong { color: var(--fg); }
+.over { color: var(--accent); font-weight: 600; }
+.meter { height: 14px; border-radius: 99px; background: rgba(255,255,255,0.07); overflow: hidden; margin: 0.35rem 0; border: 1px solid rgba(232,160,90,0.18); }
+.meter i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #d9b26a, #e8a05a); transition: width .25s ease, background .25s; }
+.meter.is-over i { background: repeating-linear-gradient(45deg, #c9783a 0 8px, #8a4a2a 8px 16px); }
+.src { font-size: 0.78rem; color: var(--soft); }
+.devices { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+@media (min-width: 620px) { .devices { grid-template-columns: repeat(3, 1fr); } }
+.dev {
+  position: relative; min-height: 64px; text-align: left; padding: 0.55rem 2rem 0.55rem 2.3rem; border-radius: 14px; cursor: pointer;
+  background: rgba(20,12,8,0.55); border: 1px solid rgba(232,160,90,0.22); touch-action: manipulation;
+  transition: border-color .15s, background .15s;
+}
+.dev::before { content: ""; position: absolute; left: 0.75rem; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; border: 2px solid rgba(201,168,138,0.5); }
+.dev.on { background: linear-gradient(170deg, rgba(232,160,90,0.18), rgba(232,160,90,0.05)); border-color: var(--accent); }
+.dev.on::before { background: #f2c27a; border-color: #f2c27a; box-shadow: 0 0 10px rgba(242,194,122,0.7); }
+.dev b { display: block; font-weight: 600; font-size: 0.98rem; line-height: 1.2; }
+.dev small { color: var(--muted); font-size: 0.78rem; }
+.dev .cost { position: absolute; top: 0.55rem; right: 0.65rem; min-width: 1.3rem; text-align: center; border-radius: 99px; background: rgba(232,160,90,0.12); font-size: 0.78rem; color: var(--accent); font-weight: 700; }
+.run-row { text-align: center; margin-top: 1rem; }
+.stage.tripped { animation: trip 1.1s ease; }
+@keyframes trip { 0% { filter: brightness(1); } 10% { filter: brightness(0.25); } 25% { filter: brightness(0.6); } 32% { filter: brightness(0.2); } 100% { filter: brightness(1); } }
+
+</style>
+</head>
+<body data-game="power">
+<nav class="topbar"><a class="pill" href="index.html">&larr; Solve it</a><a class="pill" href="../index.html">Read Mission 1</a></nav>
+<main class="wrap">
+  <header class="game-head">
+    <div class="eyebrow">Mission 1 &middot; Solve it &middot; <span id="game-num"></span></div>
+    <h1>Power Budget</h1>
+    <p class="setup">One small solar panel. Seven appliances. Everyone has a reason theirs is essential.</p>
+    <p class="how"><b>How to play</b>Switch devices on until the job is covered, without going over what the panel can supply. Then press Run it.</p>
+    <div class="solved-flag" id="solved-flag" hidden></div>
+  </header>
+  <section class="stage" id="stage">
+    <div class="status"><span id="round-label"><strong>Round 1 of 3</strong> · Noon</span><span id="sky-tag">Sun high</span></div>
+    <p class="goal" id="goal"></p>
+    <div class="supply">
+      <div class="panel-art" id="panel-art">
+        <svg viewBox="0 0 200 90" aria-hidden="true"><defs><linearGradient id="pg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#3a5070"/><stop offset="1" stop-color="#1e2c40"/></linearGradient></defs>
+          <g id="sunball"><circle cx="178" cy="16" r="9" fill="#f2d9a8" opacity=".9"/></g>
+          <path d="M20 78 L52 24 L168 24 L136 78Z" fill="url(#pg)" stroke="#8aa0b8" stroke-width="1.2"/>
+          <path d="M36 51 L152 51 M44 37 L160 37 M44 65 L144 65 M81 24 L65 78 M110 24 L94 78 M139 24 L123 78" stroke="#8aa0b8" stroke-width=".6" opacity=".6"/>
+        </svg>
+        <div class="dust-layer" id="dust-layer"></div>
+      </div>
+      <div class="meter-wrap">
+        <div class="meter-top"><span>Using <strong id="used">0</strong> of <strong id="cap">10</strong> units</span><span id="over" class="over"></span></div>
+        <div class="meter"><i id="meter-fill"></i></div>
+        <div class="src" id="src">From the solar panel</div>
+      </div>
+    </div>
+    <div class="devices" id="devices"></div>
+    <div class="run-row"><button class="btn primary" id="run" type="button">Run it</button></div>
+
+  </section>
+  <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  <div id="done" hidden></div>
+  <nav class="foot-links"><a class="pill" href="index.html">All five problems</a><a class="pill" href="../index.html">Back to the story</a></nav>
+</main>
+<script src="solve.js"></script>
+<script src="power.js"></script>
+</body>
+</html>

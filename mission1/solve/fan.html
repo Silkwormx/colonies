@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#140c08" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Build the Fan · Solve it · Colonies</title>
+<link rel="manifest" href="../../manifest.json" />
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png" />
+<link rel="icon" href="../../icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="solve.css" />
+<style>
+.bench { position: relative; border-radius: 16px; background: radial-gradient(ellipse at 50% 85%, rgba(107,84,66,0.35), transparent 70%), rgba(20,12,8,0.45); border: 1px dashed rgba(232,160,90,0.25); transition: border-color .2s, background .2s; }
+.bench.over { border-color: var(--accent); background-color: rgba(232,160,90,0.08); }
+.fan-svg { display: block; width: 100%; max-width: 420px; margin: 0 auto; }
+.part { opacity: 0; transition: opacity .35s ease, transform .35s ease; transform: translateY(-10px); }
+.part.on { opacity: 1; transform: none; }
+.spin { transform-origin: 160px 100px; transform-box: view-box; }
+.running .spin { animation: spin .35s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.dust-fx circle { fill: #c9a88a; opacity: 0; }
+.running .dust-fx circle { animation: blow 1.2s linear infinite; }
+.running .dust-fx circle:nth-child(2) { animation-delay: .3s; } .running .dust-fx circle:nth-child(3) { animation-delay: .6s; } .running .dust-fx circle:nth-child(4) { animation-delay: .9s; } .running .dust-fx circle:nth-child(5) { animation-delay: .45s; }
+@keyframes blow { 0% { opacity: 0; transform: translateX(0); } 20% { opacity: .7; } 100% { opacity: 0; transform: translateX(-60px); } }
+.bench.shake { animation: shake .4s ease; }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.drop-hint { position: absolute; top: 8px; right: 12px; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(201,168,138,0.5); }
+.tray { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.5rem; margin-top: 0.9rem; }
+.chip {
+  min-height: 52px; padding: 0.5rem 0.8rem; border-radius: 14px; text-align: left; cursor: grab;
+  background: linear-gradient(170deg, #4a2f1f, #33200f); border: 1px solid rgba(232,160,90,0.35);
+  touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.chip b { display: block; font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1rem; }
+.chip small { color: var(--muted); font-size: 0.78rem; }
+.chip.used { display: none; }
+.chip.wrong { animation: shake .4s ease; border-color: var(--accent); }
+.chip.dragging { opacity: 0.35; }
+.drag-ghost { position: fixed; z-index: 100; pointer-events: none; transform: translate(-50%, -60%) rotate(-3deg); box-shadow: 0 12px 30px rgba(0,0,0,0.5); opacity: 0.95; }
+.switch-row { text-align: center; margin-top: 1rem; }
+.gauge { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; font-size: 0.85rem; color: var(--muted); }
+.g-bar { flex: 1; height: 8px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.g-bar i { display: block; height: 100%; width: 34%; background: linear-gradient(90deg, #5f98a8, #a9d8e4); }
+.g-tx { min-width: 6.5rem; text-align: right; }
+.quiz { margin-top: 1rem; }
+.quiz .q { font-family: Fraunces, Georgia, serif; font-size: 1.15rem; margin-bottom: 0.7rem; }
+.choices { display: grid; gap: 0.5rem; }
+
+</style>
+</head>
+<body data-game="fan">
+<nav class="topbar"><a class="pill" href="index.html">&larr; Solve it</a><a class="pill" href="../index.html">Read Mission 1</a></nav>
+<main class="wrap">
+  <header class="game-head">
+    <div class="eyebrow">Mission 1 &middot; Solve it &middot; <span id="game-num"></span></div>
+    <h1>Build the Fan</h1>
+    <p class="setup">The colony’s first invention, assembled from parts of the pod that were not consulted.</p>
+    <p class="how"><b>How to play</b>Tap a part, or drag it onto the workbench, in the order it should go on. Then switch it on and find out what it is actually for.</p>
+    <div class="solved-flag" id="solved-flag" hidden></div>
+  </header>
+  <section class="stage" id="stage">
+    <div class="status"><span id="round-label"><strong>Round 1 of 3</strong> · Assemble</span><span>Parts on: <strong id="placed">0</strong> of 5</span></div>
+    <div class="bench" id="bench" aria-label="Workbench">
+      <svg viewBox="0 0 320 220" class="fan-svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="mt" cx="40%" cy="35%"><stop offset="0" stop-color="#9a8a76"/><stop offset="1" stop-color="#4a3d32"/></radialGradient>
+          <linearGradient id="bl" x1="0" x2="1"><stop offset="0" stop-color="#b9a48a"/><stop offset="1" stop-color="#7a6754"/></linearGradient>
+        </defs>
+        <g class="ghost-outline" fill="none" stroke="rgba(232,160,90,0.18)" stroke-dasharray="4 5" stroke-width="1.5">
+          <rect x="95" y="182" width="130" height="16" rx="3"/><circle cx="160" cy="100" r="62"/>
+        </g>
+        <g class="part p-base"><rect x="95" y="182" width="130" height="16" rx="3" fill="#6b5442" stroke="#2a1810"/><rect x="152" y="140" width="16" height="44" fill="#5a4636" stroke="#2a1810"/><circle cx="108" cy="190" r="2.5" fill="#2a1810"/><circle cx="212" cy="190" r="2.5" fill="#2a1810"/></g>
+        <g class="part p-motor"><ellipse cx="160" cy="118" rx="26" ry="22" fill="url(#mt)" stroke="#2a1810"/><path d="M140 108h40M140 116h40M140 124h40" stroke="#2a1810" stroke-width="1" opacity=".5"/></g>
+        <g class="part p-blades"><g class="spin"><path d="M160 100 C150 70 152 48 160 40 C170 50 172 74 160 100Z" fill="url(#bl)" stroke="#2a1810"/><path d="M160 100 C190 92 210 98 214 108 C200 116 180 114 160 100Z" fill="url(#bl)" stroke="#2a1810"/><path d="M160 100 C150 128 130 142 120 140 C120 126 136 110 160 100Z" fill="url(#bl)" stroke="#2a1810"/><circle cx="160" cy="100" r="9" fill="#3a2e26" stroke="#b9a48a"/></g></g>
+        <g class="part p-guard" fill="none" stroke="#c9a88a" stroke-width="2"><circle cx="160" cy="100" r="62"/><circle cx="160" cy="100" r="42" opacity=".6"/><path d="M160 38v124M98 100h124M116 56l88 88M204 56l-88 88" opacity=".45" stroke-width="1.4"/></g>
+        <g class="part p-cable"><path d="M186 124 C230 150 250 170 300 168" fill="none" stroke="#c9783a" stroke-width="3"/><rect x="282" y="150" width="34" height="22" rx="2" fill="#2a3a52" stroke="#8aa0b8"/></g>
+        <g class="dust-fx"><circle cx="40" cy="80" r="2"/><circle cx="20" cy="110" r="1.6"/><circle cx="50" cy="130" r="2.2"/><circle cx="30" cy="60" r="1.4"/><circle cx="60" cy="100" r="1.8"/></g>
+      </svg>
+      <div class="drop-hint" id="drop-hint">Drop parts here</div>
+    </div>
+    <div class="tray" id="tray"></div>
+    <div class="switch-row" id="switch-row" hidden><button class="btn primary" id="switch" type="button">Switch it on</button></div>
+    <div class="gauge" id="gauge" hidden><span>Helmet oxygen</span><span class="g-bar"><i></i></span><span class="g-tx" id="g-tx">unchanged</span></div>
+    <div class="quiz" id="quiz" hidden>
+      <p class="q" id="q"></p>
+      <div class="choices" id="choices"></div>
+    </div>
+
+  </section>
+  <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+  <div id="done" hidden></div>
+  <nav class="foot-links"><a class="pill" href="index.html">All five problems</a><a class="pill" href="../index.html">Back to the story</a></nav>
+</main>
+<script src="solve.js"></script>
+<script src="fan.js"></script>
+</body>
+</html>
