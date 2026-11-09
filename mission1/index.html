@@ -167,7 +167,7 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     requestAnimationFrame(step);
   }
   function stopAudio(){ token++; stopVoice(); stopBgm(false); }
-  function pageWantsBgm(pg){ return !!(pg && pg.bgm) || (pg && (pg.kind==='cover' || pg.kind==='intro')); }
+  function pageWantsBgm(pg){ return false; }
   async function ensureBgm(pg){
     if(muted || !readingAll){ stopBgm(false); return; }
     const src = (pg && pg.bgm) ? ('audio/'+pg.bgm) : (pageWantsBgm(pg) ? 'audio/theme_intro.mp3' : null);

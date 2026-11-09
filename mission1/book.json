@@ -67,8 +67,7 @@
           "duration": 2.592,
           "rate": "-7%"
         }
-      ],
-      "bgm": "theme_intro.mp3"
+      ]
     },
     {
       "id": "intro1",
@@ -122,8 +121,7 @@
           "duration": 5.208,
           "rate": "-7%"
         }
-      ],
-      "bgm": "theme_intro.mp3"
+      ]
     },
     {
       "id": "intro2",
@@ -194,8 +192,7 @@
           "duration": 1.656,
           "rate": "-7%"
         }
-      ],
-      "bgm": "theme_intro.mp3"
+      ]
     },
     {
       "id": "intro3",
@@ -266,8 +263,7 @@
           "duration": 3.6,
           "rate": "-7%"
         }
-      ],
-      "bgm": "theme_intro.mp3"
+      ]
     },
     {
       "id": "s01",
