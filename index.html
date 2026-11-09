@@ -647,6 +647,9 @@ body.home { min-height: 0; height: 100dvh; overflow: hidden; }
   box-shadow: none; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .hero-actions #watchIntroBtn { min-height: 44px; padding: 0.5rem 1.05rem; font-size: 0.86rem; }
 .hero-actions .cta-play { border-top-width: 5px; border-bottom-width: 5px; border-left-width: 9px; margin-right: 0; }
+.hero-actions { flex-direction: column; flex-wrap: nowrap; align-items: center; gap: 0.5rem; }
+.hero-actions .hero-cta { width: 220px; max-width: 80vw; justify-content: center; }
+@media (max-height: 700px) { .hero-actions { gap: 0.4rem; } .hero-actions .hero-cta, .hero-actions #watchIntroBtn { min-height: 40px; } }
 @media (max-height: 700px) {
   .hero-copy { padding-top: 1.1rem !important; }
   .hero-copy h1 { font-size: clamp(2.3rem, 11vw, 3rem) !important; }
