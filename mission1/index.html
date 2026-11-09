@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="manifest" href="../manifest.json" />
+<meta name="theme-color" content="#1a0f0a" />
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+<title>Colonies — Mission 1: Can't Breathe</title>
+<style>
+  :root {
+    --bg: #1a0f0a;
+    --fg: #f4e6d4;
+    --muted: #c9a88a;
+    --accent: #e8a05a;
+    --science: #7eb8c9;
+    --card: #2a1810;
+    --guide-bg: #24160f;
+    --guide-border: #8a5a32;
+    --guide-ink: #e8d2b0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    line-height: 1.45;
+  }
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.25rem;
+    background:
+      radial-gradient(ellipse at 50% 30%, #4a2a18 0%, transparent 60%),
+      var(--bg);
+  }
+  .hero .eyebrow {
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-family: system-ui, sans-serif;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 7vw, 3.6rem);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+  .hero p {
+    max-width: 32rem;
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+  .hero .scroll-hint {
+    margin-top: 2.5rem;
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.8;
+  }
+  .scene {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem 0 2.5rem;
+  }
+  .scene figure {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 0.75rem;
+  }
+  .scene img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  }
+  .caption {
+    max-width: 640px;
+    margin: 1.25rem auto 0;
+    padding: 0 1.25rem;
+  }
+  .caption .lines p {
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    margin-bottom: 0.35rem;
+  }
+  .caption .lines .who {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .caption .science {
+    margin-top: 0.85rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid rgba(201,168,138,0.25);
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.88rem;
+    color: var(--science);
+  }
+  .caption .science::before {
+    content: "Science · ";
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    opacity: 0.85;
+  }
+  .guide {
+    margin-top: 1rem;
+    background: var(--guide-bg);
+    border: 1px solid var(--guide-border);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 0.85rem 1rem;
+    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+    color: var(--guide-ink);
+    box-shadow: inset 0 0 0 1px rgba(232,160,90,0.08);
+  }
+  .guide .label {
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .guide .title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+  }
+  .guide p {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    color: var(--guide-ink);
+  }
+  .reveal-badge {
+    display: inline-block;
+    font-family: system-ui, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--bg);
+    background: var(--accent);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+  }
+  .teaser {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.25rem 5rem;
+  }
+  .teaser-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card);
+    border: 1px solid rgba(232,160,90,0.35);
+    border-radius: 14px;
+    padding: 2rem 1.75rem;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  .teaser-card .locked {
+    font-family: system-ui, sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+  .teaser-card h2 { font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .teaser-card p { color: var(--muted); font-size: 1rem; }
+  .teaser-card .someday {
+    margin-top: 1.4rem;
+    font-style: italic;
+    color: var(--fg);
+    opacity: 0.9;
+  }
+  footer {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    color: var(--muted);
+    font-family: system-ui, sans-serif;
+    font-size: 0.8rem;
+  }
+</style>
+</head>
+<body>
+
+<a class="home-link" href="../index.html">← Colonies</a>
+<style>
+  .home-link {
+    position: fixed; top: 0.75rem; left: 0.75rem; z-index: 40;
+    font-family: system-ui, sans-serif; font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none;
+    color: #f4e6d4; background: rgba(26,15,10,0.72);
+    border: 1px solid #8a5a32; border-radius: 999px; padding: 0.45rem 0.85rem;
+    backdrop-filter: blur(6px);
+  }
+  .thanks {
+    text-align: center; padding: 2.5rem 1.25rem 1rem; color: #c9a88a;
+    font-family: system-ui, sans-serif; font-size: 0.95rem;
+  }
+  .feed-cta {
+    display: block; width: fit-content; margin: 0 auto 2rem;
+    font-family: system-ui, sans-serif; text-decoration: none;
+    background: #e8a05a; color: #1a0f0a; font-weight: 600;
+    padding: 0.85rem 1.4rem; border-radius: 999px; letter-spacing: 0.02em;
+  }
+</style>
+
+
+<header class="hero">
+  <div class="eyebrow">Colonies · Mission 1</div>
+  <h1>Can't Breathe</h1>
+  <p>Kepler and Comet are sent ahead to make Mars livable. The pod landed. The manual didn't. Six hours of oxygen.</p>
+  <div class="scroll-hint">Scroll ↓</div>
+</header>
+
+<section class="scene" id="s01">
+  <figure><img src="scene01.jpg" alt="Move-in day: Kepler by the wrecked pod with a dropping oxygen gauge" loading="eager" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p class="who">Comet: “Five-star landing!”</p>
+      <p class="who">Kepler: “Six hours of air.”</p>
+    </div>
+    <p class="science">Mars air is about 95% carbon dioxide and far too thin to breathe.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">Mars Air</div>
+      <p>Technically present. Not recommended. Surface pressure is about one percent of Earth's, which is a polite way of saying the sky is mostly a suggestion.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s02">
+  <figure><img src="scene02.jpg" alt="Comet reaches for helmet latch; Kepler stops him" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p class="who">Comet: “Let's air the place out.”</p>
+      <p class="who">Kepler: “That's not airing out. That's checking out.”</p>
+    </div>
+    <p class="science">One breath of Martian air would not sustain you. Keep the helmet on.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">Helmets</div>
+      <p>On Mars, “fresh air” is a marketing term with no product behind it. The atmosphere is thin enough that even a polite breeze arrives late and underwhelmed.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s03">
+  <figure><img src="scene03.jpg" alt="First principles: Kepler plans with ice, sunlight, scrap; Comet offers snacks" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p>Need: oxygen. Have: ice, sunlight, scrap.</p>
+      <p class="who">Comet: “Snacks.”</p>
+      <p class="who">Kepler: “Later.”</p>
+    </div>
+    <p class="science">Oxygen can be made from water ice by electrolysis — or from CO₂, as NASA's MOXIE did on Perseverance.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">First Principles</div>
+      <p>Ask what the problem actually needs. Mars soil can contain perchlorates — salty compounds hostile to Earth microbes and inconvenient for farming. The planet restocks itself. The labels are missing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s04">
+  <figure><img src="scene04.jpg" alt="They dig and find water ice under red dust" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p class="who">Comet: “We're rich!”</p>
+      <p class="who">Kepler: “We're breathing. Out here, same thing.”</p>
+    </div>
+    <p class="science">Water ice lies under Martian dust in many places. The red color is iron oxide — basically rust.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">Ice</div>
+      <p>The most valuable substance on Mars. Also frozen water. Both are true. Dig under the rust and you may find the colony's first real paycheck.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s05">
+  <figure><img src="scene05.jpg" alt="Comet's fan experiment; Kepler facepalms with ice" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p class="who">Comet: “If the dust goes fast enough it's wind, and wind is basically air.”</p>
+      <p class="who">Kepler: “Three wrong things in one sentence.”</p>
+    </div>
+    <p class="science">Blowing regolith around does not make oxygen. Chemistry does.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">The Fan</div>
+      <p>The colony's first invention. It is no longer considered an invention. Mars dust is fine enough to get into everything; it does not, however, become breathable when accelerated.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s06">
+  <figure><img src="scene06.jpg" alt="Building a solar electrolysis rig from scraps" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p class="who">Kepler: “Everything we need is already here. It's just in the wrong order.”</p>
+    </div>
+    <p class="science">Electricity splits water into hydrogen and oxygen. A scavenged solar panel can run the current.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">Electrolysis</div>
+      <p>Sunlight in. Water split. Oxygen out. Perseverance's MOXIE later proved you can also wring oxygen from the CO₂ air itself — which is cheating, and therefore science.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s07">
+  <figure><img src="scene07.jpg" alt="Kepler rings the brass colony bell; Comet holds the gauge" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p>First ring: dull. Leak. They patch it.</p>
+      <p>Second ring: clear.</p>
+      <p class="who">Kepler: “Seal holds.”</p>
+    </div>
+    <p class="science">Ring test: a sealed structure rings clear; a crack sounds dull. On Mars, sound is quieter and high/low pitches travel at different speeds.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">Ring Test</div>
+      <p>A method of asking a building if it is okay. Buildings are surprisingly honest. On Mars, sound travels slower and arrives softer; even a good ring can sound like it took the scenic route.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s08">
+  <figure><img src="scene08.jpg" alt="First breath: Comet helmet-off inside sealed bubble with a sprout" loading="lazy" /></figure>
+  <div class="caption">
+    <span class="reveal-badge">Build reveal</span>
+    <div class="lines">
+      <p class="who">Comet: “Wrong planet?”</p>
+      <p class="who">Kepler: “Right start.”</p>
+    </div>
+    <p class="science">Habitats must stay sealed. Nothing grows in open Martian regolith — only inside a pressurized, protected space.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">First Breath</div>
+      <p>Available indoors only. Outdoors remains a museum exhibit. The sprout agrees, which is why it lives in glass.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="s09">
+  <figure><img src="scene09.jpg" alt="Blue sunset; Kepler sketches a forest under glass; dust storm teaser" loading="lazy" /></figure>
+  <div class="caption">
+    <div class="lines">
+      <p class="who">Kepler: “Someday, a forest under glass.”</p>
+      <p>Horizon: weather coming.</p>
+    </div>
+    <p class="science">Fine dust makes Mars sunsets blue near the sun. Heat, shielding, and power still needed before any forest under glass.</p>
+    <div class="guide">
+      <div class="label">The Colony Guide</div>
+      <div class="title">Blue Sunsets</div>
+      <p>On Mars, dusk can turn blue near the sun while the rest of the sky stays peach. Fine dust scatters the light. The planet has a sense of irony, and a dust storm waiting on the horizon.</p>
+    </div>
+  </div>
+</section>
+
+<section class="teaser">
+  <div class="teaser-card">
+    <div class="locked">Next mission</div>
+    <h2>Too Cold</h2>
+    <p>Air is solved. Heat is not. A faint dust storm waits on the horizon — and the brass bell will have more to say.</p>
+    <p class="someday">Someday: a forest under glass.</p>
+  </div>
+</section>
+
+
+<section class="thanks" id="thanks">
+  <p>Mission 1 was made possible by everyone who fed the colony.</p>
+</section>
+<a class="feed-cta" href="../support.html">Feed the colony</a>
+
+<footer>Colonies · Mission 1 of 6 · Illustrated scroll story · The Colony Guide</footer>
+
+<script>
+(function(){
+  try {
+    const key = 'colonies_read_missions';
+    const read = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!read.includes('m1')) { read.push('m1'); localStorage.setItem(key, JSON.stringify(read)); }
+  } catch(e) {}
+})();
+</script>
+
+</body>
+</html>

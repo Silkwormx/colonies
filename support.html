@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1a0f0a" />
+<title>Feed the colony · Colonies</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #140c08; --bg-elev: #1f130d; --card: #27180f;
+  --fg: #f6eadc; --muted: #c9a88a; --soft: #a8886c;
+  --accent: #e8a05a; --accent-deep: #c9783a; --guide: #7eb8c9;
+  --line: rgba(232,160,90,0.22); --shadow: 0 18px 50px rgba(0,0,0,0.45);
+  --radius: 22px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  line-height: 1.55; -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+a { color: var(--accent); }
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.25rem;
+  background: rgba(20,12,8,0.82);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar a.back {
+  text-decoration: none; color: var(--fg);
+  font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 600;
+}
+.topbar .brand {
+  font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 1.05rem;
+}
+.hero-band {
+  position: relative; height: min(38vw, 280px); min-height: 200px; overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: #1a100c;
+}
+.hero-band img { width: 100%; height: 100%; object-fit: cover; object-position: center 40%; filter: brightness(0.78); }
+.hero-band .veil {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,12,8,0.25) 0%, transparent 35%, rgba(20,12,8,0.88) 100%);
+  display: flex; align-items: flex-end; padding: 1.5rem 1.35rem;
+}
+.hero-band h1 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 600;
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.35rem 3.5rem; }
+.tag {
+  font-family: Fraunces, Georgia, serif; font-style: italic;
+  color: var(--accent); margin-bottom: 1.5rem; font-size: 1.05rem;
+}
+section.block { margin-bottom: 2.1rem; }
+section.block h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.35rem; font-weight: 600; margin-bottom: 0.65rem;
+}
+section.block p, section.block li {
+  color: var(--muted); font-size: 1.02rem;
+}
+section.block ul { padding-left: 1.15rem; margin-top: 0.55rem; }
+section.block li { margin: 0.35rem 0; }
+.guide-box {
+  margin: 1.25rem 0 0;
+  border-left: 3px solid var(--guide);
+  padding: 0.75rem 0 0.75rem 1rem;
+  background: linear-gradient(90deg, rgba(126,184,201,0.1), transparent);
+  border-radius: 0 14px 14px 0;
+}
+.guide-box .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--guide); margin-bottom: 0.3rem;
+}
+.guide-box p { color: var(--fg); }
+.panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.3rem;
+  box-shadow: var(--shadow);
+  margin-top: 0.75rem;
+}
+.panel .row {
+  display: flex; flex-wrap: wrap; gap: 0.35rem 1rem;
+  padding: 0.55rem 0; border-bottom: 1px solid rgba(232,160,90,0.12);
+  font-size: 0.95rem;
+}
+.panel .row:last-child { border-bottom: 0; }
+.panel .k { color: var(--soft); min-width: 7rem; font-weight: 600; }
+.panel .v { color: var(--fg); word-break: break-all; }
+.panel .placeholder {
+  display: inline-block; font-size: 0.68rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 700;
+  color: #1a0f0a; background: var(--accent);
+  padding: 0.15rem 0.45rem; border-radius: 6px; margin-right: 0.4rem;
+  vertical-align: middle;
+}
+.get-ants {
+  display: inline-flex; margin-top: 1rem;
+  color: var(--accent); font-weight: 600; text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.disclaimer {
+  margin-top: 2rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(201,136,108,0.25);
+  color: var(--soft);
+  font-size: 0.9rem;
+}
+.disclaimer strong { color: var(--muted); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">← Colonies</a>
+  <div class="brand">Colonies</div>
+</div>
+
+<div class="hero-band">
+  <img src="hero-someday.jpg" alt="" />
+  <div class="veil"><h1>Feed the colony</h1></div>
+</div>
+
+<main class="wrap">
+  <p class="tag">Colonies, powered by ANTS</p>
+
+  <section class="block">
+    <h2>The vision</h2>
+    <p>Colonies is an illustrated story about ants building a home on Mars, one problem at a time. Six missions: Can't Breathe, Too Cold, Radiation, No Soil, Dust Storm, and The Dome. The series builds toward a lush banyan world under glass.</p>
+  </section>
+
+  <section class="block">
+    <h2>How ANTS helps</h2>
+    <ul>
+      <li>Supporter contributions pay for art and writing for new missions.</li>
+      <li>Each mission ends with a thank-you to everyone who fed the colony.</li>
+      <li>Supporters may cast an advisory vote on the next Mars problem. The creator decides. Votes are not weighted by holdings.</li>
+      <li>A new mission goes live when it's finished — never on token price, volume, or holdings.</li>
+    </ul>
+    <div class="guide-box">
+      <div class="label">The Colony Guide · Feeding the colony</div>
+      <p>Ants share food with the whole nest. This colony runs on the same principle, plus snacks.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Token details</h2>
+    <div class="panel">
+      <div class="row"><span class="k">Token</span><span class="v">ANTS</span></div>
+      <div class="row"><span class="k">Chain</span><span class="v"><span class="placeholder">Placeholder</span> Base (or TBA)</span></div>
+      <div class="row"><span class="k">Contract</span><span class="v"><span class="placeholder">Placeholder</span> 0xCOLONIES0000000000000000000000ANTS</span></div>
+    </div>
+    <a class="get-ants" href="#get-ants-placeholder">Get ANTS</a>
+    <div class="guide-box" style="margin-top:1.25rem">
+      <div class="label">The Colony Guide · What a token is</div>
+      <p>A token is a small digital IOU that fits in a pocket that does not exist. It is not a sandwich. It will not keep you warm on Mars. It may, however, help mark who showed up for the nest.</p>
+    </div>
+  </section>
+
+  <aside class="disclaimer">
+    <strong>Disclaimers.</strong>
+    ANTS is not an investment and gives no right to profits. Tokens can lose all value. Nothing here is financial or legal advice.
+  </aside>
+</main>
+<script>
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>

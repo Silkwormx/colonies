@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1a0f0a" />
+<meta name="description" content="Two ants were sent to build a colony on Mars. Nobody sent the instructions. Colonies — six illustrated missions on Mars." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>Colonies</title>
+<link rel="manifest" href="manifest.json" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #140c08;
+  --bg-elev: #1f130d;
+  --card: #27180f;
+  --fg: #f6eadc;
+  --muted: #c9a88a;
+  --soft: #a8886c;
+  --accent: #e8a05a;
+  --accent-deep: #c9783a;
+  --guide: #7eb8c9;
+  --line: rgba(232, 160, 90, 0.22);
+  --shadow: 0 18px 50px rgba(0,0,0,0.45);
+  --radius: 22px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+button { font: inherit; }
+
+/* ——— HERO ——— */
+.hero {
+  position: relative;
+  min-height: min(92dvh, 920px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  isolation: isolate;
+  background: #1a100c;
+}
+.hero-media {
+  position: absolute; inset: 0; z-index: 0;
+  overflow: hidden;
+  background: #1a100c;
+}
+.hero-media img.now {
+  position: absolute;
+  /* bleed past edges so parallax/scale never shows a seam */
+  top: -3%; right: -4%; bottom: -3%; left: -4%;
+  width: auto; height: auto;
+  min-width: 108%; min-height: 108%;
+  object-fit: cover;
+  /* keep ants + pod in the lower band, open sky for title */
+  object-position: center 72%;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+}
+.hero-media img.someday {
+  display: none; /* someday lives in its own strip below — avoids blend seams */
+}
+.hero-vignette {
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    linear-gradient(180deg,
+      rgba(20,12,8,0.55) 0%,
+      rgba(20,12,8,0.22) 18%,
+      rgba(20,12,8,0.0) 38%,
+      rgba(20,12,8,0.05) 55%,
+      rgba(20,12,8,0.55) 78%,
+      rgba(20,12,8,0.98) 100%);
+  pointer-events: none;
+}
+.dust {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden;
+}
+.dust span {
+  position: absolute;
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(255, 220, 170, 0.55);
+  box-shadow: 0 0 8px rgba(255, 200, 140, 0.35);
+  animation: drift linear infinite;
+  opacity: 0.0;
+}
+@keyframes drift {
+  0% { transform: translate3d(0, 20px, 0); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.35; }
+  100% { transform: translate3d(40px, -110vh, 0); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dust span, .hero-media img { animation: none !important; transition: none !important; }
+  .card:hover, .feed-btn:hover { transform: none !important; }
+}
+.hero-copy {
+  position: relative; z-index: 3;
+  padding: clamp(1.6rem, 4.5vh, 2.6rem) 1.4rem 0.85rem;
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  align-self: start;
+}
+.hero-copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  width: 180%;
+  height: 220%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side,
+    rgba(20,12,8,0.42) 0%,
+    rgba(20,12,8,0.26) 40%,
+    rgba(20,12,8,0.10) 70%,
+    rgba(20,12,8,0) 100%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+.hero-spacer {
+  flex: 1 1 auto;
+  min-height: clamp(28vh, 36vh, 46vh);
+  pointer-events: none;
+}
+@media (max-width: 520px) {
+  .hero-media img.now { object-position: center 78%; }
+  .hero-spacer { min-height: clamp(26vh, 32vh, 40vh); }
+  .hero-copy h1 { font-size: clamp(2.6rem, 14vw, 3.4rem); }
+  .hero-copy { padding-top: 1.75rem; }
+}
+.eyebrow {
+  font-size: clamp(0.62rem, 1.5vw, 0.74rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f0d4a8;
+  font-weight: 600;
+  margin-bottom: 0.85rem;
+  text-shadow: 0 1px 8px rgba(20,12,8,0.65);
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.35;
+}
+@media (min-width: 720px) {
+  .eyebrow {
+    white-space: nowrap;
+    letter-spacing: 0.2em;
+    font-size: 0.72rem;
+  }
+}
+.hero-copy h1 {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(3rem, 12vw, 5.2rem);
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  text-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 0 60px rgba(232,160,90,0.18);
+}
+.tagline {
+  margin-top: 0.55rem;
+  font-family: Fraunces, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #f3e2c4;
+  font-size: clamp(1rem, 3.2vw, 1.25rem);
+  opacity: 1;
+  text-shadow:
+    0 1px 0 rgba(20,12,8,0.35),
+    0 2px 12px rgba(20,12,8,0.75),
+    0 0 28px rgba(20,12,8,0.45);
+}
+.premise {
+  margin: 0.7rem auto 0;
+  max-width: 26rem;
+  color: #e2c9ae;
+  font-size: 0.98rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-shadow: 0 2px 14px rgba(20,12,8,0.75);
+}
+.scroll-cue {
+  margin-top: 0;
+  padding-bottom: 1.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft);
+  opacity: 0.85;
+  position: relative; z-index: 3;
+  text-align: center;
+}
+
+/* ——— SECTIONS ——— */
+.section {
+  padding: 2.75rem 0 1rem;
+}
+.section-head {
+  padding: 0 1.35rem 1.1rem;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  max-width: 1100px; margin: 0 auto;
+}
+.section-head h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(1.45rem, 4vw, 1.9rem);
+  font-weight: 600;
+}
+.section-head p {
+  color: var(--soft);
+  font-size: 0.92rem;
+}
+
+/* ——— MISSION RAIL ——— */
+.rail-wrap { position: relative; }
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(78vw, 320px);
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 0.35rem 1.35rem 1.6rem;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.35rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.rail::-webkit-scrollbar { display: none; }
+@media (min-width: 720px) {
+  .rail { grid-auto-columns: minmax(300px, 340px); }
+}
+@media (min-width: 900px) {
+  .rail { grid-auto-columns: minmax(320px, 360px); padding-left: max(1.35rem, calc((100vw - 1100px) / 2 + 1.35rem)); padding-right: max(1.35rem, calc((100vw - 1100px) / 2 + 1.35rem)); }
+}
+
+.card {
+  scroll-snap-align: start;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: inherit;
+  display: flex; flex-direction: column;
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  position: relative;
+  min-height: 100%;
+}
+.card:hover, .card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px rgba(0,0,0,0.55);
+  border-color: rgba(232,160,90,0.45);
+  outline: none;
+}
+.card-art {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #2a1810;
+}
+.card-art img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.card:hover .card-art img { transform: scale(1.04); }
+.card-body {
+  padding: 1.05rem 1.15rem 1.25rem;
+  display: flex; flex-direction: column; gap: 0.35rem; flex: 1;
+  min-height: 148px;
+}
+.card-num {
+  font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+}
+.card-body h3 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.28rem; font-weight: 600; line-height: 1.15;
+}
+.card-body p {
+  color: var(--muted); font-size: 0.95rem; margin-top: 0.15rem;
+}
+.badge-open {
+  display: inline-flex; align-self: flex-start;
+  margin-top: 0.7rem;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  color: #1a0f0a; padding: 0.38rem 0.7rem; border-radius: 999px;
+}
+.card.locked { cursor: default; }
+.card.locked:hover { transform: none; box-shadow: var(--shadow); border-color: var(--line); }
+.card.locked .card-art::after {
+  content: "";
+  position: absolute; inset: 0;
+  backdrop-filter: blur(7px) saturate(0.85);
+  -webkit-backdrop-filter: blur(7px) saturate(0.85);
+  background: linear-gradient(180deg, rgba(30,18,12,0.25), rgba(20,12,8,0.55));
+}
+.frost-label {
+  position: absolute; z-index: 2; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
+  font-weight: 700; color: var(--fg);
+  background: rgba(26,15,10,0.55);
+  border: 1px solid rgba(244,230,212,0.25);
+  padding: 0.55rem 0.9rem; border-radius: 999px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+.card.read .badge-open::after { content: " · Read"; }
+
+/* ——— CREW + GUIDE ——— */
+.crew {
+  max-width: 1100px; margin: 0.5rem auto 0; padding: 0 1.35rem 1rem;
+}
+.crew-card {
+  display: grid; gap: 1.25rem;
+  grid-template-columns: 1fr;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(232,160,90,0.12), transparent 55%),
+    var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 1.35rem;
+  box-shadow: var(--shadow);
+}
+@media (min-width: 720px) {
+  .crew-card { grid-template-columns: 240px 1fr; align-items: center; padding: 1.5rem 1.6rem; }
+}
+.crew-faces {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+.crew-person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  width: 96px;
+}
+.face {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 35%;
+  border: 2px solid rgba(232,160,90,0.5);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  background: #2a1810;
+  display: block;
+}
+.crew-name {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+@media (min-width: 720px) {
+  .crew-person { width: 104px; }
+  .face { width: 96px; height: 96px; }
+}
+.crew-text h3 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem;
+}
+.crew-text .who { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.9rem; }
+.guide-box {
+  border-left: 3px solid var(--guide);
+  padding: 0.55rem 0 0.55rem 0.95rem;
+  background: linear-gradient(90deg, rgba(126,184,201,0.08), transparent);
+  border-radius: 0 12px 12px 0;
+}
+.guide-box .label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--guide); margin-bottom: 0.25rem;
+}
+.guide-box .guide-title {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--guide); opacity: 0.85; margin-bottom: 0.35rem;
+}
+.guide-box .guide-topic {
+  font-family: 'Fraunces', Georgia, serif; font-weight: 600;
+  font-size: 1.15rem; color: var(--fg); margin-bottom: 0.3rem;
+}
+.guide-box p { color: var(--fg); font-size: 0.98rem; max-width: 42rem; }
+
+/* ——— SOMEDAY STRIP ——— */
+.someday {
+  max-width: 1100px; margin: 1.5rem auto 0; padding: 0 1.35rem;
+}
+.someday-inner {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  min-height: 160px;
+  box-shadow: var(--shadow);
+}
+.someday-inner img {
+  width: 100%; height: 220px; object-fit: cover;
+  object-position: center 42%;
+  filter: saturate(0.95) brightness(0.88);
+}
+.someday-cap {
+  position: absolute; inset: auto 0 0 0;
+  padding: 1.35rem 1.2rem 1.15rem;
+  background: linear-gradient(transparent, rgba(20,12,8,0.55) 35%, rgba(20,12,8,0.92));
+}
+.someday-cap span {
+  font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700;
+}
+.someday-cap p {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 1.15rem; margin-top: 0.2rem;
+}
+
+/* ——— CTA ——— */
+.cta {
+  text-align: center;
+  padding: 2.5rem 1.35rem 3.25rem;
+  padding-bottom: calc(3.25rem + var(--safe-b));
+}
+.feed-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: linear-gradient(135deg, #f0b06a, var(--accent-deep));
+  color: #1a0f0a; font-weight: 700; font-size: 1.05rem;
+  text-decoration: none;
+  padding: 0.95rem 1.7rem; border-radius: 999px;
+  box-shadow: 0 14px 36px rgba(201,120,58,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.feed-btn:hover, .feed-btn:focus-visible {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 20px 44px rgba(201,120,58,0.45);
+  outline: none;
+}
+.cta .note {
+  margin-top: 0.85rem; color: var(--soft); font-size: 0.88rem;
+}
+footer.app-foot {
+  text-align: center; color: var(--soft);
+  font-size: 0.78rem; padding: 0 1rem 2rem;
+  letter-spacing: 0.04em;
+}
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="hero-media" id="heroMedia">
+    <img src="hero-landing.jpg" alt="Bare Mars landing site — the colony begins" class="now" />
+    <img src="hero-someday.jpg" alt="" class="someday" aria-hidden="true" />
+  </div>
+  <div class="hero-vignette"></div>
+  <div class="dust" id="dust" aria-hidden="true"></div>
+  <div class="hero-copy">
+    <div class="eyebrow">Building something beautiful from almost nothing</div>
+    <h1>Colonies</h1>
+    <p class="premise">Two ants were sent to build a colony on Mars. Nobody sent the instructions.</p>
+  </div>
+  <div class="hero-spacer" aria-hidden="true"></div>
+  <div class="scroll-cue">Swipe the missions ↓</div>
+</header>
+
+<section class="section" aria-labelledby="missions-heading">
+  <div class="section-head">
+    <h2 id="missions-heading">Missions</h2>
+    <p>One Mars problem at a time</p>
+  </div>
+  <div class="rail-wrap">
+    <div class="rail" id="missionRail">
+      <a class="card" href="mission1/index.html" data-mission="m1">
+        <div class="card-art"><img src="covers/m1.jpg" alt="Mission 1 cover: oxygen gauge at the landing pod" /></div>
+        <div class="card-body">
+          <div class="card-num">Mission 01</div>
+          <h3>Can't Breathe</h3>
+          <p>Six hours of air. The manual didn't land.</p>
+          <span class="badge-open">Open story</span>
+        </div>
+      </a>
+
+      <div class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m2.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 02</div>
+          <h3>Too Cold</h3>
+          <p>Air is solved. Heat is not. Nights here have opinions.</p>
+        </div>
+      </div>
+
+      <div class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m3.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 03</div>
+          <h3>Radiation</h3>
+          <p>The sky forgets to filter. Dirt becomes architecture.</p>
+        </div>
+      </div>
+
+      <div class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m4.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 04</div>
+          <h3>No Soil</h3>
+          <p>Regolith is not dirt. The first sprout negotiates terms.</p>
+        </div>
+      </div>
+
+      <div class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m5.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 05</div>
+          <h3>Dust Storm</h3>
+          <p>The horizon stands up and walks toward the panels.</p>
+        </div>
+      </div>
+
+      <div class="card locked" aria-disabled="true">
+        <div class="card-art">
+          <img src="covers/m6.jpg" alt="" />
+          <div class="frost-label">Coming soon</div>
+        </div>
+        <div class="card-body">
+          <div class="card-num">Mission 06</div>
+          <h3>The Dome</h3>
+          <p>Glass rises. Someday, a forest under it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="crew" aria-label="Kepler and Comet">
+  <div class="crew-card">
+    <div class="crew-faces">
+      <figure class="crew-person">
+        <img class="face" src="art/kepler_portrait.jpg" alt="Portrait of Kepler" width="96" height="96" />
+        <figcaption class="crew-name">Kepler</figcaption>
+      </figure>
+      <figure class="crew-person">
+        <img class="face" src="art/comet_portrait.jpg" alt="Portrait of Comet" width="96" height="96" />
+        <figcaption class="crew-name">Comet</figcaption>
+      </figure>
+    </div>
+    <div class="crew-text">
+      <h3>Kepler &amp; Comet</h3>
+      <p class="who">Kepler builds carefully and says very little. Comet builds quickly and says everything.</p>
+      <div class="guide-box">
+        <div class="guide-title">The Colony Guide</div>
+        <div class="guide-topic">Mars Gravity</div>
+        <p>About 38% of Earth's. Everything is lighter except the workload.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="someday" aria-label="Where this is going">
+  <div class="someday-inner">
+    <img src="hero-someday.jpg" alt="Lush banyan dome — the series end goal" />
+    <div class="someday-cap">
+      <span>Where this is going</span>
+      <p>A forest under glass — the banyan dome at journey's end.</p>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <a class="feed-btn" href="support.html">Feed the colony</a>
+  <p class="note">Watching stays free. New missions ship when they're finished.</p>
+</section>
+
+<footer class="app-foot">Colonies · six missions · illustrated scroll stories</footer>
+
+<script>
+(function () {
+  // dust particles
+  const dust = document.getElementById('dust');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (dust && !reduce) {
+    for (let i = 0; i < 18; i++) {
+      const s = document.createElement('span');
+      s.style.left = Math.random() * 100 + '%';
+      s.style.bottom = (-10 - Math.random() * 30) + '%';
+      s.style.animationDuration = (10 + Math.random() * 16) + 's';
+      s.style.animationDelay = (Math.random() * 12) + 's';
+      s.style.width = s.style.height = (2 + Math.random() * 3) + 'px';
+      dust.appendChild(s);
+    }
+  }
+  // gentle parallax
+  const heroImg = document.querySelector('.hero-media img.now');
+  if (heroImg && !reduce) {
+    window.addEventListener('scroll', () => {
+      const y = Math.min(window.scrollY, 500);
+      heroImg.style.transform = 'translate3d(0,' + (y * 0.1) + 'px,0)';
+    }, { passive: true });
+  }
+  // remember read missions
+  try {
+    const read = JSON.parse(localStorage.getItem('colonies_read_missions') || '[]');
+    document.querySelectorAll('[data-mission]').forEach((el) => {
+      if (read.includes(el.dataset.mission)) el.classList.add('read');
+    });
+  } catch (e) {}
+  // PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+})();
+</script>
+</body>
+</html>
