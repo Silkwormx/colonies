@@ -1,87 +1,154 @@
 {
-  "duration_sec": 32.072,
+  "duration_sec": 30.101,
   "kind": "series_intro",
-  "method": "generated_motion_v8",
-  "voice": "andrew",
-  "beats": [
+  "method": "short_shots_v9",
+  "voice": "en-US-AndrewMultilingualNeural (edge-tts) tempo 0.93",
+  "title_take": "happy_c1",
+  "shots": [
     {
-      "clip": "beat1_v1.mp4",
+      "shot": "S1 village gathered",
+      "source": "gen9/s1_v1.mp4",
+      "in": 0.0,
       "start": 0,
-      "duration": 12.639
+      "dur": 3.701
     },
     {
-      "clip": "beat2_v1.mp4",
-      "start": 12.239,
-      "duration": 5.0
+      "shot": "S2 ants look up at Mars",
+      "source": "gen9/s2_v1.mp4",
+      "in": 0.3,
+      "start": 3.701,
+      "dur": 2.226
     },
     {
-      "clip": "beat3_v2.mp4",
-      "start": 16.839,
-      "duration": 5.0
+      "shot": "S3 Earth & Mars line up",
+      "source": "work_v9/s3_orbits.mp4",
+      "in": 0.0,
+      "start": 5.927,
+      "dur": 4.121
     },
     {
-      "clip": "beat4_combo.mp4",
-      "start": 21.439,
-      "duration": 6.433
+      "shot": "S4a Kepler & Comet wave by pod",
+      "source": "gen9/s4a_v3.mp4",
+      "in": 0.6,
+      "start": 10.048,
+      "dur": 1.5
     },
     {
-      "clip": "beat5_v1.mp4",
-      "start": 27.472,
-      "duration": 4.6
+      "shot": "S4b pod launches, crowd cheers",
+      "source": "gen9/s4b_v1.mp4",
+      "in": 0.7,
+      "start": 11.548,
+      "dur": 2.241
+    },
+    {
+      "shot": "S5a pod glides toward Mars",
+      "source": "gen/beat2_v1.mp4",
+      "in": 0.6,
+      "start": 13.789,
+      "dur": 1.6
+    },
+    {
+      "shot": "S5b landing dust puff",
+      "source": "gen/beat3_v2.mp4",
+      "in": 2.4,
+      "start": 15.389,
+      "dur": 1.532
+    },
+    {
+      "shot": "S6a ants look up",
+      "source": "gen9/s6_v3.mp4",
+      "in": 1.6,
+      "start": 16.921,
+      "dur": 1.649
+    },
+    {
+      "shot": "S6b empty sky, tiny Earth",
+      "source": "work_v9/s6b_sky.mp4",
+      "in": 0.0,
+      "start": 18.57,
+      "dur": 1.649
+    },
+    {
+      "shot": "S7a close on two ants",
+      "source": "gen9/s7a_v2.mp4",
+      "in": 1.4,
+      "start": 20.218,
+      "dur": 1.252
+    },
+    {
+      "shot": "S7b wide empty plain",
+      "source": "gen9/s7b_v2.mp4",
+      "in": 0.8,
+      "start": 21.47,
+      "dur": 1.724
+    },
+    {
+      "shot": "S8 ants start working",
+      "source": "gen9/s8_v2.mp4",
+      "in": 0.5,
+      "start": 23.194,
+      "dur": 2.907
+    },
+    {
+      "shot": "S9 COLONIES title",
+      "source": "gen/beat5_v1.mp4",
+      "in": 0.2,
+      "start": 26.101,
+      "dur": 4.0
     }
   ],
   "narration": [
     {
       "id": "n01a",
-      "start": 0.35,
+      "start": 1.0,
       "dur": 2.151
     },
     {
       "id": "n01b",
-      "start": 2.901,
+      "start": 3.701,
       "dur": 1.526
     },
     {
       "id": "n02",
-      "start": 5.077,
+      "start": 5.927,
       "dur": 3.421
     },
     {
       "id": "n03",
-      "start": 9.048,
+      "start": 10.048,
       "dur": 3.091
     },
     {
       "id": "n04",
-      "start": 13.539,
+      "start": 13.789,
       "dur": 2.482
     },
     {
       "id": "n05",
-      "start": 17.539,
+      "start": 16.921,
       "dur": 2.597
     },
     {
       "id": "n06a",
-      "start": 22.039,
+      "start": 20.218,
       "dur": 0.852
     },
     {
       "id": "n06b",
-      "start": 23.341,
+      "start": 21.47,
       "dur": 1.274
     },
     {
       "id": "n06c",
-      "start": 25.065,
+      "start": 23.194,
       "dur": 2.207
     }
   ],
   "title": {
     "text": "Colonies",
-    "start": 28.022,
-    "end": 31.972,
-    "spoken_at": 28.372
+    "start": 26.251,
+    "end": 30.001,
+    "spoken_at": 26.601
   },
-  "size_bytes": 6343565
+  "size_bytes": 6064000
 }

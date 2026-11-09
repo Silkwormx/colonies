@@ -262,6 +262,32 @@ button { font: inherit; }
   font-size: 0.92rem;
 }
 
+
+/* ——— WHY COLONIES ——— */
+.why {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.1rem 1.35rem 0.35rem;
+}
+.why .eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 0.55rem;
+}
+.why h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(1.45rem, 4vw, 1.9rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+.why p {
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  max-width: 38rem;
+}
+.why p + p { margin-top: 0.7rem; }
+
 /* ——— MISSION RAIL ——— */
 .rail-wrap { position: relative; }
 .rail {
@@ -631,6 +657,14 @@ footer.app-foot {
   <div class="hero-spacer" aria-hidden="true"></div>
 </header>
 
+
+<section class="why" aria-labelledby="why-heading">
+  <div class="eyebrow">The idea</div>
+  <h2 id="why-heading">Why Colonies</h2>
+  <p>Space is amazing, but learning how life on Mars would actually work usually feels like homework. And the fun stuff, like shows and games, rarely explains anything real.</p>
+  <p>Colonies turns real Mars science into a story worth following. Two ants try to make a home on an empty planet, one problem at a time. You read their story, then solve the same problem they’re facing. It’s fun first, and you learn without noticing.</p>
+</section>
+
 <section class="section" aria-labelledby="missions-heading">
   <div class="section-head">
     <h2 id="missions-heading">Missions</h2>
@@ -678,7 +712,7 @@ footer.app-foot {
 </section>
 
 <section class="cta">
-  <a class="feed-btn" href="support.html">Feed the colony</a>
+  <a class="feed-btn" href="support.html">Support the next mission</a>
   <p class="note">Watching stays free. New missions ship when they're finished.</p>
 </section>
 

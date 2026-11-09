@@ -1,4 +1,8 @@
-# Colonies series intro (v8: real motion)
+# Colonies series intro (v9: short shots matched to each line)
+
+Current build: `work_v9/build_v9.py` (run with `/workspace/ant-colony/.venv-tts/bin/python work_v9/build_v9.py happy_c1 intro.mp4`). New clips in `gen9/`, orbit and sky graphics from `work_v9/graphics.py`. v8 backup: `intro_v8_backup.mp4`. Title-voice takes: `voice_samples/title_takes/`.
+
+(v8 notes below)
 
 Plays from the home page "Watch the intro" pop-up. Series intro, not Mission 1. **Not published.**
 

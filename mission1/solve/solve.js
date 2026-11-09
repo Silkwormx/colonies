@@ -455,7 +455,7 @@
     var hintBtn = document.getElementById('hint-btn');
 
     ensureAudioChrome();
-    fetch('audio/manifest.json').then(function (r) { return r.json(); }).then(function (man) {
+    fetch('audio/manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (man) {
       (man.clips || []).forEach(function (c) { help.byId[c.id] = c; });
       help.ready = true;
       if (btn) {

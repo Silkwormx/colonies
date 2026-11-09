@@ -24,12 +24,12 @@
       "fill_k": {
         "id": "oxygen_g_fill_k",
         "text": "Fill Kepler\u2019s tank. It needs six oxygen bubbles.",
-        "speak": "Fill Kepler's tank. It needs six oxygen bubbles."
+        "speak": "Fill up Kepler's tank. It needs six oxygen bubbles."
       },
       "fill_c": {
         "id": "oxygen_g_fill_c",
         "text": "Fill Comet\u2019s tank. It needs six oxygen bubbles.",
-        "speak": "Fill Comet's tank. It needs six oxygen bubbles."
+        "speak": "Fill up Comet's tank. It needs six oxygen bubbles."
       },
       "quiz": {
         "id": "oxygen_g_quiz",

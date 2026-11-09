@@ -179,30 +179,43 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     bgm.volume = muted ? 0 : 0.12;
     try{
       const p=bgm.play();
-      if(p && p.catch) await p.catch(()=>{});
       bgmOn=true;
+      // never let background music hold up narration
+      if(p && p.catch) await Promise.race([p.catch(()=>{}), sleep(1200)]);
     }catch(e){ bgmOn=false; }
   }
-  function playSrc(src){return new Promise(resolve=>{
-    if(muted){ resolve(true); return; }
-    let done=false; const my=token;
-    const fin=ok=>{ if(done||my!==token)return; done=true; audio.removeEventListener('ended',onEnd); audio.removeEventListener('error',onErr); resolve(ok); };
-    const onEnd=()=>fin(true); const onErr=()=>fin(false);
-    audio.addEventListener('ended',onEnd); audio.addEventListener('error',onErr);
+  // Play one clip. Resolves 'ok' | 'error' | 'blocked' | 'cancel'. Never hangs:
+  // a watchdog resolves if 'ended' never fires (stalled network, decode hiccup, iOS quirks).
+  function playSrc(src, expectSec){return new Promise(resolve=>{
+    if(muted){ resolve('ok'); return; }
+    let done=false, wd=null; const my=token;
+    const fin=r=>{ if(done)return; done=true; clearTimeout(wd); clearInterval(poll);
+      ['ended','error','stalled'].forEach(ev=>audio.removeEventListener(ev,handlers[ev]));
+      resolve(my!==token?'cancel':r); };
+    const handlers={ ended:()=>fin('ok'), error:()=>fin('error'), stalled:()=>{} };
+    ['ended','error','stalled'].forEach(ev=>audio.addEventListener(ev,handlers[ev]));
+    // cancel promptly if the page is turned or reading stops
+    const poll=setInterval(()=>{ if(my!==token) fin('cancel'); }, 120);
+    const armWatchdog=()=>{ clearTimeout(wd);
+      const d=(isFinite(audio.duration)&&audio.duration>0)?audio.duration:(expectSec||4);
+      wd=setTimeout(()=>fin(audio.error?'error':'ok'), Math.round(d*1000/(audio.playbackRate||1))+2500); };
     try{
-      audio.src=src; audio.currentTime=0; audio.volume = muted?0:1;
+      audio.src=src; audio.volume = muted?0:1;
+      wd=setTimeout(()=>fin('error'), 12000); // never started (404 / network)
       const p=audio.play();
+      audio.addEventListener('playing',armWatchdog,{once:true});
       if(p&&p.catch)p.catch(e=>{
-        if(my!==token)return;
-        if(e&&e.name==='AbortError')return;
-        showFallback(()=>playSrc(src).then(resolve));
-        fin(false);
+        if(e&&e.name==='AbortError')return; // superseded by a newer src
+        fin(e&&e.name==='NotAllowedError'?'blocked':'error');
       });
-    }catch(e){ showFallback(()=>playSrc(src).then(resolve)); fin(false); }
+    }catch(e){ fin('error'); }
   });}
   function speakFallback(text){return new Promise(resolve=>{
     if(muted) return resolve(true);
-    try{if(!window.speechSynthesis||!text)return resolve(false);const u=new SpeechSynthesisUtterance(text);u.rate=.92;u.onend=()=>resolve(true);u.onerror=()=>resolve(false);speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){resolve(false);}
+    let done=false; const fin=v=>{ if(!done){done=true; clearTimeout(t); resolve(v);} };
+    const words=String(text||'').split(/\s+/).length;
+    const t=setTimeout(()=>{ try{speechSynthesis.cancel();}catch(e){} fin(false); }, 2500+words*450);
+    try{if(!window.speechSynthesis||!text)return fin(false);const u=new SpeechSynthesisUtterance(text);u.rate=.92;u.onend=()=>fin(true);u.onerror=()=>fin(false);speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){fin(false);}
   });}
 
   function renderDots(){dots.innerHTML=''; book.pages.forEach((_,i)=>{const d=document.createElement('i'); if(i===pageIndex)d.classList.add('cur'); if(i<pageIndex)d.classList.add('seen'); dots.appendChild(d);});}
@@ -249,9 +262,13 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
       if(my!==token) return false;
       if(it.pause){ setActive(null); await sleep(Math.max(80, Math.round((it.duration||.45)*1000))); continue; }
       const el=stage.querySelector('[data-clip="'+it.id+'"]'); setActive(el);
-      let ok=await playSrc('audio/'+it.file);
-      if(my!==token) return false;
-      if(!ok){ ok=await speakFallback(it.speak||it.text||(el?el.textContent:'')); if(my!==token)return false; if(!ok)return false; }
+      const r=await playSrc('audio/'+it.file, it.duration);
+      if(my!==token || r==='cancel') return false;
+      if(r==='blocked') return 'blocked';
+      if(r==='error'){ // missing or broken clip: try the device voice, then just move on
+        await speakFallback(it.speak||it.text||(el?el.textContent:''));
+        if(my!==token) return false;
+      }
     }
     if(my===token) setActive(null);
     const hold = pg.hold_sec != null ? pg.hold_sec : (pg.kind==='scene' ? 1.0 : 0.6);
@@ -265,30 +282,39 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     return my===token && readingAll;
   }
 
-  let turnQueue=Promise.resolve();
-  function goTo(i,dir, fromUser){ turnQueue=turnQueue.then(()=>goToInner(i,dir,fromUser)).catch(()=>{}); return turnQueue; }
-  async function goToInner(i,dir, fromUser){
-    if(!book||turning) return;
-    if(i<0||i>=book.pages.length||i===pageIndex) return;
-    turning=true;
-    // Jump narration to the new page: cancel current clips, keep readingAll if on
+  // Page turns are never queued behind narration. A turn requested mid-animation
+  // is remembered (latest wins) and applied right after, so nav can never deadlock.
+  let pendingTurn=null, turnTarget=0;
+  async function goTo(i,dir){
+    if(!book) return;
+    if(i<0||i>=book.pages.length) return;
+    if(turning){ pendingTurn={i,dir}; return; }
+    if(i===pageIndex) return;
+    turning=true; turnTarget=i;
     token++; stopVoice();
-    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const out=dir>=0?'turn-out-next':'turn-out-prev'; const inn=dir>=0?'turn-in-next':'turn-in-prev';
-    stage.classList.remove('turn-in-next','turn-in-prev','turn-out-next','turn-out-prev');
-    stage.classList.add(out); await sleep(reduce?0:150);
-    pageIndex=i; renderPage();
-    stage.classList.remove(out); stage.classList.add(inn); await sleep(reduce?0:150);
-    stage.classList.remove(inn); turning=false;
-    if(readingAll){
-      const ok=await playPageClips();
-      if(ok && readingAll){
-        if(pageIndex<book.pages.length-1) await goTo(pageIndex+1,1,false);
-        else setReading(false);
-      } else if(!ok) setReading(false);
-    } else if(!pageWantsBgm(book.pages[pageIndex])) {
-      stopBgm(true);
-    }
+    try{
+      const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const out=dir>=0?'turn-out-next':'turn-out-prev'; const inn=dir>=0?'turn-in-next':'turn-in-prev';
+      stage.classList.remove('turn-in-next','turn-in-prev','turn-out-next','turn-out-prev');
+      stage.classList.add(out); await sleep(reduce?0:150);
+      pageIndex=i; renderPage();
+      stage.classList.remove(out); stage.classList.add(inn); await sleep(reduce?0:150);
+      stage.classList.remove(inn);
+    } finally { turning=false; }
+    if(pendingTurn){ const p=pendingTurn; pendingTurn=null; if(p.i!==pageIndex){ goTo(p.i,p.dir); return; } }
+    if(readingAll) readFromHere();
+    else if(!pageWantsBgm(book.pages[pageIndex])) stopBgm(true);
+  }
+  // Read the current page, then turn to the next one. Not awaited by goTo, so
+  // a manual turn simply cancels this run (token changes) and starts a fresh one.
+  async function readFromHere(isAutoStart){
+    const my=token;
+    let r;
+    try{ r=await playPageClips(); }catch(e){ r=true; }
+    if(my!==token || !readingAll) return;
+    if(r==='blocked'){ setReading(false,{remember:false}); showStartOverlay(true); return; }
+    if(pageIndex<book.pages.length-1) goTo(pageIndex+1,1);
+    else setReading(false,{remember:false});
   }
   function setReading(on, opts){
     opts=opts||{};
@@ -307,33 +333,15 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
       showStartOverlay(false);
     }
   }
-  async function toggleRead(){
+  function toggleRead(){
     if(readingAll){ setReading(false); return; }
-    setReading(true);
-    const ok=await playPageClips();
-    if(ok && readingAll){ if(pageIndex<book.pages.length-1) await goTo(pageIndex+1,1,false); else setReading(false); }
-    else setReading(false);
+    setReading(true); token++; stopVoice();
+    readFromHere();
   }
-  async function tryAutoStart(){
+  function tryAutoStart(){
     if(userStopped) return;
     setReading(true, {remember:false});
-    // Probe with a tiny silent play via first clip or bgm
-    try{
-      const pg=book.pages[pageIndex];
-      await ensureBgm(pg);
-      const ok=await playPageClips();
-      if(ok && readingAll){
-        if(pageIndex<book.pages.length-1) await goTo(pageIndex+1,1,false);
-        else setReading(false, {remember:false});
-      } else if(!ok){
-        // autoplay blocked
-        setReading(false, {remember:false});
-        showStartOverlay(true);
-      }
-    }catch(e){
-      setReading(false, {remember:false});
-      showStartOverlay(true);
-    }
+    readFromHere(true);
   }
   function toggleMute(){
     muted=!muted;
@@ -345,7 +353,8 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     else if(readingAll){ ensureBgm(book.pages[pageIndex]); }
     try{sessionStorage.setItem(SS_KEY, muted ? 'muted' : (readingAll?'on':(userStopped?'off':'on')));}catch(e){}
   }
-  const next=()=>goTo(pageIndex+1,1,true), prev=()=>goTo(pageIndex-1,-1,true);
+  const tgt=d=>Math.max(0,Math.min(book?book.pages.length-1:0,(pendingTurn?pendingTurn.i:(turning?turnTarget:pageIndex))+d));
+  const next=()=>{ if(book) goTo(tgt(1),1); }, prev=()=>{ if(book) goTo(tgt(-1),-1); };
   prevBtn.onclick=prev; nextBtn.onclick=next; hitLeft.onclick=prev; hitRight.onclick=next;
   raToggle.onclick=toggleRead; muteBtn.onclick=toggleMute;
   startBtn.onclick=()=>{ showStartOverlay(false); toggleRead(); };
@@ -353,7 +362,7 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
   let tx=null,ty=null; const wrap=document.getElementById('stageWrap');
   wrap.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;},{passive:true});
   wrap.addEventListener('touchend',e=>{if(tx==null)return;const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=ty=null;if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.2)return; if(dx<0)next(); else prev();},{passive:true});
-  fetch('audio/manifest.json').then(r=>r.json()).then(m=>{
+  fetch('audio/manifest.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>{
     book=m; if(!book.pages) throw 0; renderPage();
     // Opening the mission is the user gesture from the home link — auto-start Read to me
     setTimeout(()=>{ tryAutoStart(); }, 60);
