@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+  <rect width="900" height="420" fill="#f3e6d0"/>
+  <g fill="#5a3a22" opacity="0.25">
+    <circle cx="200" cy="40" r="2"/><circle cx="340" cy="70" r="1.5"/><circle cx="500" cy="30" r="2"/>
+    <circle cx="620" cy="60" r="1.5"/><circle cx="780" cy="45" r="2"/><circle cx="420" cy="100" r="1.5"/>
+  </g>
+  <circle cx="160" cy="210" r="70" fill="#6a9ec8" stroke="#5a3a22" stroke-width="3"/>
+  <path d="M110 190 q30 -20 50 10 q20 30 -10 45 q-40 10 -50 -20 z" fill="#5a8a5a" opacity="0.7"/>
+  <text x="160" y="310" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#5a3a22">Earth</text>
+  <circle cx="740" cy="210" r="48" fill="#c47a4a" stroke="#5a3a22" stroke-width="3"/>
+  <text x="740" y="310" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#5a3a22">Mars</text>
+  <path d="M230 190 C380 90, 560 90, 690 180" fill="none" stroke="#5a3a22" stroke-width="3" stroke-dasharray="10 8"/>
+  <g transform="translate(430,110)">
+    <ellipse cx="0" cy="0" rx="28" ry="12" fill="#d4c2a4" stroke="#5a3a22" stroke-width="2"/>
+    <circle cx="18" cy="-2" r="5" fill="#7eb6e8" stroke="#5a3a22" stroke-width="1.5"/>
+  </g>
+  <text x="450" y="85" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#5a3a22">about 7 months</text>
+  <text x="450" y="380" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#7a5535">Ships can leave only about every 26 months</text>
+</svg>

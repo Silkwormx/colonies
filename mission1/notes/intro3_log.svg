@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+  <rect width="900" height="420" fill="#f3e6d0"/>
+  <rect x="140" y="40" width="280" height="300" rx="8" fill="#efe0c8" stroke="#5a3a22" stroke-width="3"/>
+  <rect x="420" y="40" width="320" height="300" rx="8" fill="#f7ecd8" stroke="#5a3a22" stroke-width="3"/>
+  <line x1="420" y1="40" x2="420" y2="340" stroke="#5a3a22" stroke-width="3"/>
+  <g stroke="#d4c2a4" stroke-width="1.5">
+    <line x1="170" y1="100" x2="390" y2="100"/><line x1="170" y1="140" x2="390" y2="140"/>
+    <line x1="170" y1="180" x2="390" y2="180"/><line x1="170" y1="220" x2="390" y2="220"/>
+    <line x1="450" y1="100" x2="710" y2="100"/><line x1="450" y1="140" x2="710" y2="140"/>
+    <line x1="450" y1="180" x2="710" y2="180"/><line x1="450" y1="220" x2="710" y2="220"/>
+    <line x1="450" y1="260" x2="710" y2="260"/>
+  </g>
+  <text x="170" y="90" font-family="Georgia, serif" font-size="20" fill="#8a5a32">Sol 1 · 06:14</text>
+  <text x="450" y="90" font-family="Georgia, serif" font-size="20" fill="#8a5a32">Sol = one Mars day</text>
+  <text x="450" y="170" font-family="Georgia, serif" font-size="18" fill="#5a3a22">about 24 hours 40 minutes</text>
+  <text x="450" y="390" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#7a5535">A diary of each Mars day</text>
+</svg>

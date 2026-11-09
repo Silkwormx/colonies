@@ -1,0 +1,87 @@
+{
+  "duration_sec": 32.072,
+  "kind": "series_intro",
+  "method": "generated_motion_v8",
+  "voice": "andrew",
+  "beats": [
+    {
+      "clip": "beat1_v1.mp4",
+      "start": 0,
+      "duration": 12.639
+    },
+    {
+      "clip": "beat2_v1.mp4",
+      "start": 12.239,
+      "duration": 5.0
+    },
+    {
+      "clip": "beat3_v2.mp4",
+      "start": 16.839,
+      "duration": 5.0
+    },
+    {
+      "clip": "beat4_combo.mp4",
+      "start": 21.439,
+      "duration": 6.433
+    },
+    {
+      "clip": "beat5_v1.mp4",
+      "start": 27.472,
+      "duration": 4.6
+    }
+  ],
+  "narration": [
+    {
+      "id": "n01a",
+      "start": 0.35,
+      "dur": 2.151
+    },
+    {
+      "id": "n01b",
+      "start": 2.901,
+      "dur": 1.526
+    },
+    {
+      "id": "n02",
+      "start": 5.077,
+      "dur": 3.421
+    },
+    {
+      "id": "n03",
+      "start": 9.048,
+      "dur": 3.091
+    },
+    {
+      "id": "n04",
+      "start": 13.539,
+      "dur": 2.482
+    },
+    {
+      "id": "n05",
+      "start": 17.539,
+      "dur": 2.597
+    },
+    {
+      "id": "n06a",
+      "start": 22.039,
+      "dur": 0.852
+    },
+    {
+      "id": "n06b",
+      "start": 23.341,
+      "dur": 1.274
+    },
+    {
+      "id": "n06c",
+      "start": 25.065,
+      "dur": 2.207
+    }
+  ],
+  "title": {
+    "text": "Colonies",
+    "start": 28.022,
+    "end": 31.972,
+    "spoken_at": 28.372
+  },
+  "size_bytes": 6343565
+}

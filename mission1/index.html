@@ -2,803 +2,363 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-<link rel="manifest" href="../manifest.json" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#1a0f0a" />
-<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
 <title>Colonies — Mission 1: Can't Breathe</title>
+<link rel="manifest" href="../manifest.json" />
+<link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --bg: #1a0f0a;
-    --fg: #f4e6d4;
-    --muted: #c9a88a;
-    --accent: #e8a05a;
-    --science: #7eb8c9;
-    --card: #2a1810;
-    --guide-bg: #24160f;
-    --guide-border: #8a5a32;
-    --guide-ink: #e8d2b0;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-    line-height: 1.45;
-  }
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 3rem 1.25rem;
-    background:
-      radial-gradient(ellipse at 50% 30%, #4a2a18 0%, transparent 60%),
-      var(--bg);
-  }
-  .hero .eyebrow {
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    font-family: system-ui, sans-serif;
-  }
-  .hero h1 {
-    font-size: clamp(2.2rem, 7vw, 3.6rem);
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-  }
-  .hero p {
-    max-width: 32rem;
-    color: var(--muted);
-    font-size: 1.08rem;
-  }
-  .hero .scroll-hint {
-    margin-top: 2.5rem;
-    font-family: system-ui, sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    opacity: 0.8;
-  }
-  .scene {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1.5rem 0 2.5rem;
-  }
-  .scene figure {
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 0.75rem;
-  }
-  .scene img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 6px;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-  }
-  .caption {
-    max-width: 640px;
-    margin: 1.25rem auto 0;
-    padding: 0 1.25rem;
-  }
-  .caption .lines p {
-    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
-    margin-bottom: 0.35rem;
-  }
-  .caption .lines .who {
-    color: var(--accent);
-    font-style: italic;
-  }
-  .caption .science {
-    margin-top: 0.85rem;
-    padding-top: 0.7rem;
-    border-top: 1px solid rgba(201,168,138,0.25);
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.88rem;
-    color: var(--science);
-  }
-  .caption .science::before {
-    content: "Science · ";
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.72rem;
-    opacity: 0.85;
-  }
-  .guide {
-    margin-top: 1rem;
-    background: var(--guide-bg);
-    border: 1px solid var(--guide-border);
-    border-left: 4px solid var(--accent);
-    border-radius: 4px;
-    padding: 0.85rem 1rem;
-    font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
-    color: var(--guide-ink);
-    box-shadow: inset 0 0 0 1px rgba(232,160,90,0.08);
-  }
-  .guide .label {
-    font-size: 0.68rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.35rem;
-  }
-  .guide .title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    margin-bottom: 0.35rem;
-  }
-  .guide p {
-    font-size: 0.86rem;
-    line-height: 1.5;
-    color: var(--guide-ink);
-  }
-  .reveal-badge {
-    display: inline-block;
-    font-family: system-ui, sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--bg);
-    background: var(--accent);
-    padding: 0.3rem 0.7rem;
-    border-radius: 999px;
-    margin-bottom: 0.75rem;
-  }
-  .teaser {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 1.25rem 5rem;
-  }
-  .teaser-card {
-    width: 100%;
-    max-width: 420px;
-    background: var(--card);
-    border: 1px solid rgba(232,160,90,0.35);
-    border-radius: 14px;
-    padding: 2rem 1.75rem;
-    text-align: center;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
-  }
-  .teaser-card .locked {
-    font-family: system-ui, sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.8rem;
-  }
-  .teaser-card h2 { font-size: 1.8rem; margin-bottom: 0.6rem; }
-  .teaser-card p { color: var(--muted); font-size: 1rem; }
-  .teaser-card .someday {
-    margin-top: 1.4rem;
-    font-style: italic;
-    color: var(--fg);
-    opacity: 0.9;
-  }
-  footer {
-    text-align: center;
-    padding: 2rem 1rem 3rem;
-    color: var(--muted);
-    font-family: system-ui, sans-serif;
-    font-size: 0.8rem;
-  }
+:root {
+  --bg:#140c08; --card:#1f130d; --fg:#f6eadc; --muted:#c9a88a; --soft:#a8886c;
+  --accent:#e8a05a; --accent-deep:#c9783a; --line:rgba(232,160,90,.28);
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:"Source Sans 3",system-ui,sans-serif;min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased}
+button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:auto}
+.app{height:100dvh;display:flex;flex-direction:column;max-width:720px;margin:0 auto;position:relative}
+.topbar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:calc(.55rem + var(--safe-t)) .75rem .45rem;z-index:20}
+.pill{display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:.45rem .85rem;border-radius:999px;border:1px solid #8a5a32;background:rgba(26,15,10,.78);text-decoration:none;letter-spacing:.06em;text-transform:uppercase;font-size:.72rem;font-weight:600;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.pill[aria-pressed="true"]{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#1a0f0a;border:none}
+.pill .dot{width:8px;height:8px;border-radius:50%;background:currentColor;margin-right:.4rem;opacity:.7}
+.stage-wrap{flex:1 1 auto;position:relative;min-height:0;perspective:1600px;overflow:hidden}
+.stage{position:absolute;inset:0;display:flex;flex-direction:column;padding:0 .9rem .35rem;transform-origin:left center;will-change:transform,opacity}
+.stage.turn-out-next{animation:turnOutNext .28s ease forwards}
+.stage.turn-in-next{animation:turnInNext .28s ease}
+.stage.turn-out-prev{animation:turnOutPrev .28s ease forwards}
+.stage.turn-in-prev{animation:turnInPrev .28s ease}
+@keyframes turnOutNext{from{transform:rotateY(0) translateX(0);opacity:1}to{transform:rotateY(-18deg) translateX(-18%);opacity:0}}
+@keyframes turnInNext{from{transform:rotateY(16deg) translateX(22%);opacity:0}to{transform:rotateY(0) translateX(0);opacity:1}}
+@keyframes turnOutPrev{from{transform:rotateY(0) translateX(0);opacity:1}to{transform:rotateY(18deg) translateX(18%);opacity:0}}
+@keyframes turnInPrev{from{transform:rotateY(-16deg) translateX(-22%);opacity:0}to{transform:rotateY(0) translateX(0);opacity:1}}
+@media (prefers-reduced-motion:reduce){.stage.turn-out-next,.stage.turn-in-next,.stage.turn-out-prev,.stage.turn-in-prev{animation:none}}
+.page-art{flex:1 1 auto;min-height:0;border-radius:16px;overflow:hidden;background:#2a1810;border:1px solid var(--line);box-shadow:0 16px 40px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center}
+.page-art img{width:100%;height:100%;object-fit:cover}
+.page-art.logish{
+  background:radial-gradient(ellipse at 50% 28%, #4a2a18 0%, transparent 60%), var(--card);
+  flex-direction:column;align-items:stretch;justify-content:flex-start;text-align:left;
+  padding:1.25rem 1.15rem; gap:.75rem; overflow:auto; -webkit-overflow-scrolling:touch;
+}
+.page-art.logish::before,.page-art.logish::after{content:"";flex:1 1 0;min-height:0;pointer-events:none}
+.page-scene{
+  flex:1 1 auto;min-height:0;border-radius:16px;overflow:auto;background:#1a100c;
+  border:1px solid var(--line);box-shadow:0 16px 40px rgba(0,0,0,.4);
+  display:flex;flex-direction:column;justify-content:flex-start;
+  -webkit-overflow-scrolling:touch;
+}
+/* Vertical center when content is shorter than the card; spacers collapse to 0 when scrolling */
+.page-scene::before,.page-scene::after{content:"";flex:1 1 0;min-height:0;pointer-events:none}
+.page-scene .scene-art{
+  flex:0 0 auto;overflow:hidden;background:transparent;line-height:0;
+  border-bottom:1px solid var(--line);
+}
+.page-scene .scene-art img{
+  width:100%;height:auto;display:block;
+  object-fit:unset;
+}
+.page-scene .scene-log{
+  flex:0 0 auto;overflow:visible;
+  padding:0.55rem 0.85rem 0.7rem; display:flex; flex-direction:column; gap:.28rem;
+  background:radial-gradient(ellipse at 50% 0%, #3a2214 0%, transparent 55%), var(--card);
+}
+.page-scene.note-page{background:#1a100c}
+.page-scene.note-page .scene-art{background:#f3e6d0;border-bottom:1px solid rgba(90,58,34,.25)}
+.page-scene.note-page .scene-art img{background:#f3e6d0}
+.page-scene.note-page .scene-log{
+  background:radial-gradient(ellipse at 50% 0%, #3a2214 0%, transparent 55%), var(--card);
+}
+.log-head{
+  font-family:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size:.68rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--accent); font-weight:600;
+}
+.log-body p{
+  font-family:Fraunces, Georgia, serif;
+  font-size:clamp(0.95rem, 3.4vw, 1.12rem);
+  line-height:1.4; color:#f3e2c4;
+}
+.ra-active{background:rgba(232,160,90,.14);box-shadow:inset 3px 0 0 var(--accent);border-radius:3px;color:#ffe7c8!important}
+.end-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.7rem 1.15rem;border-radius:999px;text-decoration:none;font-weight:700}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#1a0f0a}
+.btn.ghost{border:1px solid rgba(232,160,90,.45)}
+.nav{flex:0 0 auto;display:grid;grid-template-columns:44px 1fr 44px;gap:.55rem;align-items:center;padding:.35rem .75rem calc(.75rem + var(--safe-b))}
+.nav-arrow{width:44px;height:44px;border-radius:50%;border:1px solid #8a5a32;background:rgba(26,15,10,.75);color:var(--fg);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.nav-arrow:disabled{opacity:.35;cursor:default}
+.nav-arrow svg{width:18px;height:18px;fill:currentColor}
+.page-meta{text-align:center;color:var(--soft);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}
+.dots{display:flex;justify-content:center;gap:4px;margin-top:.35rem;flex-wrap:wrap}
+.dots i{width:5px;height:5px;border-radius:50%;background:rgba(232,160,90,.28);display:block}
+.dots i.cur{background:var(--accent);transform:scale(1.25)}
+.dots i.seen{background:rgba(232,160,90,.55)}
+.hit{position:absolute;top:12%;bottom:18%;width:22%;z-index:12;background:transparent;border:0;padding:0;cursor:pointer}
+.hit.left{left:0}.hit.right{right:0}
+.fallback{position:fixed;left:50%;bottom:calc(1rem + var(--safe-b));transform:translateX(-50%);z-index:40;display:none;min-height:44px;padding:.7rem 1.1rem;border-radius:999px;border:1px solid var(--accent);background:rgba(26,15,10,.92)}
+.fallback.show{display:inline-flex;align-items:center}
 
-  /* ——— Read aloud ——— */
-  .ra-bar {
-    position: fixed; top: 0.75rem; right: 0.75rem; z-index: 45;
-    display: flex; align-items: center; gap: 0.45rem;
-  }
-  .ra-toggle, .scene-play {
-    appearance: none; border: 1px solid #8a5a32; background: rgba(26,15,10,0.78);
-    color: #f4e6d4; cursor: pointer;
-    font-family: system-ui, -apple-system, sans-serif;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
-  }
-  .ra-toggle {
-    display: inline-flex; align-items: center; gap: 0.45rem;
-    min-height: 44px; padding: 0.5rem 0.95rem; border-radius: 999px;
-    font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
-  }
-  .ra-toggle .dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #8a5a32; box-shadow: 0 0 0 0 rgba(232,160,90,0.0);
-  }
-  .ra-toggle[aria-pressed="true"] {
-    border-color: var(--accent); color: #1a0f0a;
-    background: linear-gradient(135deg, #e8a05a, #c9783a);
-  }
-  .ra-toggle[aria-pressed="true"] .dot {
-    background: #1a0f0a;
-    box-shadow: 0 0 0 4px rgba(26,15,10,0.12);
-  }
-  .ra-toggle:hover, .ra-toggle:focus-visible,
-  .scene-play:hover, .scene-play:focus-visible {
-    border-color: var(--accent); outline: none;
-  }
-  .scene-play {
-    position: absolute; top: 0.35rem; right: 0.1rem;
-    width: 44px; height: 44px; border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 0; line-height: 0;
-  }
-  .scene-play svg { width: 16px; height: 16px; fill: currentColor; }
-  .scene-play[aria-pressed="true"] {
-    background: rgba(232,160,90,0.18); border-color: var(--accent); color: var(--accent);
-  }
-  .caption { position: relative; padding-right: 3.1rem; }
-  .ra-line, .ra-sci, .ra-guide-label, .ra-guide-title, .ra-guide-p {
-    border-radius: 4px;
-    transition: background 0.18s ease, box-shadow 0.18s ease, color 0.18s ease;
-  }
-  .ra-active {
-    background: rgba(232,160,90,0.14);
-    box-shadow: inset 3px 0 0 var(--accent);
-    color: #ffe7c8 !important;
-  }
-  h1.ra-active {
-    background: transparent;
-    box-shadow: none;
-    text-shadow: 0 0 24px rgba(232,160,90,0.35);
-  }
-  .ra-guide-p + .ra-guide-p { margin-top: 0.45rem; }
-  .guide .ra-active { color: #ffe7c8 !important; }
-  .ra-fallback {
-    position: fixed; left: 50%; bottom: 1.25rem; transform: translateX(-50%);
-    z-index: 50; display: none;
-    min-height: 44px; padding: 0.7rem 1.1rem; border-radius: 999px;
-    border: 1px solid var(--accent); background: rgba(26,15,10,0.92);
-    color: var(--fg); font-family: system-ui, sans-serif; font-size: 0.85rem;
-    backdrop-filter: blur(8px);
-  }
-  .ra-fallback.show { display: inline-flex; align-items: center; }
-
-  .scene.ra-leaving {
-    opacity: 0.35;
-    transition: opacity 0.45s ease;
-  }
-  .scene.ra-entering {
-    animation: raEnter 0.55s ease;
-  }
-  @keyframes raEnter {
-    from { opacity: 0.2; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .ra-end {
-    display: none;
-    max-width: 420px;
-    margin: 0 auto 2rem;
-    padding: 1.5rem 1.35rem;
-    text-align: center;
-    background: #2a1810;
-    border: 1px solid rgba(232,160,90,0.4);
-    border-radius: 14px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.4);
-  }
-  .ra-end.show { display: block; animation: raEnter 0.5s ease; }
-  .ra-end h2 {
-    font-size: 1.35rem;
-    margin-bottom: 0.45rem;
-  }
-  .ra-end p { color: var(--muted); margin-bottom: 1rem; font-family: system-ui, sans-serif; font-size: 0.95rem; }
-  .ra-end a {
-    display: inline-flex; align-items: center; justify-content: center;
-    min-height: 44px; padding: 0.7rem 1.25rem; border-radius: 999px;
-    background: linear-gradient(135deg, #e8a05a, #c9783a);
-    color: #1a0f0a; font-weight: 700; text-decoration: none;
-    font-family: system-ui, sans-serif; letter-spacing: 0.02em;
-  }
-  @media (max-width: 520px) {
-    .home-link { top: 0.65rem; left: 0.65rem; }
-    .ra-bar { top: 0.65rem; right: 0.65rem; }
-    .ra-toggle { padding: 0.5rem 0.75rem; font-size: 0.72rem; }
-  }
+.pill.mute[aria-pressed="true"]{opacity:.55}
+.start-overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
+  background:rgba(12,7,5,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:16px;margin:.15rem .15rem .4rem}
+.start-overlay.show{display:flex}
+.start-overlay button{min-height:56px;padding:1rem 1.4rem;border-radius:999px;border:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--accent),var(--accent-deep));color:#1a0f0a;font-weight:700;font-size:1.05rem;
+  box-shadow:0 12px 32px rgba(0,0,0,.45)}
 </style>
 </head>
 <body>
-
-<a class="home-link" href="../index.html">← Colonies</a>
-<div class="ra-bar" id="raBar">
-  <button type="button" class="ra-toggle" id="raToggle" aria-pressed="false" aria-label="Read to me">
-    <span class="dot" aria-hidden="true"></span>
-    <span class="ra-label">Read to me</span>
-  </button>
+<div class="app">
+  <div class="topbar">
+    <a class="pill" href="../index.html">← Colonies</a>
+    <div style="display:flex;gap:.4rem;align-items:center">
+      <button type="button" class="pill" id="raToggle" aria-pressed="false"><span class="dot"></span><span class="ra-label">Read to me</span></button>
+      <button type="button" class="pill mute" id="muteBtn" aria-pressed="false" aria-label="Mute">Mute</button>
+    </div>
+  </div>
+  <div class="stage-wrap" id="stageWrap">
+    <div class="stage" id="stage" aria-live="polite"></div>
+    <div class="start-overlay" id="startOverlay"><button type="button" id="startBtn">Tap to start reading</button></div>
+    <button type="button" class="hit left" id="hitLeft" aria-label="Previous page"></button>
+    <button type="button" class="hit right" id="hitRight" aria-label="Next page"></button>
+  </div>
+  <div class="nav">
+    <button type="button" class="nav-arrow" id="prevBtn" aria-label="Previous page"><svg viewBox="0 0 24 24"><path d="M15.4 4.6 8 12l7.4 7.4 1.4-1.4L10.8 12l6-6z"/></svg></button>
+    <div><div class="page-meta" id="pageMeta">1</div><div class="dots" id="dots"></div></div>
+    <button type="button" class="nav-arrow" id="nextBtn" aria-label="Next page"><svg viewBox="0 0 24 24"><path d="m8.6 4.6-1.4 1.4 6 6-6 6 1.4 1.4L16 12z"/></svg></button>
+  </div>
 </div>
-<button type="button" class="ra-fallback" id="raFallback">Sound off? Tap to enable</button>
-
-<style>
-  .home-link {
-    position: fixed; top: 0.75rem; left: 0.75rem; z-index: 40;
-    font-family: system-ui, sans-serif; font-size: 0.78rem; letter-spacing: 0.08em;
-    text-transform: uppercase; text-decoration: none;
-    color: #f4e6d4; background: rgba(26,15,10,0.72);
-    border: 1px solid #8a5a32; border-radius: 999px; padding: 0.45rem 0.85rem;
-    backdrop-filter: blur(6px);
-  }
-  .thanks {
-    text-align: center; padding: 2.5rem 1.25rem 1rem; color: #c9a88a;
-    font-family: system-ui, sans-serif; font-size: 0.95rem;
-  }
-  .feed-cta {
-    display: block; width: fit-content; margin: 0 auto 2rem;
-    font-family: system-ui, sans-serif; text-decoration: none;
-    background: #e8a05a; color: #1a0f0a; font-weight: 600;
-    padding: 0.85rem 1.4rem; border-radius: 999px; letter-spacing: 0.02em;
-  }
-</style>
-
-
-<header class="hero" id="hero">
-  <div class="eyebrow">Colonies · Mission 1</div>
-  <h1 class="ra-line" data-clip="hero_01">Can't Breathe</h1>
-  <p class="ra-line" data-clip="hero_02">Kepler and Comet are sent ahead to make Mars livable. The pod landed. The manual didn't. Six hours of oxygen.</p>
-  <div class="scroll-hint">Scroll ↓</div>
-</header>
-
-<section class="scene" id="s01">
-  <figure><img src="scene01.jpg" alt="Move-in day: Kepler by the wrecked pod with a dropping oxygen gauge" loading="eager" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s01" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s01_01">Comet: “Five-star landing!”</p>
-      <p class="ra-line who" data-clip="s01_02">Kepler: “Six hours of air.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s01_03">Mars air is about 95% carbon dioxide and far too thin to breathe.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s01_05">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s01_06">Mars Air</div>
-      <p class="ra-guide-p" data-clip="s01_07">Technically present. Not recommended.</p>
-      <p class="ra-guide-p" data-clip="s01_08">Surface pressure is less than one percent of Earth's, which is a polite way of saying the sky is mostly a suggestion.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s02">
-  <figure><img src="scene02.jpg" alt="Comet reaches for helmet latch; Kepler stops him" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s02" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s02_01">Comet: “Let's air the place out.”</p>
-      <p class="ra-line who" data-clip="s02_02">Kepler: “That's not airing out. That's checking out.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s02_03">One breath of Martian air would not sustain you. Keep the helmet on.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s02_05">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s02_06">Helmets</div>
-      <p class="ra-guide-p" data-clip="s02_07">On Mars, “fresh air” is a marketing term with no product behind it.</p>
-      <p class="ra-guide-p" data-clip="s02_08">The atmosphere is thin enough that even a polite breeze arrives late and underwhelmed.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s03">
-  <figure><img src="scene03.jpg" alt="First principles: Kepler plans with ice, sunlight, scrap; Comet offers snacks" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s03" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line" data-clip="s03_01">Need: oxygen. Have: ice, sunlight, scrap.</p>
-      <p class="ra-line who" data-clip="s03_02">Comet: “Snacks.”</p>
-      <p class="ra-line who" data-clip="s03_03">Kepler: “Later.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s03_04">Oxygen can be made from water ice by electrolysis — or from CO₂, as NASA's MOXIE did on Perseverance.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s03_06">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s03_07">First Principles</div>
-      <p class="ra-guide-p" data-clip="s03_08">Ask what the problem actually needs.</p>
-      <p class="ra-guide-p" data-clip="s03_09">Mars soil can contain perchlorates — salty compounds hostile to Earth microbes and inconvenient for farming.</p>
-      <p class="ra-guide-p" data-clip="s03_10">The planet restocks itself. The labels are missing.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s04">
-  <figure><img src="scene04.jpg" alt="They dig and find water ice under red dust" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s04" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s04_01">Comet: “We're rich!”</p>
-      <p class="ra-line who" data-clip="s04_02">Kepler: “We're breathing. Out here, same thing.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s04_03">Water ice lies under Martian dust in many places. The red color is iron oxide — basically rust.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s04_05">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s04_06">Ice</div>
-      <p class="ra-guide-p" data-clip="s04_07">The most valuable substance on Mars. Also frozen water. Both are true.</p>
-      <p class="ra-guide-p" data-clip="s04_08">Dig under the rust and you may find the colony's first real paycheck.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s05">
-  <figure><img src="scene05.jpg" alt="Comet's fan experiment; Kepler facepalms with ice" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s05" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s05_01">Comet: “If the dust goes fast enough it's wind, and wind is basically air.”</p>
-      <p class="ra-line who" data-clip="s05_02">Kepler: “Three wrong things in one sentence.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s05_03">Blowing regolith around does not make oxygen. Chemistry does.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s05_05">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s05_06">The Fan</div>
-      <p class="ra-guide-p" data-clip="s05_07">The colony's first invention. It is no longer considered an invention.</p>
-      <p class="ra-guide-p" data-clip="s05_08">Mars dust is fine enough to get into everything; it does not, however, become breathable when accelerated.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s06">
-  <figure><img src="scene06.jpg" alt="Building a solar electrolysis rig from scraps" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s06" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s06_01">Kepler: “Everything we need is already here. It's just in the wrong order.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s06_02">Electricity splits water into hydrogen and oxygen. A scavenged solar panel can run the current.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s06_04">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s06_05">Electrolysis</div>
-      <p class="ra-guide-p" data-clip="s06_06">Sunlight in. Water split. Oxygen out.</p>
-      <p class="ra-guide-p" data-clip="s06_07">Perseverance's MOXIE later proved you can also wring oxygen from the CO₂ air itself — which is cheating, and therefore science.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s07">
-  <figure><img src="scene07.jpg" alt="Kepler rings the brass colony bell; Comet holds the gauge" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s07" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line" data-clip="s07_01">First ring: dull. Leak. They patch it.</p>
-      <p class="ra-line" data-clip="s07_02">Second ring: clear.</p>
-      <p class="ra-line who" data-clip="s07_03">Kepler: “Seal holds.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s07_04">Ring test: a sealed structure rings clear; a crack sounds dull. On Mars, sound is quieter and high/low pitches travel at different speeds.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s07_06">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s07_07">Ring Test</div>
-      <p class="ra-guide-p" data-clip="s07_08">A method of asking a building if it is okay. Buildings are surprisingly honest.</p>
-      <p class="ra-guide-p" data-clip="s07_09">On Mars, sound travels slower and arrives softer; even a good ring can sound like it took the scenic route.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s08">
-  <figure><img src="scene08.jpg" alt="First breath: Comet helmet-off inside sealed bubble with a sprout" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s08" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <span class="reveal-badge">Build reveal</span>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s08_01">Comet: “Wrong planet?”</p>
-      <p class="ra-line who" data-clip="s08_02">Kepler: “Right start.”</p>
-    </div>
-    <p class="science ra-sci" data-clip="s08_03">Habitats must stay sealed. Nothing grows in open Martian regolith — only inside a pressurized, protected space.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s08_05">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s08_06">First Breath</div>
-      <p class="ra-guide-p" data-clip="s08_07">Available indoors only. Outdoors remains a museum exhibit.</p>
-      <p class="ra-guide-p" data-clip="s08_08">The sprout agrees, which is why it lives in glass.</p>
-    </div>
-  </div>
-</section>
-
-<section class="scene" id="s09">
-  <figure><img src="scene09.jpg" alt="Blue sunset; Kepler sketches a forest under glass; dust storm teaser" loading="lazy" /></figure>
-  <div class="caption">
-    <button type="button" class="scene-play" data-scene="s09" aria-label="Play this scene" aria-pressed="false">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-    </button>
-    <div class="lines">
-      <p class="ra-line who" data-clip="s09_01">Kepler: “Someday, a forest under glass.”</p>
-      <p class="ra-line" data-clip="s09_02">Horizon: weather coming.</p>
-    </div>
-    <p class="science ra-sci" data-clip="s09_03">Fine dust makes Mars sunsets blue near the sun. Heat, shielding, and power still needed before any forest under glass.</p>
-    <div class="guide">
-      <div class="label ra-guide-label" data-clip="s09_05">The Colony Guide</div>
-      <div class="title ra-guide-title" data-clip="s09_06">Blue Sunsets</div>
-      <p class="ra-guide-p" data-clip="s09_07">On Mars, dusk can turn blue near the sun while the rest of the sky stays peach. Fine dust scatters the light.</p>
-      <p class="ra-guide-p" data-clip="s09_08">The planet has a sense of irony, and a dust storm waiting on the horizon.</p>
-    </div>
-  </div>
-</section>
-
-<section class="teaser">
-  <div class="teaser-card">
-    <div class="locked">Next mission</div>
-    <h2>Too Cold</h2>
-    <p>Air is solved. Heat is not. A faint dust storm waits on the horizon — and the brass bell will have more to say.</p>
-    <p class="someday">Someday: a forest under glass.</p>
-  </div>
-</section>
-
-
-<section class="ra-end" id="raEnd" aria-live="polite">
-  <h2>Mission 1 narrated</h2>
-  <p>Air is solved. Ready for the problems?</p>
-  <a href="solve/index.html">Solve it</a>
-</section>
-
-<section class="thanks" id="thanks">
-  <p>Mission 1 was made possible by everyone who fed the colony.</p>
-</section>
-<a class="feed-cta" href="../support.html">Feed the colony</a>
-
-<footer>Colonies · Mission 1 of 6 · Illustrated scroll story · The Colony Guide</footer>
-
+<button type="button" class="fallback" id="fallback">Sound off? Tap to enable</button>
 <script>
 (function(){
-  try {
-    const key = 'colonies_read_missions';
-    const read = JSON.parse(localStorage.getItem(key) || '[]');
-    if (!read.includes('m1')) { read.push('m1'); localStorage.setItem(key, JSON.stringify(read)); }
-  } catch(e) {}
-
-  const BASE = 'audio/';
-  const playIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
-  const pauseIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14H7zm7 0h3v14h-3z"/></svg>';
-  const SCENE_ORDER = ['s01','s02','s03','s04','s05','s06','s07','s08','s09'];
-
-  const audio = document.createElement('audio');
-  audio.setAttribute('playsinline', '');
-  audio.preload = 'auto';
-  audio.style.display = 'none';
-  document.body.appendChild(audio);
-
-  let manifest = null;
-  let token = 0;
-  let mode = 'idle'; // idle | scene | all
-  let currentScene = null;
-
-  const toggle = document.getElementById('raToggle');
-  const fallback = document.getElementById('raFallback');
-  const endCard = document.getElementById('raEnd');
-  const sceneBtns = Array.from(document.querySelectorAll('.scene-play'));
-
-  function setActive(el) {
-    document.querySelectorAll('.ra-active').forEach((n) => n.classList.remove('ra-active'));
-    if (el) {
-      el.classList.add('ra-active');
-      try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
-    }
-  }
-
-  function setSceneBtn(scene, playing) {
-    sceneBtns.forEach((b) => {
-      const on = playing && b.dataset.scene === scene;
-      b.setAttribute('aria-pressed', on ? 'true' : 'false');
-      b.innerHTML = on ? pauseIcon : playIcon;
-      b.setAttribute('aria-label', on ? 'Pause this scene' : 'Play this scene');
-    });
-  }
-
-  function setToggle(on) {
-    toggle.setAttribute('aria-pressed', on ? 'true' : 'false');
-    toggle.querySelector('.ra-label').textContent = on ? 'Pause' : 'Read to me';
-  }
-
-  function clearSceneFx() {
-    document.querySelectorAll('.scene.ra-leaving, .scene.ra-entering').forEach((n) => {
-      n.classList.remove('ra-leaving', 'ra-entering');
-    });
-  }
-
-  function stopAll() {
-    token++;
-    try { audio.pause(); } catch (e) {}
-    try { if (window.speechSynthesis) speechSynthesis.cancel(); } catch (e) {}
-    mode = 'idle';
-    currentScene = null;
-    setActive(null);
-    setSceneBtn(null, false);
-    setToggle(false);
-    clearSceneFx();
-  }
-
-  function showFallback(retry) {
-    fallback.classList.add('show');
-    fallback.onclick = () => {
-      fallback.classList.remove('show');
-      if (retry) retry();
+  try{const k='colonies_read_missions';const r=JSON.parse(localStorage.getItem(k)||'[]');if(!r.includes('m1')){r.push('m1');localStorage.setItem(k,JSON.stringify(r));}}catch(e){}
+  const stage=document.getElementById('stage'), pageMeta=document.getElementById('pageMeta'), dots=document.getElementById('dots');
+  const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
+  const raToggle=document.getElementById('raToggle'), fallback=document.getElementById('fallback');
+  const muteBtn=document.getElementById('muteBtn'), startOverlay=document.getElementById('startOverlay'), startBtn=document.getElementById('startBtn');
+  const audio=document.createElement('audio'); audio.setAttribute('playsinline',''); audio.preload='auto'; audio.style.display='none'; document.body.appendChild(audio);
+  const bgm=document.createElement('audio'); bgm.setAttribute('playsinline',''); bgm.preload='auto'; bgm.loop=true; bgm.volume=0.12; bgm.style.display='none'; document.body.appendChild(bgm);
+  let book=null, pageIndex=0, token=0, readingAll=false, turning=false, muted=false, userStopped=false, bgmOn=false;
+  const SS_KEY='colonies_m1_read_pref';
+  try{
+    const pref=sessionStorage.getItem(SS_KEY);
+    if(pref==='off') userStopped=true;
+    if(pref==='muted'){ muted=true; muteBtn.setAttribute('aria-pressed','true'); muteBtn.textContent='Unmute'; }
+  }catch(e){}
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  function setActive(el){document.querySelectorAll('.ra-active').forEach(n=>n.classList.remove('ra-active')); if(el) el.classList.add('ra-active');}
+  function showFallback(retry){fallback.classList.add('show'); fallback.onclick=()=>{fallback.classList.remove('show'); if(retry) retry();};}
+  function showStartOverlay(show){ startOverlay.classList.toggle('show', !!show); }
+  function stopVoice(){ try{audio.pause(); audio.removeAttribute('src'); audio.load();}catch(e){} try{speechSynthesis&&speechSynthesis.cancel();}catch(e){} setActive(null); }
+  function stopBgm(fade){
+    if(!bgmOn && bgm.paused) return;
+    bgmOn=false;
+    if(!fade){ try{bgm.pause();}catch(e){} return; }
+    const startVol=bgm.volume, t0=performance.now();
+    const step=(now)=>{
+      const p=Math.min(1,(now-t0)/350);
+      bgm.volume=Math.max(0, startVol*(1-p));
+      if(p<1 && !bgmOn) requestAnimationFrame(step);
+      else { try{bgm.pause();}catch(e){} bgm.volume=muted?0:0.12; }
     };
+    requestAnimationFrame(step);
+  }
+  function stopAudio(){ token++; stopVoice(); stopBgm(false); }
+  function pageWantsBgm(pg){ return !!(pg && pg.bgm) || (pg && (pg.kind==='cover' || pg.kind==='intro')); }
+  async function ensureBgm(pg){
+    if(muted || !readingAll){ stopBgm(false); return; }
+    const src = (pg && pg.bgm) ? ('audio/'+pg.bgm) : (pageWantsBgm(pg) ? 'audio/theme_intro.mp3' : null);
+    if(!src){ if(bgmOn) stopBgm(true); return; }
+    const abs = new URL(src, location.href).href;
+    if(!bgm.src.endsWith('theme_intro.mp3') && bgm.src !== abs){
+      bgm.src = src; bgm.currentTime=0;
+    } else if(!bgm.src){ bgm.src = src; }
+    bgm.volume = muted ? 0 : 0.12;
+    try{
+      const p=bgm.play();
+      if(p && p.catch) await p.catch(()=>{});
+      bgmOn=true;
+    }catch(e){ bgmOn=false; }
+  }
+  function playSrc(src){return new Promise(resolve=>{
+    if(muted){ resolve(true); return; }
+    let done=false; const my=token;
+    const fin=ok=>{ if(done||my!==token)return; done=true; audio.removeEventListener('ended',onEnd); audio.removeEventListener('error',onErr); resolve(ok); };
+    const onEnd=()=>fin(true); const onErr=()=>fin(false);
+    audio.addEventListener('ended',onEnd); audio.addEventListener('error',onErr);
+    try{
+      audio.src=src; audio.currentTime=0; audio.volume = muted?0:1;
+      const p=audio.play();
+      if(p&&p.catch)p.catch(e=>{
+        if(my!==token)return;
+        if(e&&e.name==='AbortError')return;
+        showFallback(()=>playSrc(src).then(resolve));
+        fin(false);
+      });
+    }catch(e){ showFallback(()=>playSrc(src).then(resolve)); fin(false); }
+  });}
+  function speakFallback(text){return new Promise(resolve=>{
+    if(muted) return resolve(true);
+    try{if(!window.speechSynthesis||!text)return resolve(false);const u=new SpeechSynthesisUtterance(text);u.rate=.92;u.onend=()=>resolve(true);u.onerror=()=>resolve(false);speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){resolve(false);}
+  });}
+
+  function renderDots(){dots.innerHTML=''; book.pages.forEach((_,i)=>{const d=document.createElement('i'); if(i===pageIndex)d.classList.add('cur'); if(i<pageIndex)d.classList.add('seen'); dots.appendChild(d);});}
+  function kindLabel(pg){
+    const k=pg.kind||'';
+    if(k==='cover') return ' · Cover';
+    if(k==='intro') return ' · Intro';
+    if(k==='scene') return ' · '+(pg.title||'Log');
+    if(k==='note') return ' · Note';
+    if(k==='science') return ' · Science';
+    if(k==='end') return ' · End';
+    if(k==='log') return ' · Log '+(pg.title||'');
+    if(k==='image') return ' · Image';
+    return '';
+  }
+  function renderPage(){
+    const pg=book.pages[pageIndex], total=book.pages.length;
+    pageMeta.textContent=(pageIndex+1)+' / '+total+kindLabel(pg);
+    if((pg.kind==='scene' || pg.kind==='note' || (pg.kind==='intro' && pg.img)) && pg.img && pg.html){
+      const sketch=/note|intro2|intro3/.test(String(pg.img));
+      const extra=sketch?' note-page':'';
+      stage.innerHTML='<div class="page-scene'+extra+'"><div class="scene-art"><img src="'+pg.img+'" alt="'+(pg.alt||pg.title||'')+'"/></div><div class="scene-log">'+pg.html+'</div></div>';
+    } else if(pg.img && !pg.html){
+      stage.innerHTML='<div class="page-art"><img src="'+pg.img+'" alt="'+(pg.alt||'')+'"/></div>';
+    } else {
+      stage.innerHTML='<div class="page-art logish">'+(pg.html||'')+'</div>';
+    }
+    prevBtn.disabled=pageIndex<=0; nextBtn.disabled=pageIndex>=total-1; renderDots();
   }
 
-  function sleep(ms) {
-    return new Promise((r) => setTimeout(r, ms));
-  }
-
-  function playSrc(src) {
-    return new Promise((resolve) => {
-      let done = false;
-      const my = token;
-      const finish = (ok) => {
-        if (done || my !== token) return;
-        done = true;
-        audio.removeEventListener('ended', onEnd);
-        audio.removeEventListener('error', onErr);
-        resolve(ok);
-      };
-      const onEnd = () => finish(true);
-      const onErr = () => finish(false);
-      audio.addEventListener('ended', onEnd);
-      audio.addEventListener('error', onErr);
-      try {
-        audio.src = src;
-        audio.currentTime = 0;
-        const p = audio.play();
-        if (p && p.catch) p.catch((e) => {
-          if (my !== token) return;
-          if (e && e.name === 'AbortError') return;
-          showFallback(() => playSrc(src).then(resolve));
-          finish(false);
-        });
-      } catch (e) {
-        showFallback(() => playSrc(src).then(resolve));
-        finish(false);
+  async function playPageClips(){
+    const pg=book.pages[pageIndex]; const clips=pg.clips||[]; const my=token;
+    await ensureBgm(pg);
+    if((pg.hold || pg.kind==='image') && !clips.some(c=>!c.pause)){
+      const sec = pg.hold_sec != null ? pg.hold_sec : 3;
+      const end = Date.now() + Math.round(sec*1000);
+      while(Date.now() < end){
+        if(my!==token || !readingAll) return false;
+        await sleep(100);
       }
-    });
-  }
-
-  function speakFallback(text) {
-    return new Promise((resolve) => {
-      try {
-        if (!window.speechSynthesis || !text) return resolve(false);
-        const u = new SpeechSynthesisUtterance(text);
-        u.rate = 0.92;
-        u.onend = () => resolve(true);
-        u.onerror = () => resolve(false);
-        speechSynthesis.cancel();
-        speechSynthesis.speak(u);
-      } catch (e) { resolve(false); }
-    });
-  }
-
-  async function playQueue(items) {
-    const my = token;
-    for (const it of items) {
-      if (my !== token) return false;
-      if (it.pause) {
-        setActive(null);
-        await sleep(450);
-        continue;
-      }
-      const el = document.querySelector('[data-clip="' + it.id + '"]');
-      setActive(el);
-      let ok = await playSrc(BASE + it.file);
-      if (my !== token) return false;
-      if (!ok) {
-        ok = await speakFallback(it.text || (el ? el.textContent : ''));
-        if (my !== token) return false;
-        if (!ok) return false;
-      }
-      await sleep(120);
+      return my===token && readingAll;
     }
-    if (my === token) setActive(null);
-    return my === token;
-  }
-
-  function sceneItems(sceneId) {
-    return (manifest && manifest.scenes[sceneId]) ? manifest.scenes[sceneId] : [];
-  }
-
-  async function pageTurnTo(sceneId, prevId) {
-    const next = document.getElementById(sceneId);
-    const prev = prevId ? document.getElementById(prevId) : null;
-    if (prev) prev.classList.add('ra-leaving');
-    if (next) {
-      try { next.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
-      next.classList.add('ra-entering');
+    for(const it of clips){
+      if(my!==token) return false;
+      if(it.pause){ setActive(null); await sleep(Math.max(80, Math.round((it.duration||.45)*1000))); continue; }
+      const el=stage.querySelector('[data-clip="'+it.id+'"]'); setActive(el);
+      let ok=await playSrc('audio/'+it.file);
+      if(my!==token) return false;
+      if(!ok){ ok=await speakFallback(it.speak||it.text||(el?el.textContent:'')); if(my!==token)return false; if(!ok)return false; }
     }
-    await sleep(520);
-    clearSceneFx();
-  }
-
-  async function playScene(sceneId) {
-    if (mode === 'scene' && currentScene === sceneId) {
-      stopAll();
-      return;
-    }
-    if (endCard) endCard.classList.remove('show');
-    stopAll();
-    mode = 'scene';
-    currentScene = sceneId;
-    setSceneBtn(sceneId, true);
-    const section = document.getElementById(sceneId);
-    if (section) try { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
-    const ok = await playQueue(sceneItems(sceneId));
-    if (mode === 'scene' && currentScene === sceneId) {
-      setSceneBtn(sceneId, false);
-      mode = 'idle';
-      currentScene = null;
-    }
-    return ok;
-  }
-
-  async function playAll() {
-    // Pause stops auto-advance
-    if (mode === 'all') {
-      stopAll();
-      return;
-    }
-    if (!manifest) return;
-    if (endCard) endCard.classList.remove('show');
-    stopAll();
-    mode = 'all';
-    setToggle(true);
-
-    // Hero intro
-    const hero = document.getElementById('hero');
-    if (hero) try { hero.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
-    if (manifest.scenes.hero) {
-      const okHero = await playQueue(manifest.scenes.hero);
-      if (!okHero || mode !== 'all') { if (mode === 'all') stopAll(); return; }
-      await sleep(220);
-    }
-
-    let prev = null;
-    for (const sid of SCENE_ORDER) {
-      if (mode !== 'all') return;
-      await pageTurnTo(sid, prev);
-      if (mode !== 'all') return;
-      currentScene = sid;
-      setSceneBtn(sid, true);
-      const ok = await playQueue(sceneItems(sid));
-      setSceneBtn(sid, false);
-      if (!ok || mode !== 'all') { if (mode === 'all') stopAll(); return; }
-      prev = sid;
-      await sleep(180);
-    }
-
-    if (mode === 'all') {
-      mode = 'idle';
-      currentScene = null;
-      setToggle(false);
-      setActive(null);
-      if (endCard) {
-        endCard.classList.add('show');
-        try { endCard.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+    if(my===token) setActive(null);
+    const hold = pg.hold_sec != null ? pg.hold_sec : (pg.kind==='scene' ? 1.0 : 0.6);
+    if(hold > 0){
+      const end = Date.now() + Math.round(hold*1000);
+      while(Date.now() < end){
+        if(my!==token || !readingAll) return false;
+        await sleep(80);
       }
     }
+    return my===token && readingAll;
   }
 
-  toggle.addEventListener('click', () => { playAll(); });
-  sceneBtns.forEach((b) => b.addEventListener('click', () => { playScene(b.dataset.scene); }));
-
-  fetch(BASE + 'manifest.json').then((r) => r.json()).then((m) => { manifest = m; }).catch(() => {
-    console.warn('audio manifest missing');
-  });
+  let turnQueue=Promise.resolve();
+  function goTo(i,dir, fromUser){ turnQueue=turnQueue.then(()=>goToInner(i,dir,fromUser)).catch(()=>{}); return turnQueue; }
+  async function goToInner(i,dir, fromUser){
+    if(!book||turning) return;
+    if(i<0||i>=book.pages.length||i===pageIndex) return;
+    turning=true;
+    // Jump narration to the new page: cancel current clips, keep readingAll if on
+    token++; stopVoice();
+    const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const out=dir>=0?'turn-out-next':'turn-out-prev'; const inn=dir>=0?'turn-in-next':'turn-in-prev';
+    stage.classList.remove('turn-in-next','turn-in-prev','turn-out-next','turn-out-prev');
+    stage.classList.add(out); await sleep(reduce?0:150);
+    pageIndex=i; renderPage();
+    stage.classList.remove(out); stage.classList.add(inn); await sleep(reduce?0:150);
+    stage.classList.remove(inn); turning=false;
+    if(readingAll){
+      const ok=await playPageClips();
+      if(ok && readingAll){
+        if(pageIndex<book.pages.length-1) await goTo(pageIndex+1,1,false);
+        else setReading(false);
+      } else if(!ok) setReading(false);
+    } else if(!pageWantsBgm(book.pages[pageIndex])) {
+      stopBgm(true);
+    }
+  }
+  function setReading(on, opts){
+    opts=opts||{};
+    readingAll=on;
+    raToggle.setAttribute('aria-pressed',on?'true':'false');
+    raToggle.querySelector('.ra-label').textContent=on?'Pause':'Read to me';
+    if(!on){
+      stopAudio();
+      if(opts.remember!==false){
+        userStopped=true;
+        try{sessionStorage.setItem(SS_KEY, muted?'muted':'off');}catch(e){}
+      }
+    } else {
+      userStopped=false;
+      try{sessionStorage.setItem(SS_KEY, muted?'muted':'on');}catch(e){}
+      showStartOverlay(false);
+    }
+  }
+  async function toggleRead(){
+    if(readingAll){ setReading(false); return; }
+    setReading(true);
+    const ok=await playPageClips();
+    if(ok && readingAll){ if(pageIndex<book.pages.length-1) await goTo(pageIndex+1,1,false); else setReading(false); }
+    else setReading(false);
+  }
+  async function tryAutoStart(){
+    if(userStopped) return;
+    setReading(true, {remember:false});
+    // Probe with a tiny silent play via first clip or bgm
+    try{
+      const pg=book.pages[pageIndex];
+      await ensureBgm(pg);
+      const ok=await playPageClips();
+      if(ok && readingAll){
+        if(pageIndex<book.pages.length-1) await goTo(pageIndex+1,1,false);
+        else setReading(false, {remember:false});
+      } else if(!ok){
+        // autoplay blocked
+        setReading(false, {remember:false});
+        showStartOverlay(true);
+      }
+    }catch(e){
+      setReading(false, {remember:false});
+      showStartOverlay(true);
+    }
+  }
+  function toggleMute(){
+    muted=!muted;
+    muteBtn.setAttribute('aria-pressed', muted?'true':'false');
+    muteBtn.textContent = muted ? 'Unmute' : 'Mute';
+    audio.volume = muted?0:1;
+    bgm.volume = muted?0:0.12;
+    if(muted){ try{audio.pause();}catch(e){} try{bgm.pause();}catch(e){} bgmOn=false; }
+    else if(readingAll){ ensureBgm(book.pages[pageIndex]); }
+    try{sessionStorage.setItem(SS_KEY, muted ? 'muted' : (readingAll?'on':(userStopped?'off':'on')));}catch(e){}
+  }
+  const next=()=>goTo(pageIndex+1,1,true), prev=()=>goTo(pageIndex-1,-1,true);
+  prevBtn.onclick=prev; nextBtn.onclick=next; hitLeft.onclick=prev; hitRight.onclick=next;
+  raToggle.onclick=toggleRead; muteBtn.onclick=toggleMute;
+  startBtn.onclick=()=>{ showStartOverlay(false); toggleRead(); };
+  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();next();} if(e.key==='ArrowLeft'){e.preventDefault();prev();} if(e.key===' '){e.preventDefault();toggleRead();} });
+  let tx=null,ty=null; const wrap=document.getElementById('stageWrap');
+  wrap.addEventListener('touchstart',e=>{const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;},{passive:true});
+  wrap.addEventListener('touchend',e=>{if(tx==null)return;const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=ty=null;if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.2)return; if(dx<0)next(); else prev();},{passive:true});
+  fetch('audio/manifest.json').then(r=>r.json()).then(m=>{
+    book=m; if(!book.pages) throw 0; renderPage();
+    // Opening the mission is the user gesture from the home link — auto-start Read to me
+    setTimeout(()=>{ tryAutoStart(); }, 60);
+  }).catch(()=>{stage.innerHTML='<div class="page-art logish"><p>Could not load the log.</p></div>';});
 })();
 </script>
-
 </body>
 </html>

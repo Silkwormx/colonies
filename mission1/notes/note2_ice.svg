@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+  <rect width="900" height="360" fill="#f3e6d0"/>
+  <path d="M60 40 C200 10, 350 60, 480 30 C620 5, 760 50, 840 25 L840 330 L60 330 Z" fill="#c47a4a" stroke="#5a3a22" stroke-width="3"/>
+  <g fill="#8a4a28" opacity="0.5">
+    <circle cx="150" cy="80" r="3"/><circle cx="250" cy="55" r="2"/><circle cx="360" cy="90" r="3"/>
+    <circle cx="500" cy="50" r="2"/><circle cx="650" cy="75" r="3"/><circle cx="760" cy="45" r="2"/>
+  </g>
+  <path d="M60 180 C250 155, 480 205, 840 170 L840 330 L60 330 Z" fill="#b8d8e8" stroke="#3a5a6a" stroke-width="2.5"/>
+  <g fill="#7aa0b8" opacity="0.45">
+    <path d="M180 220 l20 40 l-40 0 z"/><path d="M380 210 l25 45 l-50 0 z"/><path d="M600 225 l18 35 l-36 0 z"/><path d="M740 215 l22 40 l-44 0 z"/>
+  </g>
+  <line x1="200" y1="100" x2="300" y2="30" stroke="#5a3a22" stroke-width="2"/>
+  <text x="310" y="28" font-family="Georgia, serif" font-size="22" fill="#5a3a22">red dust</text>
+  <line x1="480" y1="240" x2="600" y2="150" stroke="#3a5a6a" stroke-width="2"/>
+  <text x="610" y="145" font-family="Georgia, serif" font-size="22" fill="#3a5a6a">water ice</text>
+</svg>

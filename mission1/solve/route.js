@@ -1,4 +1,15 @@
 (function () {
+  fetch('help.json').then(function (r) { return r.json(); }).then(function (h) {
+    var H = h.route;
+    Solve.installHelp({
+      hints: H.hints_by_step,
+      goals: H.goals,
+      happening: H.happening,
+      step: 'air',
+      goal: 'air',
+      happeningStep: 'air'
+    });
+  });
   var NS = 'http://www.w3.org/2000/svg';
   var ICONS = {
     ice:    '<path d="M-12 6 L-4 -10 L8 -8 L13 6 L2 12Z" fill="#cfe6ee" opacity=".85"/><path d="M-4 -10 L2 12 M8 -8 L-12 6" stroke="#7eb8c9" stroke-width="1" opacity=".7"/>',
@@ -9,7 +20,6 @@
     panel:  '<path d="M-14 9 L-8 -9 L14 -9 L8 9Z" fill="#2a3a52" stroke="#8aa0b8"/><path d="M-11 0 L11 0 M0 -9 L-3 9" stroke="#8aa0b8" stroke-width=".7"/>',
     vent:   '<path d="M-4 10 L-4 -6 L4 -6 L4 10" fill="#6b5442"/><circle cx="-2" cy="-11" r="3" fill="none" stroke="#c9b8a4"/><circle cx="4" cy="-15" r="2" fill="none" stroke="#c9b8a4"/>',
     dust:   '<ellipse cx="0" cy="4" rx="14" ry="6" fill="#a0603a"/><ellipse cx="-3" cy="0" rx="8" ry="5" fill="#b8704a"/>',
-    snack:  '<rect x="-11" y="-9" width="22" height="18" rx="2" fill="#7a4a2a" stroke="#c9783a"/><path d="M-11 -2h22" stroke="#c9783a"/><circle cx="6" cy="3" r="1.5" fill="#e8a05a"/>',
     fan:    '<circle r="11" fill="none" stroke="#c9a88a" stroke-width="1.5"/><path d="M0 0 C-3 -8 0 -10 2 -10 C3 -6 2 -3 0 0Z M0 0 C8 -2 10 1 9 3 C6 3 3 2 0 0Z M0 0 C-5 6 -8 6 -9 4 C-7 1 -4 0 0 0Z" fill="#b9a48a"/>'
   };
   var N = {
@@ -20,7 +30,6 @@
     split: { x: 180, y: 198, label: 'Splitter' },
     tank:  { x: 298, y: 198, label: 'O₂ tank' },
     ice:   { x: 64,  y: 340, label: 'Ice deposit' },
-    snack: { x: 168, y: 300, label: 'Snack locker' },
     hab:   { x: 282, y: 348, label: 'Habitat', r: 40 },
     fan:   { x: 150, y: 386, label: 'The fan', hidden: true }
   };
@@ -43,17 +52,16 @@
   var R2 = { 'melt|panel': 'wire', 'panel|split': 'wire', 'split|vent': 'h2' };
   var WRONG = {
     'ice|split': 'The splitter jams on a lump of ice. Electrolysis needs liquid water. Melt it first.',
-    'ice|hab': 'A block of ice in the living room. Cold, decorative, not air.',
-    'ice|tank': 'Ice does not fit through a gas valve. Kepler checked.',
-    'melt|tank': 'A tank full of water. Hydrating, not breathable. It needs splitting first.',
-    'melt|hab': 'Water in the habitat. Comet is delighted. Nobody can breathe it.',
+    'ice|hab': 'Ice in the habitat is not air. Melt and split it first.',
+    'ice|tank': 'Ice does not fit through a gas valve. Melt it first.',
+    'melt|tank': 'A tank full of water is not breathable. Split it into oxygen first.',
+    'melt|hab': 'Liquid water in the habitat is not breathable air.',
     'split|hab': 'Straight from the splitter means no reserve. At night the panel stops and so would the air. Fill a tank first.',
     'split|vent': 'That is where the hydrogen goes, later. Right now, follow the oxygen.',
-    'tank|vent': 'Venting the oxygen. Bold. Mars already has plenty of nothing.',
+    'tank|vent': 'That vents the oxygen you need. Keep it in the tank.',
     'hab|split': 'Hydrogen in the habitat: flammable, and no use to lungs. Only oxygen goes in.',
     'split|melt': 'That is backwards. Water goes from the melter into the splitter.',
     any_dust: 'Dust. Mars has an unlimited supply and none of it helps. It mostly gets into the valves.',
-    any_snack: 'Comet supports this route. It is not a life-support route.',
     any_panel: 'The panel is power, not plumbing. Its cables come in round two.',
     r2_bad: 'Not on this circuit. The panel feeds the machines that need electricity, and the hydrogen needs its own way out.',
     r2_hab_h2: 'Hydrogen in the habitat: flammable, and no use to lungs. Vent it, or store it for fuel later.'
@@ -121,7 +129,6 @@
       }
       if (links[k]) { Solve.feedback('<span class="tag">Already done</span>That one is connected.', ''); return false; }
       if (k === 'hab|split') { bad(b, WRONG.r2_hab_h2); return false; }
-      if (a === 'snack' || b === 'snack') { bad(b, 'Comet: “Technically, that is power routing.” Kepler: “No.”'); return false; }
       bad(b, WRONG.r2_bad); return false;
     }
     if (round === 2) {
@@ -192,21 +199,24 @@
   }
   function startR1() {
     label(1, 'The air', 'Lay pipe from the ice to the habitat, one station at a time.');
+    Solve.setHintStep('air'); Solve.setGoal('air'); Solve.setHappening('air');
     N.ice.el.classList.add('start', 'done'); setSel('ice');
     document.getElementById('links-tag').textContent = '';
   }
   function startR2() {
     round = 1;
     label(2, 'The power', 'The melter and splitter need electricity, and the splitter’s hydrogen needs a way out. Three connections.');
+    Solve.setHintStep('power'); Solve.setGoal('power'); Solve.setHappening('power');
     document.getElementById('links-tag').innerHTML = 'Connections: <strong>0</strong> of 3';
     Solve.feedback('<span class="tag">Round two</span>Tap a station, then the station it should connect to. Or drag between them.', '');
   }
   function startR3() {
     round = 2;
-    label(3, 'The seal', 'Put the fan where it does some good, then ring-test the habitat.');
+    label(3, 'The seal', 'Put the fan inside the habitat, then ring-test the seal.');
+    Solve.setHintStep('seal'); Solve.setGoal('seal'); Solve.setHappening('seal');
     N.fan.el.classList.remove('hidden');
     document.getElementById('links-tag').textContent = '';
-    Solve.feedback('<span class="tag">Round three</span>The fan has turned up. It would like a job.', '');
+    Solve.feedback('<span class="tag">Round three</span>Connect the fan to the habitat, then ring-test.', '');
   }
 
   // simple clear ring for the finale (WebAudio)
@@ -228,13 +238,13 @@
     ring();
     this.disabled = true;
     board.classList.add('flowing');
-    Solve.feedback('<span class="tag">Clear</span>Long, clear ring. Kepler: “Seal holds.” Oxygen flows, the fan stirs it, and the panel pays for all of it.', 'good');
+    Solve.feedback('<span class="tag">Clear</span>Long, clear ring. Seal holds. Oxygen flows, the fan stirs it, and the panel pays for all of it.', 'good');
     setTimeout(function () {
       document.getElementById('r3-row').hidden = true;
       var rv = document.getElementById('reveal');
       document.getElementById('done').after(rv);
       rv.hidden = false;
-      Solve.finish({ who: 'Comet', line: 'Wrong planet?', fact: 'Kepler: “Right start.” Ice, power, oxygen, circulation and a checked shell: the same pieces every serious Mars habitat plan has to solve.' });
+      Solve.finish({ who: 'Kepler', line: 'Right start.', fact: 'Ice, power, oxygen, circulation and a checked shell: the same pieces every serious Mars habitat plan has to solve.', resultClip: 'route_r_done' });
     }, 1800);
   });
 

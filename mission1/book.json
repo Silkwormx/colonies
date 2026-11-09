@@ -1,0 +1,1156 @@
+{
+  "title": "Can't Breathe",
+  "mission": 1,
+  "voices": {
+    "narrator": {
+      "engine": "kokoro",
+      "voice": "am_eric",
+      "speed": 0.97,
+      "lang": "en-us",
+      "role": "Mission log narrator"
+    }
+  },
+  "pacing": {
+    "same_speaker_sec": 0.28,
+    "after_page_hold_sec": 1.2
+  },
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "title": "Can't Breathe",
+      "img": null,
+      "hold_sec": 0.8,
+      "html": "<p class=\"log-head\">Mission 1 · Can't Breathe</p><div class=\"log-body\"><p><span data-clip=\"b5_cover_a\">Can't Breathe.</span> <span data-clip=\"b5_cover_b\">Two ants. One cracked pod.</span> <span data-clip=\"b5_cover_c\">And the oxygen clock is already ticking.</span></p></div>",
+      "clips": [
+        {
+          "id": "b5_cover_a",
+          "speaker": "narrator",
+          "text": "Can't Breathe.",
+          "speak": "Can't Breathe.",
+          "speed": 1.0,
+          "file": "b5_cover_a.mp3",
+          "duration": 1.152
+        },
+        {
+          "id": "sil_350",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_350.mp3",
+          "pause": true,
+          "duration": 0.35
+        },
+        {
+          "id": "b5_cover_b",
+          "speaker": "narrator",
+          "text": "Two ants. One cracked pod.",
+          "speak": "Two ants. One cracked pod.",
+          "speed": 1.02,
+          "file": "b5_cover_b.mp3",
+          "duration": 1.656
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_cover_c",
+          "speaker": "narrator",
+          "text": "And the oxygen clock is already ticking.",
+          "speak": "And the oxygen clock is already ticking.",
+          "speed": 1.0,
+          "file": "b5_cover_c.mp3",
+          "duration": 2.136
+        }
+      ],
+      "bgm": "theme_intro.mp3"
+    },
+    {
+      "id": "intro1",
+      "kind": "intro",
+      "title": "Why they went",
+      "img": "intro1_why.jpg",
+      "alt": "Why they went",
+      "hold_sec": 0.9,
+      "html": "<p class=\"log-head\">Why they went</p><div class=\"log-body\"><p><span data-clip=\"b5_i1_a\">Kepler and Comet went first.</span> <span data-clip=\"b5_i1_b\">Could ants live on Mars?</span> <span data-clip=\"b5_i1_c\">Make air. Make water. Build shelter.</span> <span data-clip=\"b5_i1_d\">If yes — the colony would follow.</span></p></div>",
+      "clips": [
+        {
+          "id": "b5_i1_a",
+          "speaker": "narrator",
+          "text": "Kepler and Comet went first.",
+          "speak": "Kepler and Comet went first.",
+          "speed": 1.02,
+          "file": "b5_i1_a.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i1_b",
+          "speaker": "narrator",
+          "text": "Could ants live on Mars?",
+          "speak": "Could ants live on Mars?",
+          "speed": 1.05,
+          "file": "b5_i1_b.mp3",
+          "duration": 1.488
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i1_c",
+          "speaker": "narrator",
+          "text": "Make air. Make water. Build shelter.",
+          "speak": "Make air. Make water. Build shelter.",
+          "speed": 1.02,
+          "file": "b5_i1_c.mp3",
+          "duration": 1.872
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i1_d",
+          "speaker": "narrator",
+          "text": "If yes — the colony would follow.",
+          "speak": "If yes — the colony would follow.",
+          "speed": 1.02,
+          "file": "b5_i1_d.mp3",
+          "duration": 1.776
+        }
+      ],
+      "bgm": "theme_intro.mp3"
+    },
+    {
+      "id": "intro2",
+      "kind": "intro",
+      "title": "The trip",
+      "img": "intro2_trip.jpg",
+      "alt": "The trip",
+      "hold_sec": 0.9,
+      "html": "<p class=\"log-head\">The trip</p><div class=\"log-body\"><p><span data-clip=\"b5_i2_a\">About 7 months from Earth.</span> <span data-clip=\"b5_i2_b\">A real trip usually takes 6 to 9.</span> <span data-clip=\"b5_i2_c\">Ships leave only about every 26 months — when Earth and Mars line up.</span> <span data-clip=\"b5_i2_d\">Help will not arrive soon.</span></p></div>",
+      "clips": [
+        {
+          "id": "b5_i2_a",
+          "speaker": "narrator",
+          "text": "About 7 months from Earth.",
+          "speak": "About seven months from Earth.",
+          "speed": 1.02,
+          "file": "b5_i2_a.mp3",
+          "duration": 1.608
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i2_b",
+          "speaker": "narrator",
+          "text": "A real trip usually takes 6 to 9.",
+          "speak": "A real trip usually takes six to nine.",
+          "speed": 1.02,
+          "file": "b5_i2_b.mp3",
+          "duration": 2.304
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i2_c",
+          "speaker": "narrator",
+          "text": "Ships leave only about every 26 months — when Earth and Mars line up.",
+          "speak": "Ships leave only about every twenty-six months — when Earth and Mars line up.",
+          "speed": 1.02,
+          "file": "b5_i2_c.mp3",
+          "duration": 3.816
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i2_d",
+          "speaker": "narrator",
+          "text": "Help will not arrive soon.",
+          "speak": "Help will not arrive soon.",
+          "speed": 1.02,
+          "file": "b5_i2_d.mp3",
+          "duration": 1.512
+        }
+      ],
+      "bgm": "theme_intro.mp3"
+    },
+    {
+      "id": "intro3",
+      "kind": "intro",
+      "title": "What this book is",
+      "img": "intro3_log.jpg",
+      "alt": "What this book is",
+      "hold_sec": 0.9,
+      "html": "<p class=\"log-head\">What this book is</p><div class=\"log-body\"><p><span data-clip=\"b5_i3_a\">This book is Kepler's mission log.</span> <span data-clip=\"b5_i3_b\">Mars days are called sols.</span> <span data-clip=\"b5_i3_c\">One sol lasts about twenty-four hours and forty minutes.</span> <span data-clip=\"b5_i3_d\">Each log entry starts with the Sol number and the time.</span></p></div>",
+      "clips": [
+        {
+          "id": "b5_i3_a",
+          "speaker": "narrator",
+          "text": "This book is Kepler's mission log.",
+          "speak": "This book is Kepler's mission log.",
+          "speed": 1.02,
+          "file": "b5_i3_a.mp3",
+          "duration": 1.8
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i3_b",
+          "speaker": "narrator",
+          "text": "Mars days are called sols.",
+          "speak": "Mars days are called souls.",
+          "speed": 1.02,
+          "file": "b5_i3_b.mp3",
+          "duration": 1.8
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i3_c",
+          "speaker": "narrator",
+          "text": "One sol lasts about twenty-four hours and forty minutes.",
+          "speak": "One soul lasts about twenty-four hours and forty minutes.",
+          "speed": 1.02,
+          "file": "b5_i3_c.mp3",
+          "duration": 3.0
+        },
+        {
+          "id": "sil_280",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_280.mp3",
+          "pause": true,
+          "duration": 0.28
+        },
+        {
+          "id": "b5_i3_d",
+          "speaker": "narrator",
+          "text": "Each log entry starts with the Sol number and the time.",
+          "speak": "Each log entry starts with the Soul number and the time.",
+          "speed": 1.02,
+          "file": "b5_i3_d.mp3",
+          "duration": 2.736
+        }
+      ],
+      "bgm": "theme_intro.mp3"
+    },
+    {
+      "id": "s01",
+      "kind": "scene",
+      "title": "Sol 1 · Mars day 1 · 06:14",
+      "img": "scene01.jpg",
+      "alt": "Sol 1 · Mars day 1 · 06:14",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s01_head\">Sol 1 · Mars day 1 · 06:14</p><div class=\"log-body\"><p><span data-clip=\"b2_s01_a\">We landed on Mars.</span> <span data-clip=\"b2_s01_b\">The landing pod is bent, but it still holds air well enough to climb out.</span> <span data-clip=\"b2_s01_c\">We leave the ship to explore an empty planet.</span> <span data-clip=\"b2_s01_d\">The air outside is too thin to breathe.</span> <span data-clip=\"b2_s01_e\">Inside, we have about six hours of oxygen left.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s01_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · Mars day 1 · 06:14",
+          "speak": "Soul one, Mars day one. Zero six fourteen.",
+          "speed": 0.95,
+          "file": "b2_s01_head.mp3",
+          "duration": 2.904
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s01_a",
+          "speaker": "narrator",
+          "text": "We landed on Mars.",
+          "speak": "We landed on Mars.",
+          "speed": 0.97,
+          "file": "b2_s01_a.mp3",
+          "duration": 1.656
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s01_b",
+          "speaker": "narrator",
+          "text": "The landing pod is bent, but it still holds air well enough to climb out.",
+          "speak": "The landing pod is bent, but it still holds air well enough to climb out.",
+          "speed": 0.97,
+          "file": "b2_s01_b.mp3",
+          "duration": 3.792
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s01_c",
+          "speaker": "narrator",
+          "text": "We leave the ship to explore an empty planet.",
+          "speak": "We leave the ship to explore an empty planet.",
+          "speed": 0.97,
+          "file": "b2_s01_c.mp3",
+          "duration": 2.712
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s01_d",
+          "speaker": "narrator",
+          "text": "The air outside is too thin to breathe.",
+          "speak": "The air outside is too thin to breathe.",
+          "speed": 0.97,
+          "file": "b2_s01_d.mp3",
+          "duration": 2.496
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s01_e",
+          "speaker": "narrator",
+          "text": "Inside, we have about six hours of oxygen left.",
+          "speak": "Inside, we have about six hours of oxygen left.",
+          "speed": 0.97,
+          "file": "b2_s01_e.mp3",
+          "duration": 2.952
+        }
+      ]
+    },
+    {
+      "id": "s02",
+      "kind": "scene",
+      "title": "Sol 1 · 06:31",
+      "img": "scene02.jpg",
+      "alt": "Sol 1 · 06:31",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s02_head\">Sol 1 · 06:31</p><div class=\"log-body\"><p><span data-clip=\"b2_s02_a\">Comet nearly opened a helmet to go outside.</span> <span data-clip=\"b2_s02_b\">Outside, the air pressure is less than 1% of Earth’s — almost nothing.</span> <span data-clip=\"b2_s02_c\">One breath out there would end the mission.</span> <span data-clip=\"b2_s02_d\">Kepler sealed the latch. Going outside was canceled.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s02_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · 06:31",
+          "speak": "Soul one. Zero six thirty-one.",
+          "speed": 0.95,
+          "file": "b2_s02_head.mp3",
+          "duration": 2.064
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s02_a",
+          "speaker": "narrator",
+          "text": "Comet nearly opened a helmet to go outside.",
+          "speak": "Comet nearly opened a helmet to go outside.",
+          "speed": 0.97,
+          "file": "b2_s02_a.mp3",
+          "duration": 2.76
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s02_b",
+          "speaker": "narrator",
+          "text": "Outside, the air pressure is less than 1% of Earth’s — almost nothing.",
+          "speak": "Outside, the air pressure is less than one percent of Earth’s — almost nothing.",
+          "speed": 0.97,
+          "file": "b2_s02_b.mp3",
+          "duration": 4.176
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s02_c",
+          "speaker": "narrator",
+          "text": "One breath out there would end the mission.",
+          "speak": "One breath out there would end the mission.",
+          "speed": 0.97,
+          "file": "b2_s02_c.mp3",
+          "duration": 2.232
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s02_d",
+          "speaker": "narrator",
+          "text": "Kepler sealed the latch. Going outside was canceled.",
+          "speak": "Kepler sealed the latch. Going outside was canceled.",
+          "speed": 0.97,
+          "file": "b2_s02_d.mp3",
+          "duration": 3.0
+        }
+      ]
+    },
+    {
+      "id": "note1",
+      "kind": "note",
+      "title": "Field note · Thin air",
+      "img": "note1_air.jpg",
+      "alt": "Field note · Thin air",
+      "hold_sec": 0.8,
+      "html": "<p class=\"log-head\">Field note · Thin air</p><div class=\"log-body\"><p><span data-clip=\"b3_n1_a\">Earth's air is thick and full of oxygen we can breathe.</span> <span data-clip=\"b3_n1_b\">Mars air is almost all carbon dioxide — the gas we breathe out — and less than 1% as thick.</span></p></div>",
+      "clips": [
+        {
+          "id": "b3_n1_a",
+          "speaker": "narrator",
+          "text": "Earth's air is thick and full of oxygen we can breathe.",
+          "speak": "Earth's air is thick and full of oxygen we can breathe.",
+          "speed": 0.97,
+          "file": "b3_n1_a.mp3",
+          "duration": 3.12
+        },
+        {
+          "id": "sil_220",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_220.mp3",
+          "pause": true,
+          "duration": 0.22
+        },
+        {
+          "id": "b3_n1_b",
+          "speaker": "narrator",
+          "text": "Mars air is almost all carbon dioxide — the gas we breathe out — and less than 1% as thick.",
+          "speak": "Mars air is almost all carbon dioxide — the gas we breathe out — and less than one percent as thick.",
+          "speed": 0.97,
+          "file": "b3_n1_b.mp3",
+          "duration": 5.328
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "kind": "scene",
+      "title": "Sol 1 · 07:02",
+      "img": "scene03.jpg",
+      "alt": "Sol 1 · 07:02",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s03_head\">Sol 1 · 07:02</p><div class=\"log-body\"><p><span data-clip=\"b2_s03_a\">We scratched a list in the dust of what we have and what we need.</span> <span data-clip=\"b2_s03_b\">We need oxygen. We have ice, sunlight, and scrap metal.</span> <span data-clip=\"b2_s03_c\">There is no ready oxygen tank on board. We could split water into oxygen if we find ice.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s03_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · 07:02",
+          "speak": "Soul one. Zero seven oh two.",
+          "speed": 0.95,
+          "file": "b2_s03_head.mp3",
+          "duration": 1.944
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s03_a",
+          "speaker": "narrator",
+          "text": "We scratched a list in the dust of what we have and what we need.",
+          "speak": "We scratched a list in the dust of what we have and what we need.",
+          "speed": 0.97,
+          "file": "b2_s03_a.mp3",
+          "duration": 3.36
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s03_b",
+          "speaker": "narrator",
+          "text": "We need oxygen. We have ice, sunlight, and scrap metal.",
+          "speak": "We need oxygen. We have ice, sunlight, and scrap metal.",
+          "speed": 0.97,
+          "file": "b2_s03_b.mp3",
+          "duration": 3.12
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s03_c",
+          "speaker": "narrator",
+          "text": "There is no ready oxygen tank on board. We could split water into oxygen if we find ice.",
+          "speak": "There is no ready oxygen tank on board. We could split water into oxygen if we find ice.",
+          "speed": 0.97,
+          "file": "b2_s03_c.mp3",
+          "duration": 5.376
+        }
+      ]
+    },
+    {
+      "id": "s04",
+      "kind": "scene",
+      "title": "Sol 1 · 11:48",
+      "img": "scene04.jpg",
+      "alt": "Sol 1 · 11:48",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s04_head\">Sol 1 · 11:48</p><div class=\"log-body\"><p><span data-clip=\"b2_s04_a\">Digging under the red dust, we found water ice.</span> <span data-clip=\"b2_s04_b\">The red color is iron oxide — rust in the dirt.</span> <span data-clip=\"b2_s04_c\">That ice can help us make the oxygen we need.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s04_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · 11:48",
+          "speak": "Soul one. Eleven forty-eight.",
+          "speed": 0.95,
+          "file": "b2_s04_head.mp3",
+          "duration": 1.8
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s04_a",
+          "speaker": "narrator",
+          "text": "Digging under the red dust, we found water ice.",
+          "speak": "Digging under the red dust, we found water ice.",
+          "speed": 0.97,
+          "file": "b2_s04_a.mp3",
+          "duration": 2.712
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s04_b",
+          "speaker": "narrator",
+          "text": "The red color is iron oxide — rust in the dirt.",
+          "speak": "The red color is iron oxide — rust in the dirt.",
+          "speed": 0.97,
+          "file": "b2_s04_b.mp3",
+          "duration": 2.976
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s04_c",
+          "speaker": "narrator",
+          "text": "That ice can help us make the oxygen we need.",
+          "speak": "That ice can help us make the oxygen we need.",
+          "speed": 0.97,
+          "file": "b2_s04_c.mp3",
+          "duration": 2.784
+        }
+      ]
+    },
+    {
+      "id": "note2",
+      "kind": "note",
+      "title": "Field note · Ice under dust",
+      "img": "note2_ice.jpg",
+      "alt": "Field note · Ice under dust",
+      "hold_sec": 0.8,
+      "html": "<p class=\"log-head\">Field note · Ice under dust</p><div class=\"log-body\"><p><span data-clip=\"b3_n2_a\">Water ice often hides under the red dust on Mars.</span> <span data-clip=\"b3_n2_b\">Dig a little, melt it, and a colony has water to drink, grow plants, and make oxygen.</span></p></div>",
+      "clips": [
+        {
+          "id": "b3_n2_a",
+          "speaker": "narrator",
+          "text": "Water ice often hides under the red dust on Mars.",
+          "speak": "Water ice often hides under the red dust on Mars.",
+          "speed": 0.97,
+          "file": "b3_n2_a.mp3",
+          "duration": 3.264
+        },
+        {
+          "id": "sil_220",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_220.mp3",
+          "pause": true,
+          "duration": 0.22
+        },
+        {
+          "id": "b3_n2_b",
+          "speaker": "narrator",
+          "text": "Dig a little, melt it, and a colony has water to drink, grow plants, and make oxygen.",
+          "speak": "Dig a little, melt it, and a colony has water to drink, grow plants, and make oxygen.",
+          "speed": 0.97,
+          "file": "b3_n2_b.mp3",
+          "duration": 4.536
+        }
+      ]
+    },
+    {
+      "id": "s05",
+      "kind": "scene",
+      "title": "Sol 1 · 14:05",
+      "img": "scene05.jpg",
+      "alt": "Sol 1 · 14:05",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s05_head\">Sol 1 · 14:05</p><div class=\"log-body\"><p><span data-clip=\"b2_s05_a\">We tried a scrap fan to blow the dust and pull air from it.</span> <span data-clip=\"b2_s05_b\">The dust moved, but the air did not change.</span> <span data-clip=\"b2_s05_c\">The method had three mistakes. We stopped the trial.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s05_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · 14:05",
+          "speak": "Soul one. Fourteen oh five.",
+          "speed": 0.95,
+          "file": "b2_s05_head.mp3",
+          "duration": 1.728
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s05_a",
+          "speaker": "narrator",
+          "text": "We tried a scrap fan to blow the dust and pull air from it.",
+          "speak": "We tried a scrap fan to blow the dust and pull air from it.",
+          "speed": 0.97,
+          "file": "b2_s05_a.mp3",
+          "duration": 3.312
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s05_b",
+          "speaker": "narrator",
+          "text": "The dust moved, but the air did not change.",
+          "speak": "The dust moved, but the air did not change.",
+          "speed": 0.97,
+          "file": "b2_s05_b.mp3",
+          "duration": 2.616
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s05_c",
+          "speaker": "narrator",
+          "text": "The method had three mistakes. We stopped the trial.",
+          "speak": "The method had three mistakes. We stopped the trial.",
+          "speed": 0.97,
+          "file": "b2_s05_c.mp3",
+          "duration": 2.928
+        }
+      ]
+    },
+    {
+      "id": "s06",
+      "kind": "scene",
+      "title": "Sol 1 · 16:40",
+      "img": "scene06.jpg",
+      "alt": "Sol 1 · 16:40",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s06_head\">Sol 1 · 16:40</p><div class=\"log-body\"><p><span data-clip=\"b2_s06_a\">The water-splitting rig is on: a scavenged solar panel, a jar of melted ice water, and scrap electrodes.</span> <span data-clip=\"b2_s06_b\">We have what we need, and the steps are in the right order now.</span> <span data-clip=\"b2_s06_c\">The current is rising. We are making a little oxygen.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s06_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · 16:40",
+          "speak": "Soul one. Sixteen forty.",
+          "speed": 0.95,
+          "file": "b2_s06_head.mp3",
+          "duration": 2.064
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s06_a",
+          "speaker": "narrator",
+          "text": "The water-splitting rig is on: a scavenged solar panel, a jar of melted ice water, and scrap electrodes.",
+          "speak": "The water-splitting rig is on: a scavenged solar panel, a jar of melted ice water, and scrap electrodes.",
+          "speed": 0.97,
+          "file": "b2_s06_a.mp3",
+          "duration": 5.64
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s06_b",
+          "speaker": "narrator",
+          "text": "We have what we need, and the steps are in the right order now.",
+          "speak": "We have what we need, and the steps are in the right order now.",
+          "speed": 0.97,
+          "file": "b2_s06_b.mp3",
+          "duration": 3.144
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s06_c",
+          "speaker": "narrator",
+          "text": "The current is rising. We are making a little oxygen.",
+          "speak": "The current is rising. We are making a little oxygen.",
+          "speed": 0.97,
+          "file": "b2_s06_c.mp3",
+          "duration": 2.952
+        }
+      ]
+    },
+    {
+      "id": "note3",
+      "kind": "note",
+      "title": "Field note · Splitting water",
+      "img": "note3_elec.jpg",
+      "alt": "Field note · Splitting water",
+      "hold_sec": 0.8,
+      "html": "<p class=\"log-head\">Field note · Splitting water</p><div class=\"log-body\"><p><span data-clip=\"b3_n3_a\">Electrolysis means using electricity to split water.</span> <span data-clip=\"b3_n3_b\">You get 2 parts hydrogen gas and 1 part oxygen — and that oxygen is what we breathe.</span></p></div>",
+      "clips": [
+        {
+          "id": "b3_n3_a",
+          "speaker": "narrator",
+          "text": "Electrolysis means using electricity to split water.",
+          "speak": "Electrolysis means using electricity to split water.",
+          "speed": 0.97,
+          "file": "b3_n3_a.mp3",
+          "duration": 3.264
+        },
+        {
+          "id": "sil_220",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_220.mp3",
+          "pause": true,
+          "duration": 0.22
+        },
+        {
+          "id": "b3_n3_b",
+          "speaker": "narrator",
+          "text": "You get 2 parts hydrogen gas and 1 part oxygen — and that oxygen is what we breathe.",
+          "speak": "You get two parts hydrogen gas and one part oxygen — and that oxygen is what we breathe.",
+          "speed": 0.97,
+          "file": "b3_n3_b.mp3",
+          "duration": 5.232
+        }
+      ]
+    },
+    {
+      "id": "s07",
+      "kind": "scene",
+      "title": "Sol 1 · 19:12",
+      "img": "scene07.jpg",
+      "alt": "Sol 1 · 19:12",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s07_head\">Sol 1 · 19:12</p><div class=\"log-body\"><p><span data-clip=\"b2_s07_a\">The habitat shell is closed.</span> <span data-clip=\"b2_s07_b\">We did a tap test with a brass bell: the first ring sounded dull, so we found a leak and patched it.</span> <span data-clip=\"b2_s07_c\">The second ring was clear. The seal holds.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s07_head",
+          "speaker": "narrator",
+          "text": "Sol 1 · 19:12",
+          "speak": "Soul one. Nineteen twelve.",
+          "speed": 0.95,
+          "file": "b2_s07_head.mp3",
+          "duration": 1.968
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s07_a",
+          "speaker": "narrator",
+          "text": "The habitat shell is closed.",
+          "speak": "The habitat shell is closed.",
+          "speed": 0.97,
+          "file": "b2_s07_a.mp3",
+          "duration": 2.064
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s07_b",
+          "speaker": "narrator",
+          "text": "We did a tap test with a brass bell: the first ring sounded dull, so we found a leak and patched it.",
+          "speak": "We did a tap test with a brass bell: the first ring sounded dull, so we found a leak and patched it.",
+          "speed": 0.97,
+          "file": "b2_s07_b.mp3",
+          "duration": 4.872
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s07_c",
+          "speaker": "narrator",
+          "text": "The second ring was clear. The seal holds.",
+          "speak": "The second ring was clear. The seal holds.",
+          "speed": 0.97,
+          "file": "b2_s07_c.mp3",
+          "duration": 2.448
+        }
+      ]
+    },
+    {
+      "id": "note4",
+      "kind": "note",
+      "title": "Field note · Seal the habitat",
+      "img": "note4_seal.jpg",
+      "alt": "Field note · Seal the habitat",
+      "hold_sec": 0.8,
+      "html": "<p class=\"log-head\">Field note · Seal the habitat</p><div class=\"log-body\"><p><span data-clip=\"b3_n4_a\">A habitat only works if the air stays sealed inside.</span> <span data-clip=\"b3_n4_b\">Tap the shell: a clear ring means it is sealed; a dull sound means there is a crack to find and fix.</span></p></div>",
+      "clips": [
+        {
+          "id": "b3_n4_a",
+          "speaker": "narrator",
+          "text": "A habitat only works if the air stays sealed inside.",
+          "speak": "A habitat only works if the air stays sealed inside.",
+          "speed": 0.97,
+          "file": "b3_n4_a.mp3",
+          "duration": 3.264
+        },
+        {
+          "id": "sil_220",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_220.mp3",
+          "pause": true,
+          "duration": 0.22
+        },
+        {
+          "id": "b3_n4_b",
+          "speaker": "narrator",
+          "text": "Tap the shell: a clear ring means it is sealed; a dull sound means there is a crack to find and fix.",
+          "speak": "Tap the shell: a clear ring means it is sealed; a dull sound means there is a crack to find and fix.",
+          "speed": 0.97,
+          "file": "b3_n4_b.mp3",
+          "duration": 5.352
+        }
+      ]
+    },
+    {
+      "id": "s08",
+      "kind": "scene",
+      "title": "Sol 2 · 05:03",
+      "img": "scene08.jpg",
+      "alt": "Sol 2 · 05:03",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s08_head\">Sol 2 · 05:03</p><div class=\"log-body\"><p><span data-clip=\"b2_s08_a\">The pressurized bubble — our sealed room with thicker air — is stable.</span> <span data-clip=\"b2_s08_b\">Helmets came off indoors. A sprout stands upright in protected soil.</span> <span data-clip=\"b2_s08_c\">Outside is still deadly. First breath of indoor air is logged.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s08_head",
+          "speaker": "narrator",
+          "text": "Sol 2 · 05:03",
+          "speak": "Soul two. Zero five oh three.",
+          "speed": 0.95,
+          "file": "b2_s08_head.mp3",
+          "duration": 1.92
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s08_a",
+          "speaker": "narrator",
+          "text": "The pressurized bubble — our sealed room with thicker air — is stable.",
+          "speak": "The pressurized bubble — our sealed room with thicker air — is stable.",
+          "speed": 0.97,
+          "file": "b2_s08_a.mp3",
+          "duration": 3.36
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s08_b",
+          "speaker": "narrator",
+          "text": "Helmets came off indoors. A sprout stands upright in protected soil.",
+          "speak": "Helmets came off indoors. A sprout stands upright in protected soil.",
+          "speed": 0.97,
+          "file": "b2_s08_b.mp3",
+          "duration": 4.152
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s08_c",
+          "speaker": "narrator",
+          "text": "Outside is still deadly. First breath of indoor air is logged.",
+          "speak": "Outside is still deadly. First breath of indoor air is logged.",
+          "speed": 0.97,
+          "file": "b2_s08_c.mp3",
+          "duration": 3.504
+        }
+      ]
+    },
+    {
+      "id": "s09",
+      "kind": "scene",
+      "title": "Sol 2 · 18:55",
+      "img": "scene09.jpg",
+      "alt": "Sol 2 · 18:55",
+      "hold_sec": 1.0,
+      "html": "<p class=\"log-head\" data-clip=\"b2_s09_head\">Sol 2 · 18:55</p><div class=\"log-body\"><p><span data-clip=\"b2_s09_a\">At dusk the sky looks blue near the sun and peach farther away, because of fine dust.</span> <span data-clip=\"b2_s09_b\">A glass-domed canopy is noted for later sols.</span> <span data-clip=\"b2_s09_c\">A dust bank is rising on the horizon. Heat is still unsolved.</span></p></div>",
+      "clips": [
+        {
+          "id": "b2_s09_head",
+          "speaker": "narrator",
+          "text": "Sol 2 · 18:55",
+          "speak": "Soul two. Eighteen fifty-five.",
+          "speed": 0.95,
+          "file": "b2_s09_head.mp3",
+          "duration": 1.776
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s09_a",
+          "speaker": "narrator",
+          "text": "At dusk the sky looks blue near the sun and peach farther away, because of fine dust.",
+          "speak": "At dusk the sky looks blue near the sun and peach farther away, because of fine dust.",
+          "speed": 0.97,
+          "file": "b2_s09_a.mp3",
+          "duration": 4.536
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s09_b",
+          "speaker": "narrator",
+          "text": "A glass-domed canopy is noted for later sols.",
+          "speak": "A glass-domed canopy is noted for later souls.",
+          "speed": 0.97,
+          "file": "b2_s09_b.mp3",
+          "duration": 2.808
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "b2_s09_c",
+          "speaker": "narrator",
+          "text": "A dust bank is rising on the horizon. Heat is still unsolved.",
+          "speak": "A dust bank is rising on the horizon. Heat is still unsolved.",
+          "speed": 0.97,
+          "file": "b2_s09_c.mp3",
+          "duration": 3.768
+        }
+      ]
+    },
+    {
+      "id": "end",
+      "kind": "end",
+      "title": "End of log",
+      "img": null,
+      "hold_sec": 0.6,
+      "html": "<p class=\"log-head\">End of log</p><div class=\"log-body\"><p><span data-clip=\"b2_end\">Survey complete for air. Open the problem set, or pick another mission.</span></p><div class=\"end-actions\"><a class=\"btn primary\" href=\"solve/index.html\">Solve it</a><a class=\"btn ghost\" href=\"../missions.html\">Explore a mission</a></div></div>",
+      "clips": [
+        {
+          "id": "b2_end",
+          "speaker": "narrator",
+          "text": "Survey complete for air. Open the problem set, or pick another mission.",
+          "speak": "Survey complete for air. Open the problem set, or pick another mission.",
+          "speed": 0.97,
+          "file": "b2_end.mp3",
+          "duration": 3.792
+        }
+      ]
+    }
+  ],
+  "removed_repeats": [
+    "Cover no longer uses “Kepler and Comet are sent ahead… The pod landed. The manual didn’t. Six hours of oxygen.” (overlap with home/missions).",
+    "Removed all quoted ant dialogue from every scene.",
+    "Science intro subtitle “No jokes — just what the colony needs to know” → “What Mission 1 teaches.”",
+    "End no longer uses “Air is solved / Heat is not…” (missions card uses that for Mission 2).",
+    "Dropped “Someday, a forest under glass” / forest-under-glass phrasing from scene 9 (home someday strip).",
+    "Gravity page states measurement only; home keeps the approved workload line unchanged."
+  ],
+  "engine": "kokoro-onnx",
+  "note": "book5: hooky short intro + theme music; Sol=soul TTS; centered layout; auto-read"
+}

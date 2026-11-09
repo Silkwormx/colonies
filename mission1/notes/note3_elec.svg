@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="340" viewBox="0 0 900 340">
+  <rect width="900" height="340" fill="#f3e6d0"/>
+  <rect x="280" y="20" width="340" height="250" rx="16" fill="#e8f2f8" stroke="#5a3a22" stroke-width="3"/>
+  <rect x="280" y="20" width="340" height="32" rx="8" fill="#d4c2a4" stroke="#5a3a22" stroke-width="2"/>
+  <rect x="292" y="110" width="316" height="148" fill="#7eb6e8" opacity="0.45"/>
+  <text x="450" y="195" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#2a4a6a">H₂O</text>
+  <rect x="350" y="60" width="20" height="180" fill="#8a8a8a" stroke="#5a3a22" stroke-width="2"/>
+  <rect x="530" y="60" width="20" height="180" fill="#8a8a8a" stroke="#5a3a22" stroke-width="2"/>
+  <g fill="#6a9ec8" opacity="0.9">
+    <circle cx="360" cy="130" r="7"/><circle cx="345" cy="100" r="5"/><circle cx="365" cy="80" r="6"/>
+  </g>
+  <g fill="#5a8a5a" opacity="0.9">
+    <circle cx="540" cy="140" r="8"/><circle cx="555" cy="105" r="6"/><circle cx="535" cy="78" r="5"/>
+  </g>
+  <text x="360" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#2a4a6a">2 H₂</text>
+  <text x="540" y="300" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#2a5a2a">1 O₂</text>
+  <rect x="90" y="130" width="100" height="48" rx="6" fill="none" stroke="#5a3a22" stroke-width="3"/>
+  <text x="140" y="160" text-anchor="middle" font-family="Georgia, serif" font-size="20" fill="#5a3a22">power</text>
+  <line x1="190" y1="154" x2="350" y2="100" stroke="#5a3a22" stroke-width="2"/>
+  <line x1="190" y1="154" x2="530" y2="100" stroke="#5a3a22" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="450" y="330" text-anchor="middle" font-family="Georgia, serif" font-size="17" fill="#7a5535">electricity splits water → breathable oxygen</text>
+</svg>

@@ -1,0 +1,6 @@
+{
+  "wer_soft": 10.88,
+  "wer_raw_prior": 11.41,
+  "n": 57,
+  "note": "Head Sol\u2192Saul/Saw ASR noise; soft-normalize sol/saw/saul"
+}

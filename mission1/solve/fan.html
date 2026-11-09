@@ -58,10 +58,26 @@
   <header class="game-head">
     <div class="eyebrow">Mission 1 &middot; Solve it &middot; <span id="game-num"></span></div>
     <h1>Build the Fan</h1>
-    <p class="setup">The colony’s first invention, assembled from parts of the pod that were not consulted.</p>
-    <p class="how"><b>How to play</b>Tap a part, or drag it onto the workbench, in the order it should go on. Then switch it on and find out what it is actually for.</p>
+    <p class="setup">The colony’s first machine, built from scrap.</p>
+    <div class="how" id="how-box">
+      <div class="how-top">
+        <b>How to play</b>
+        <button type="button" class="btn-read" id="read-instr" aria-pressed="false">
+          <svg class="ico-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          <svg class="ico-stop" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="6" width="12" height="12" rx="1" fill="currentColor"/></svg>
+          <span class="btn-read-label">Read the instructions</span>
+        </button>
+      </div>
+      <div class="how-text" id="how-text"><p class="instr-line" data-clip="fan_i1">Assemble the fan from the parts on the tray.</p><p class="instr-line" data-clip="fan_i2">Tap a part, or drag it onto the workbench, in order: base, then motor, blades, guard, and power cable last.</p><p class="instr-line" data-clip="fan_i3">When it is built, switch it on and answer what it is actually for.</p></div>
+    </div>
+    <div class="help-row">
+      <button type="button" class="btn ghost hint-btn" id="hint-btn">Hint</button>
+      <div class="hint-panel" id="hint-panel" hidden role="status" aria-live="polite"></div>
+    </div>
     <div class="solved-flag" id="solved-flag" hidden></div>
   </header>
+  <div class="goal-panel" id="goal-panel" hidden></div>
+  <div class="happening-panel" id="happening-panel" hidden></div>
   <section class="stage" id="stage">
     <div class="status"><span id="round-label"><strong>Round 1 of 3</strong> · Assemble</span><span>Parts on: <strong id="placed">0</strong> of 5</span></div>
     <div class="bench" id="bench" aria-label="Workbench">
@@ -95,6 +111,7 @@
   <div id="done" hidden></div>
   <nav class="foot-links"><a class="pill" href="index.html">All five problems</a><a class="pill" href="../index.html">Back to the story</a></nav>
 </main>
+<audio id="help-audio" playsinline webkit-playsinline preload="auto"></audio>
 <script src="solve.js"></script>
 <script src="fan.js"></script>
 </body>

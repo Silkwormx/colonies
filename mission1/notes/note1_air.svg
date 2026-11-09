@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="360" viewBox="0 0 900 360">
+  <rect width="900" height="360" fill="#f3e6d0"/>
+  <rect x="90" y="30" width="240" height="280" rx="12" fill="none" stroke="#5a3a22" stroke-width="3"/>
+  <rect x="100" y="120" width="220" height="180" fill="#7eb6e8" opacity="0.55"/>
+  <rect x="100" y="40" width="220" height="80" fill="#c8e6c0" opacity="0.7"/>
+  <text x="210" y="90" text-anchor="middle" font-family="Georgia, serif" font-size="24" fill="#2f4a2a">O₂ + N₂</text>
+  <text x="210" y="240" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#5a3a22">Earth</text>
+  <text x="210" y="275" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#7a5535">thick air</text>
+  <rect x="570" y="30" width="240" height="280" rx="12" fill="none" stroke="#5a3a22" stroke-width="3"/>
+  <rect x="580" y="270" width="220" height="30" fill="#c47a4a" opacity="0.75"/>
+  <text x="690" y="230" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#6a3a22">mostly CO₂</text>
+  <text x="690" y="325" text-anchor="middle" font-family="Georgia, serif" font-size="28" fill="#5a3a22">Mars</text>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#5a3a22"/></marker></defs>
+  <path d="M360 160 H540" stroke="#5a3a22" stroke-width="3" fill="none" marker-end="url(#arrow)"/>
+  <text x="450" y="145" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#7a5535">vs</text>
+  <text x="690" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="16" fill="#7a5535">&lt; 1% as thick</text>
+</svg>
