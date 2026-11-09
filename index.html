@@ -640,21 +640,18 @@ html, body { height: 100%; }
 body.home { min-height: 0; height: 100dvh; overflow: hidden; }
 .hero { height: 100dvh; min-height: 0; }
 .hero-spacer { min-height: 0 !important; }
-.hero-actions { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-  padding: 0 1.25rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); width: 100%; max-width: 520px; margin: 0 auto; }
-.hero-actions .hero-cta { margin: 0; }
-.hero-actions #missionStartBtn { min-height: 54px; padding: 0.95rem 2rem; font-size: 1.05rem; width: min(100%, 320px); }
-.hero-actions #aboutBtn { min-height: 44px; padding: 0.5rem 1.2rem; font-size: 0.88rem; }
-.hero-actions #watchIntroBtn { min-height: 46px; padding: 0.6rem 1.3rem; font-size: 0.92rem; color: #f3e2c4; width: min(100%, 320px); }
-.hero-links { display: flex; gap: 0.55rem; justify-content: center; flex-wrap: wrap; width: 100%; }
-.hero-links .hero-cta { min-height: 44px; padding: 0.5rem 1.05rem; font-size: 0.85rem; }
-.hero-actions .hero-cta-secondary { background: rgba(20,12,8,0.62); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.hero-actions { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+  margin: 1.05rem auto 0; max-width: 560px; }
+.hero-actions .hero-cta { margin: 0; min-height: 44px; padding: 0.5rem 1.05rem; font-size: 0.86rem; font-weight: 600;
+  letter-spacing: 0.03em; gap: 0.45rem; color: #f3e2c4; background: rgba(20,12,8,0.6); border: 1px solid rgba(232,160,90,0.5);
+  box-shadow: none; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.hero-actions #watchIntroBtn { min-height: 44px; padding: 0.5rem 1.05rem; font-size: 0.86rem; }
+.hero-actions .cta-play { border-top-width: 5px; border-bottom-width: 5px; border-left-width: 9px; margin-right: 0; }
 @media (max-height: 700px) {
   .hero-copy { padding-top: 1.1rem !important; }
   .hero-copy h1 { font-size: clamp(2.3rem, 11vw, 3rem) !important; }
   .eyebrow { margin-bottom: 0.5rem; }
-  .hero-actions { gap: 0.5rem; padding-bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px)); }
-  .hero-actions #missionStartBtn { min-height: 50px; padding: 0.8rem 1.6rem; }
+  .hero-actions { margin-top: 0.8rem; }
 }
 </style>
 </head>
@@ -670,13 +667,13 @@ body.home { min-height: 0; height: 100dvh; overflow: hidden; }
     <div class="eyebrow">Building a new home on another world</div>
     <h1>Colonies</h1>
     <p class="premise"><span class="pl">Two ants. One empty planet. Two years to make it a home.</span> <span class="pl">They’re going to need all the help they can get.</span></p>
+    <nav class="hero-actions" aria-label="Start here">
+      <a class="hero-cta hero-cta-secondary" id="aboutBtn" href="about.html">About Colonies</a>
+      <button type="button" class="hero-cta hero-cta-secondary" id="watchIntroBtn"><span class="cta-play" aria-hidden="true"></span>Watch the intro</button>
+      <a class="hero-cta hero-cta-secondary" id="missionStartBtn" href="missions.html">Begin the adventure</a>
+    </nav>
   </div>
   <div class="hero-spacer" aria-hidden="true"></div>
-  <nav class="hero-actions" aria-label="Start here">
-    <a class="hero-cta" id="missionStartBtn" href="missions.html">Begin the adventure</a>
-    <button type="button" class="hero-cta hero-cta-secondary" id="watchIntroBtn"><span class="cta-play" aria-hidden="true"></span>Watch the intro</button>
-    <a class="hero-cta hero-cta-secondary" id="aboutBtn" href="about.html">About Colonies</a>
-  </nav>
 </header>
 
 
