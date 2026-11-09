@@ -644,6 +644,7 @@ body.home { min-height: 0; height: 100dvh; overflow: hidden; }
   padding: 0 1.25rem calc(1.4rem + env(safe-area-inset-bottom, 0px)); width: 100%; max-width: 520px; margin: 0 auto; }
 .hero-actions .hero-cta { margin: 0; }
 .hero-actions #missionStartBtn { min-height: 54px; padding: 0.95rem 2rem; font-size: 1.05rem; width: min(100%, 320px); }
+.hero-actions #aboutBtn { min-height: 44px; padding: 0.5rem 1.2rem; font-size: 0.88rem; }
 .hero-actions #watchIntroBtn { min-height: 46px; padding: 0.6rem 1.3rem; font-size: 0.92rem; color: #f3e2c4; width: min(100%, 320px); }
 .hero-links { display: flex; gap: 0.55rem; justify-content: center; flex-wrap: wrap; width: 100%; }
 .hero-links .hero-cta { min-height: 44px; padding: 0.5rem 1.05rem; font-size: 0.85rem; }
@@ -674,10 +675,7 @@ body.home { min-height: 0; height: 100dvh; overflow: hidden; }
   <nav class="hero-actions" aria-label="Start here">
     <a class="hero-cta" id="missionStartBtn" href="missions.html">Begin the adventure</a>
     <button type="button" class="hero-cta hero-cta-secondary" id="watchIntroBtn"><span class="cta-play" aria-hidden="true"></span>Watch the intro</button>
-    <div class="hero-links">
-      <a class="hero-cta hero-cta-secondary" href="about.html">About</a>
-      <a class="hero-cta hero-cta-secondary" href="support.html">Support the next mission</a>
-    </div>
+    <a class="hero-cta hero-cta-secondary" id="aboutBtn" href="about.html">About Colonies</a>
   </nav>
 </header>
 

@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#1a0f0a" />
-<meta name="description" content="Why Colonies exists, and the two ants at the heart of the story." />
-<title>About · Colonies</title>
+<meta name="description" content="About Colonies: why it exists, the crew, and how to follow along." />
+<title>About Colonies</title>
 <link rel="manifest" href="manifest.json" />
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -215,6 +215,7 @@ section.block li b { color: var(--fg); font-weight: 600; }
   letter-spacing: 0.04em;
 }
 
+
 .crew-card { display: grid; gap: 1.25rem; grid-template-columns: 1fr; margin-top: 2.15rem;
   background: radial-gradient(ellipse at 15% 0%, rgba(232,160,90,0.12), transparent 55%), var(--bg-elev);
   border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 1.35rem; box-shadow: var(--shadow); }
@@ -235,12 +236,29 @@ section.block li b { color: var(--fg); font-weight: 600; }
 .foot-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.35rem 1.1rem; margin-bottom: 0.5rem; }
 .foot-nav a { color: var(--muted); text-decoration: none; min-height: 32px; display: inline-flex; align-items: center; }
 .foot-nav a:hover, .foot-nav a:focus-visible { color: var(--accent); }
+
+.fine { margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--line); }
+.fine h2 { font-family: Fraunces, Georgia, serif; font-size: 1rem; font-weight: 600; color: var(--muted); margin-bottom: 0.4rem; }
+.fine h3 { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; color: var(--soft); margin: 1.2rem 0 0.35rem; }
+.fine p { color: var(--soft); font-size: 0.88rem; line-height: 1.5; }
+.fine .ca-pending { font-size: 0.88rem; color: var(--soft); margin-top: 0; }
+.fine .ca-box { box-shadow: none; padding: 0.75rem 0.85rem; margin-top: 0.6rem; background: rgba(0,0,0,0.18); }
+.fine .ca-label { font-size: 0.64rem; color: var(--soft); margin-bottom: 0.4rem; }
+.fine .ca-field { font-size: 0.8rem; padding: 0.55rem 0.7rem; }
+.fine .ca-copy { min-height: 40px; min-width: 64px; font-size: 0.76rem; background: transparent; color: var(--muted); border-color: rgba(232,160,90,0.35); }
+.fine .ca-copy:disabled { background: transparent; }
+.fine .disclaimer { margin-top: 1.1rem; font-size: 0.82rem; padding: 0.85rem 1rem; }
 </style>
 </head>
 <body>
 <div class="topbar">
   <a class="back" href="index.html">← Home</a>
   <div class="brand">Colonies</div>
+</div>
+
+<div class="hero-band">
+  <img src="hero-someday.jpg" alt="A banyan tree growing inside a glass dome on Mars, the home the colony is building" />
+  <div class="veil"><h1>About Colonies</h1></div>
 </div>
 
 <main class="wrap">
@@ -251,6 +269,14 @@ section.block li b { color: var(--fg); font-weight: 600; }
     <p>Colonies turns real Mars science into a story worth following. Two ants try to make a home on an empty planet, one problem at a time. You read their story, then solve the same problem they’re facing. It’s fun first, and you learn without noticing.</p>
   </section>
 
+  <section class="block" aria-labelledby="problem-h">
+    <h2 id="problem-h">The problem</h2>
+    <p>Most people are curious about Mars and space, but the ways to learn about it tend to be either dry or shallow. Textbooks and articles feel like homework. Most space shows and games are just for fun and don’t explain how anything would actually work.</p>
+  </section>
+  <section class="block" aria-labelledby="fits-h">
+    <h2 id="fits-h">Where Colonies fits</h2>
+    <p>Colonies sits in the middle. It’s a story you follow because you care about two ants. Along the way, you find out how you’d really make air, stay warm, block radiation, grow food and survive a dust storm on Mars, and you solve each problem yourself in a quick hands-on game. It never feels like learning, but you come away understanding something real.</p>
+  </section>
   <section class="crew-card" aria-label="Kepler and Comet">
     <div class="crew-faces">
       <figure class="crew-person">
@@ -268,12 +294,122 @@ section.block li b { color: var(--fg); font-weight: 600; }
     </div>
   </section>
 
+  <section class="block" aria-labelledby="colony-h" style="margin-top:2.15rem">
+    <h2 id="colony-h">The colony</h2>
+    <p>Ants never build alone. Every tunnel, every chamber, every bridge is the work of the whole nest.</p>
+    <p><b>Builds alongside.</b> Share fan art, ideas and theories about the story. Favorites may get a shout-out in a future mission.</p>
+  </section>
+
+  <section class="block" aria-labelledby="join-h">
+    <h2 id="join-h">Join the colony</h2>
+    <p>The Colonies page on X is coming soon. That’s where mission news, behind-the-scenes art and colony updates will go.</p>
+    <div class="x-card" aria-label="Colonies on X — coming soon">
+      <div class="x-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.727-8.839L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>
+      </div>
+      <div class="x-body">
+        <div class="x-title">Colonies on X</div>
+        <div class="x-note">Mission news and colony updates</div>
+      </div>
+      <span class="pill-soon" aria-disabled="true">Coming soon</span>
+    </div>
+  </section>
+
   <div class="next-links">
-    <a class="primary" href="missions.html">Missions</a>
-    <a class="ghost" href="support.html">Support the next mission</a>
+    <a class="primary" href="missions.html">Begin the adventure</a>
   </div>
+
+  <section class="fine" aria-labelledby="fuels-h">
+    <h2 id="fuels-h">Support fuels the story</h2>
+    <p>Support for ANTS goes toward the people who make Colonies: the artists, writers, animators and voice talent behind every mission. That means more illustrated missions, new animated episodes, a bigger Mars world, and new seasons.</p>
+    <h3 id="about-h">About ANTS</h3>
+    <p>ANTS is the community side of Colonies.</p>
+    <p id="antsPending" class="ca-pending">ANTS isn’t live yet. When it launches, the chain and contract address will be posted here.</p>
+    <div class="ca-box" id="caBox">
+      <div class="ca-label">Contract address</div>
+      <div class="ca-chain" id="caChain"></div>
+      <div class="ca-row">
+        <div class="ca-field empty" id="caField" title="">Not live yet</div>
+        <button type="button" class="ca-copy" id="caCopy" disabled>Copy</button>
+      </div>
+    </div>
+  <aside class="disclaimer">
+    <span class="label">Please read</span>
+    ANTS is a community token, not an investment. It gives no right to profits, and it can lose all value. Nothing here is financial or legal advice.
+  </aside>
+  </section>
 </main>
 
-<footer class="foot"><nav class="foot-nav" aria-label="Site"><a href="index.html">Home</a><a href="missions.html">Missions</a><a href="about.html">About</a><a href="support.html">Support the next mission</a></nav>Colonies · six missions</footer>
+<footer class="foot"><nav class="foot-nav" aria-label="Site"><a href="index.html">Home</a><a href="missions.html">Missions</a><a href="about.html">About Colonies</a></nav>Colonies · six missions</footer>
+
+<script>
+(function () {
+  const ANTS_CA = '';
+  const ANTS_CHAIN = '';
+
+  const field = document.getElementById('caField');
+  const copyBtn = document.getElementById('caCopy');
+  const chainEl = document.getElementById('caChain');
+  const pending = document.getElementById('antsPending');
+  const ca = (ANTS_CA || '').trim();
+  const chain = (ANTS_CHAIN || '').trim();
+
+  function setCopied() {
+    const prev = copyBtn.textContent;
+    copyBtn.textContent = 'Copied';
+    window.clearTimeout(copyBtn._t);
+    copyBtn._t = window.setTimeout(() => { copyBtn.textContent = prev || 'Copy'; }, 2000);
+  }
+
+  async function copyText(text) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (e) {}
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  if (ca) {
+    field.textContent = ca;
+    field.classList.remove('empty');
+    field.title = ca;
+    copyBtn.disabled = false;
+    if (pending) pending.hidden = true;
+    if (chain) {
+      chainEl.textContent = chain;
+      chainEl.classList.add('show');
+    }
+    copyBtn.addEventListener('click', async () => {
+      const ok = await copyText(ca);
+      if (ok) setCopied();
+    });
+  } else {
+    field.textContent = 'Not live yet';
+    field.classList.add('empty');
+    field.title = '';
+    copyBtn.disabled = true;
+    if (pending) pending.hidden = false;
+    chainEl.classList.remove('show');
+    chainEl.textContent = '';
+  }
+
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
+</script>
 </body>
 </html>
