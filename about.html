@@ -51,7 +51,7 @@ a { color: var(--accent); }
   border-bottom: 1px solid var(--line);
   background: #1a100c;
 }
-.hero-band img { width: 100%; height: 100%; object-fit: cover; object-position: center 58%; filter: brightness(0.78); }
+.hero-band img { width: 100%; height: 100%; object-fit: cover; object-position: center 62%; filter: brightness(0.78); }
 .hero-band .veil {
   position: absolute; inset: 0;
   background: linear-gradient(180deg, rgba(20,12,8,0.25) 0%, transparent 35%, rgba(20,12,8,0.88) 100%);
@@ -232,7 +232,7 @@ a.x-card:hover, a.x-card:focus-visible {
 }
 
 
-.crew-card { display: grid; gap: 1.25rem; grid-template-columns: 1fr; margin-top: 2.15rem;
+.crew-card { display: grid; gap: 1.25rem; grid-template-columns: 1fr; margin: 0 0 2.15rem;
   background: radial-gradient(ellipse at 15% 0%, rgba(232,160,90,0.12), transparent 55%), var(--bg-elev);
   border: 1px solid var(--line); border-radius: calc(var(--radius) + 4px); padding: 1.35rem; box-shadow: var(--shadow); }
 @media (min-width: 640px) { .crew-card { grid-template-columns: 220px 1fr; align-items: center; padding: 1.5rem 1.6rem; } }
@@ -273,7 +273,7 @@ a.x-card:hover, a.x-card:focus-visible {
 </div>
 
 <div class="hero-band">
-  <img src="hero-about.jpg" alt="Two ants in glass helmets beside their landing pod on the dusty surface of Mars" />
+  <img src="hero-about.jpg" alt="Kepler carefully probes a Martian rock while Comet, with goggles and a notebook, points excitedly beside their landing pod" />
   <div class="veil"><h1>About Colonies</h1></div>
 </div>
 
@@ -282,19 +282,12 @@ a.x-card:hover, a.x-card:focus-visible {
     <h2 id="problem-h">The problem</h2>
     <p>Humans are already planning to live on Mars, yet most of us have no idea how anyone would breathe, stay warm or grow food there. The science is real and fascinating, but it usually comes buried in textbooks and dense articles, so curiosity fades before the learning even starts.</p>
   </section>
-  <section class="block" aria-labelledby="how-h">
-    <h2 id="how-h">How Colonies works</h2>
-    <p>Two ants land on an empty planet with no air, no water and no shelter. Every mission is one real problem they have to solve.</p>
-    <ul>
-      <li><b>Read the story.</b> An illustrated chapter, with optional read-aloud, shows Kepler and Comet running into the problem.</li>
-      <li><b>Solve it yourself.</b> Quick hands-on games put the scientific method into practice: make a guess, test it, see what happens and try again.</li>
-      <li><b>Build toward the dome.</b> Season 1’s six missions take the colony from the first breath of air to a glass dome with a forest inside. Mission 1 is open now.</li>
-    </ul>
+
+  <section class="block" aria-labelledby="idea-h">
+    <h2 id="idea-h">Colonies</h2>
+    <p>Colonies is a way into that science without the textbook wall. Each mission follows two ants facing one real survival problem on Mars—air, warmth, water, food or power—and invites you to figure it out with them.</p>
   </section>
-  <section class="block" aria-labelledby="for-h">
-    <h2 id="for-h">Who it’s for</h2>
-    <p>Colonies is for anyone who has ever looked up at Mars and wondered how we’d actually live there. You don’t need a science background, just curiosity and a willingness to try, fail and try again.</p>
-  </section>
+
   <section class="crew-card" aria-label="Kepler and Comet">
     <div class="crew-faces">
       <figure class="crew-person">
@@ -312,14 +305,29 @@ a.x-card:hover, a.x-card:focus-visible {
     </div>
   </section>
 
-  <section class="block" aria-labelledby="maker-h" style="margin-top:2.15rem">
-    <h2 id="maker-h">Who made it</h2>
-    <p>Colonies is made by a teacher with 15 years in the classroom who knows people learn best when the learning is fun. Have questions? Contact the creator at <a href="https://x.com/Silkwormx" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">@Silkwormx</a>.</p>
+  <section class="block" aria-labelledby="how-h">
+    <h2 id="how-h">How Colonies works</h2>
+    <p>Kepler and Comet land on an empty planet with no air, no water and no shelter. Every mission is one real problem they have to solve.</p>
+    <ul>
+      <li><b>Read the story.</b> An illustrated chapter, with optional read-aloud, shows Kepler and Comet running into the problem.</li>
+      <li><b>Solve it yourself.</b> Quick hands-on games put the scientific method into practice: make a guess, test it and see what you learn.</li>
+      <li><b>Build toward the dome.</b> Season 1’s six missions take the colony from the first breath of air to a glass dome with a forest inside. Mission 1 is open now.</li>
+    </ul>
   </section>
 
-  <section class="block" aria-labelledby="join-h" style="margin-top:2.15rem">
+  <section class="block" aria-labelledby="for-h">
+    <h2 id="for-h">Who it’s for</h2>
+    <p>Colonies is for anyone who has ever looked up at Mars and wondered how we’d actually live there. You don’t need a science background, just curiosity.</p>
+  </section>
+
+  <section class="block" aria-labelledby="maker-h">
+    <h2 id="maker-h">Who made it</h2>
+    <p>Colonies is made by a teacher who knows people learn best when the learning is fun. Have questions? Contact the creator at <a href="https://x.com/Silkwormx" target="_blank" rel="noopener noreferrer" style="text-decoration:underline">@Silkwormx</a>.</p>
+  </section>
+
+  <section class="block" aria-labelledby="join-h">
     <h2 id="join-h">Join the colony</h2>
-    <p>One ant can’t build a colony on Mars, but a whole nest might. Follow Kepler and Comet on X for Mars memes, sneak peeks at new art and first word when the next mission lands. Bring your own theories, because the ants could use the help.</p>
+    <p>Real scientists are still working out how to live on Mars, and so are Kepler and Comet. Follow along on X for memes, new art and first word when the next mission lands.</p>
     <a class="x-card" href="https://x.com/coloniesHQ" target="_blank" rel="noopener noreferrer" aria-label="Colonies on X, @coloniesHQ">
       <div class="x-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.74l7.727-8.839L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/></svg>

@@ -45,7 +45,8 @@
   }
 
   var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#2f4a3a" stroke="#8fc0a0" stroke-width="1.2"/><path d="M7 12.5l3.2 3.2L17.2 8.6" fill="none" stroke="#e9f3ea" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-  var SPEAKER_SVG = "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9H4z\" fill=\"currentColor\"/><path d=\"M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>";
+  var SPEAKER_SVG = "<svg class=\"ico-spk\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9H4z\" fill=\"currentColor\"/><path d=\"M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>";
+  var SPEAKER_TOGGLE_SVG = SPEAKER_SVG + '<svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 
   function finish(opts) {
     var id = document.body.getAttribute('data-game');
@@ -84,9 +85,6 @@
   }
 
   function initHeader() {
-    // Remove any leftover global audio toggle from older cached pages
-    var old = document.getElementById('read-instr');
-    if (old) old.remove();
     var id = document.body.getAttribute('data-game');
     if (!id) return;
     var st = document.getElementById('solved-flag');
@@ -108,7 +106,12 @@
     happening: {},
     audio: null,
     ready: false,
-    playGen: 0
+    playGen: 0,
+    muted: (function () { try { return localStorage.getItem('colonies_audio_off') === '1'; } catch (e) { return false; } })(),
+    autoSpoken: {},
+    openBooted: false,
+    pendingAuto: null,
+    currentBox: null
   };
 
   function audioEl() {
@@ -136,6 +139,7 @@
     btn.classList.toggle('is-playing', !!on);
     btn.setAttribute('aria-label', on ? 'Stop audio' : 'Play audio');
     btn.title = on ? 'Stop' : 'Play';
+    if (btn.id === 'read-instr') syncAudioBtn(btn);
   }
 
   function stopAll() {
@@ -373,14 +377,12 @@
     setHintStep(opts.step || Object.keys(help.hintsMap)[0] || 'default');
     bindAudioEvents();
 
-    // Strip any old global toggle
-    var old = document.getElementById('read-instr');
-    if (old) old.remove();
-
+    ensureAudioChrome();
     fetch('audio/manifest.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (man) {
       (man.clips || []).forEach(function (c) { help.byId[c.id] = c; });
       help.ready = true;
       installHowAudio();
+      bootAutoRead(opts);
     }).catch(function () {});
 
     var hintBtn = document.getElementById('hint-btn');
@@ -390,7 +392,120 @@
     }
     if (opts.goal) setGoal(opts.goal, { auto: false });
     if (opts.happeningStep) setHappening(opts.happeningStep);
-    // No auto-play. Audio only when a box speaker is tapped.
+  }
+
+  function setAudioOff(off) {
+    help.muted = !!off;
+    try { localStorage.setItem('colonies_audio_off', off ? '1' : '0'); } catch (e) {}
+    syncAudioBtn(document.getElementById('read-instr'));
+    if (off) stopAll();
+  }
+
+  function syncAudioBtn(btn) {
+    if (!btn) return;
+    btn.classList.toggle('is-off', !!help.muted);
+    btn.setAttribute('aria-pressed', help.playing && !help.muted ? 'true' : 'false');
+    btn.setAttribute('aria-label', help.muted ? 'Audio off. Tap to turn on' : (help.playing ? 'Audio on, reading. Tap to stop' : 'Audio on. Read aloud'));
+    btn.title = help.muted ? 'Audio off' : 'Read aloud';
+  }
+
+  function ensureAudioChrome() {
+    var btn = document.getElementById('read-instr');
+    if (btn && btn._coloniesBound) { syncAudioBtn(btn); return btn; }
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'read-instr';
+      var nav = document.querySelector('.topbar .topnav') || document.querySelector('.topbar');
+      (nav || document.body).appendChild(btn);
+    }
+    btn.className = 'btn-audio';
+    btn.innerHTML = (typeof SPEAKER_TOGGLE_SVG !== 'undefined' ? SPEAKER_TOGGLE_SVG : SPEAKER_SVG);
+    if (!btn._coloniesBound) {
+      btn._coloniesBound = true;
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        hideTapPrompt();
+        if (help.muted) {
+          setAudioOff(false);
+          var ids = (help.pendingAuto && help.pendingAuto.length) ? help.pendingAuto.slice() : howBoxIds();
+          help.pendingAuto = null;
+          if (ids.length && help.ready) playQueue(ids, btn);
+          return;
+        }
+        if (help.playing) { stopAll(); setAudioOff(true); return; }
+        setAudioOff(true);
+      });
+    }
+    syncAudioBtn(btn);
+    return btn;
+  }
+
+  function hideTapPrompt() {
+    var b = document.getElementById('read-instr');
+    if (b) b.classList.remove('needs-tap');
+  }
+
+  function showTapPrompt(ids) {
+    var b = ensureAudioChrome();
+    help.pendingAuto = (ids || []).slice();
+    b.classList.add('needs-tap');
+    var kick = function (e) {
+      if (e.target && e.target.closest && e.target.closest('#read-instr')) return;
+      document.removeEventListener('pointerdown', kick, true);
+      document.removeEventListener('keydown', kick, true);
+      if (help.muted) return;
+      hideTapPrompt();
+      var ids3 = (help.pendingAuto && help.pendingAuto.length) ? help.pendingAuto.slice() : howBoxIds();
+      help.pendingAuto = null;
+      if (ids3.length) playQueue(ids3, b);
+    };
+    document.addEventListener('pointerdown', kick, true);
+    document.addEventListener('keydown', kick, true);
+  }
+
+  function tryAutoPlay(ids, reason) {
+    if (help.muted) return;
+    ids = (ids || []).filter(function (id) { return id && help.byId[id]; });
+    if (!ids.length) return;
+    ensureAudioChrome();
+    stopAll();
+    help.queue = ids.map(function (id) { return help.byId[id]; });
+    help.playing = true;
+    help.activeBtn = document.getElementById('read-instr');
+    if (help.activeBtn) setBtnPlaying(help.activeBtn, true);
+    syncAudioBtn(help.activeBtn);
+    var clip = help.queue.shift();
+    if (!clip) { stopAll(); return; }
+    clearHighlight();
+    document.querySelectorAll('[data-clip="' + clip.id + '"]').forEach(function (el) {
+      if (el.classList.contains('box-audio') || el.classList.contains('btn-speak')) return;
+      el.classList.add('is-reading');
+    });
+    var a = audioEl();
+    a.src = 'audio/' + clip.file;
+    var p = a.play();
+    if (p && p.catch) {
+      p.catch(function (err) {
+        if (err && err.name === 'AbortError') return;
+        help.queue = [clip].concat(help.queue);
+        help.playing = false;
+        if (help.activeBtn) setBtnPlaying(help.activeBtn, false);
+        showTapPrompt(help.queue.map(function (c) { return c.id; }));
+        help.queue = [];
+      });
+    }
+  }
+
+  function bootAutoRead(opts) {
+    if (help.openBooted || help.muted) return;
+    help.openBooted = true;
+    var ids = [];
+    document.querySelectorAll('.instr-line[data-clip]').forEach(function (el) {
+      var id = el.getAttribute('data-clip');
+      if (id && !help.autoSpoken[id]) { help.autoSpoken[id] = true; ids.push(id); }
+    });
+    if (ids.length) tryAutoPlay(ids, 'open');
   }
 
   window.Solve = {
@@ -401,8 +516,8 @@
     setGoal: setGoal, setHappening: setHappening, setResultLine: setResultLine,
     speakClip: speakClip, makeSpeakBtn: makeSpeakBtn, bindSpeakButtons: bindSpeakButtons,
     attachBoxAudio: attachBoxAudio,
-    tryAutoPlay: function () { /* no auto-play */ },
-    isMuted: function () { return false; }
+    tryAutoPlay: tryAutoPlay, isMuted: function () { return !!help.muted; },
+    setAudioOff: setAudioOff
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHeader);
   else initHeader();

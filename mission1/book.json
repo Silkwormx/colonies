@@ -373,21 +373,12 @@
     {
       "id": "s02",
       "kind": "scene",
-      "title": "Sol 1 · 06:31",
+      "title": "06:31",
       "img": "scene02.jpg",
-      "alt": "Sol 1 · 06:31",
+      "alt": "06:31",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s02_head\">Sol 1 · 06:31</p><div class=\"log-body\"><p><span data-clip=\"a1_s02_a\">Comet nearly opened a helmet to go outside.</span> <span data-clip=\"a1_s02_b\">Outside, the air pressure is less than 1% of Earth’s — almost nothing.</span> <span data-clip=\"a1_s02_c\">One breath out there would end the mission.</span> <span data-clip=\"a1_s02_d\">Kepler sealed the latch. Going outside was canceled.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s02_head\">06:31</p><div class=\"log-body\"><p><span data-clip=\"a1_s02_a\">Comet nearly opened a helmet to go outside.</span> <span data-clip=\"a1_s02_b\">Outside, the air pressure is less than 1% of Earth’s — almost nothing.</span> <span data-clip=\"a1_s02_c\">One breath out there would end the mission.</span> <span data-clip=\"a1_s02_d\">Kepler sealed the latch. Going outside was canceled.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s02_head",
-          "speaker": "narrator",
-          "text": "Sol 1 · 06:31",
-          "speak": "Soul one. Zero six thirty-one.",
-          "file": "a1_s02_head.mp3",
-          "duration": 2.928,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",
@@ -498,21 +489,12 @@
     {
       "id": "s03",
       "kind": "scene",
-      "title": "Sol 1 · 07:02",
+      "title": "07:02",
       "img": "scene03.jpg",
-      "alt": "Sol 1 · 07:02",
+      "alt": "07:02",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s03_head\">Sol 1 · 07:02</p><div class=\"log-body\"><p><span data-clip=\"a1_s03_a\">We scratched a list in the dust of what we have and what we need.</span> <span data-clip=\"a1_s03_b\">We need oxygen. We have ice, sunlight, and scrap metal.</span> <span data-clip=\"a1_s03_c\">There is no ready oxygen tank on board. We could split water into oxygen if we find ice.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s03_head\">07:02</p><div class=\"log-body\"><p><span data-clip=\"a1_s03_a\">We scratched a list in the dust of what we have and what we need.</span> <span data-clip=\"a1_s03_b\">We need oxygen. We have ice, sunlight, and scrap metal.</span> <span data-clip=\"a1_s03_c\">There is no ready oxygen tank on board. We could split water into oxygen if we find ice.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s03_head",
-          "speaker": "narrator",
-          "text": "Sol 1 · 07:02",
-          "speak": "Soul one. Zero seven oh two.",
-          "file": "a1_s03_head.mp3",
-          "duration": 2.688,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",
@@ -569,21 +551,12 @@
     {
       "id": "s04",
       "kind": "scene",
-      "title": "Sol 1 · 11:48",
+      "title": "11:48",
       "img": "scene04.jpg",
-      "alt": "Sol 1 · 11:48",
+      "alt": "11:48",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s04_head\">Sol 1 · 11:48</p><div class=\"log-body\"><p><span data-clip=\"a1_s04_a\">Digging under the red dust, we found water ice.</span> <span data-clip=\"a1_s04_b\">The red color is iron oxide — rust in the dirt.</span> <span data-clip=\"a1_s04_c\">That ice can help us make the oxygen we need.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s04_head\">11:48</p><div class=\"log-body\"><p><span data-clip=\"a1_s04_a\">Digging under the red dust, we found water ice.</span> <span data-clip=\"a1_s04_b\">The red color is iron oxide — rust in the dirt.</span> <span data-clip=\"a1_s04_c\">That ice can help us make the oxygen we need.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s04_head",
-          "speaker": "narrator",
-          "text": "Sol 1 · 11:48",
-          "speak": "Soul one. Eleven forty-eight.",
-          "file": "a1_s04_head.mp3",
-          "duration": 2.448,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",
@@ -677,21 +650,12 @@
     {
       "id": "s05",
       "kind": "scene",
-      "title": "Sol 1 · 14:05",
+      "title": "14:05",
       "img": "scene05.jpg",
-      "alt": "Sol 1 · 14:05",
+      "alt": "14:05",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s05_head\">Sol 1 · 14:05</p><div class=\"log-body\"><p><span data-clip=\"a1_s05_a\">We tried a scrap fan to blow the dust and pull air from it.</span> <span data-clip=\"a1_s05_b\">The dust moved, but the air did not change.</span> <span data-clip=\"a1_s05_c\">The method had three mistakes. We stopped the trial.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s05_head\">14:05</p><div class=\"log-body\"><p><span data-clip=\"a1_s05_a\">We tried a scrap fan to blow the dust and pull air from it.</span> <span data-clip=\"a1_s05_b\">The dust moved, but the air did not change.</span> <span data-clip=\"a1_s05_c\">The method had three mistakes. We stopped the trial.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s05_head",
-          "speaker": "narrator",
-          "text": "Sol 1 · 14:05",
-          "speak": "Soul one. Fourteen oh five.",
-          "file": "a1_s05_head.mp3",
-          "duration": 2.352,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",
@@ -748,21 +712,12 @@
     {
       "id": "s06",
       "kind": "scene",
-      "title": "Sol 1 · 16:40",
+      "title": "16:40",
       "img": "scene06.jpg",
-      "alt": "Sol 1 · 16:40",
+      "alt": "16:40",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s06_head\">Sol 1 · 16:40</p><div class=\"log-body\"><p><span data-clip=\"a1_s06_a\">The water-splitting rig is on: a scavenged solar panel, a jar of melted ice water, and scrap electrodes.</span> <span data-clip=\"a1_s06_b\">We have what we need, and the steps are in the right order now.</span> <span data-clip=\"a1_s06_c\">The current is rising. We are making a little oxygen.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s06_head\">16:40</p><div class=\"log-body\"><p><span data-clip=\"a1_s06_a\">The water-splitting rig is on: a scavenged solar panel, a jar of melted ice water, and scrap electrodes.</span> <span data-clip=\"a1_s06_b\">We have what we need, and the steps are in the right order now.</span> <span data-clip=\"a1_s06_c\">The current is rising. We are making a little oxygen.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s06_head",
-          "speaker": "narrator",
-          "text": "Sol 1 · 16:40",
-          "speak": "Soul one. Sixteen forty.",
-          "file": "a1_s06_head.mp3",
-          "duration": 2.304,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",
@@ -856,21 +811,12 @@
     {
       "id": "s07",
       "kind": "scene",
-      "title": "Sol 1 · 19:12",
+      "title": "19:12",
       "img": "scene07.jpg",
-      "alt": "Sol 1 · 19:12",
+      "alt": "19:12",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s07_head\">Sol 1 · 19:12</p><div class=\"log-body\"><p><span data-clip=\"a1_s07_a\">The habitat shell is closed.</span> <span data-clip=\"a1_s07_b\">We did a tap test with a brass bell: the first ring sounded dull, so we found a leak and patched it.</span> <span data-clip=\"a1_s07_c\">The second ring was clear. The seal holds.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s07_head\">19:12</p><div class=\"log-body\"><p><span data-clip=\"a1_s07_a\">The habitat shell is closed.</span> <span data-clip=\"a1_s07_b\">We did a tap test with a brass bell: the first ring sounded dull, so we found a leak and patched it.</span> <span data-clip=\"a1_s07_c\">The second ring was clear. The seal holds.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s07_head",
-          "speaker": "narrator",
-          "text": "Sol 1 · 19:12",
-          "speak": "Soul one. Nineteen twelve.",
-          "file": "a1_s07_head.mp3",
-          "duration": 2.544,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",
@@ -1035,21 +981,12 @@
     {
       "id": "s09",
       "kind": "scene",
-      "title": "Sol 2 · 18:55",
+      "title": "18:55",
       "img": "scene09.jpg",
-      "alt": "Sol 2 · 18:55",
+      "alt": "18:55",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s09_head\">Sol 2 · 18:55</p><div class=\"log-body\"><p><span data-clip=\"a1_s09_a\">At dusk the sky looks blue near the sun and peach farther away, because of fine dust.</span> <span data-clip=\"a1_s09_b\">A glass-domed canopy is noted for later sols.</span> <span data-clip=\"a1_s09_c\">A dust bank is rising on the horizon. Heat is still unsolved.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s09_head\">18:55</p><div class=\"log-body\"><p><span data-clip=\"a1_s09_a\">At dusk the sky looks blue near the sun and peach farther away, because of fine dust.</span> <span data-clip=\"a1_s09_b\">A glass-domed canopy is noted for later sols.</span> <span data-clip=\"a1_s09_c\">A dust bank is rising on the horizon. Heat is still unsolved.</span></p></div>",
       "clips": [
-        {
-          "id": "a1_s09_head",
-          "speaker": "narrator",
-          "text": "Sol 2 · 18:55",
-          "speak": "Soul two. Eighteen fifty-five.",
-          "file": "a1_s09_head.mp3",
-          "duration": 2.64,
-          "rate": "-7%"
-        },
         {
           "id": "sil_240",
           "speaker": "pause",

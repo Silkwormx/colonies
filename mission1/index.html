@@ -107,6 +107,15 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
 .box-audio.is-playing,.box-audio[aria-pressed="true"]{background:rgba(126,184,201,0.32);border-color:#7eb8c9;color:#eaf6fa;box-shadow:0 0 0 3px rgba(126,184,201,0.4);animation:boxAudioPulse 1.2s ease-in-out infinite}
 @keyframes boxAudioPulse{0%,100%{box-shadow:0 0 0 3px rgba(126,184,201,0.35)}50%{box-shadow:0 0 0 8px rgba(126,184,201,0)}}
 .scene-log,.page-art.logish{padding-right:3.1rem}
+
+.btn-audio{flex:none;width:44px;height:44px;border-radius:50%;padding:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(126,184,201,0.6);background:rgba(16,24,30,0.85);color:#7eb8c9;touch-action:manipulation}
+.btn-audio svg{width:22px;height:22px;pointer-events:none}
+.btn-audio .ico-off{display:none}
+.btn-audio[aria-pressed="true"]{background:rgba(126,184,201,0.28);border-color:#7eb8c9;color:#eaf6fa;box-shadow:0 0 0 3px rgba(126,184,201,0.35)}
+.btn-audio.is-off{color:var(--muted);border-color:rgba(232,160,90,0.45)}
+.btn-audio.is-off .ico-spk{display:none}
+.btn-audio.is-off .ico-off{display:block}
+.btn-audio.needs-tap{animation:boxAudioPulse 1.2s ease-in-out infinite}
 .topnav{display:flex;gap:.4rem;align-items:center}
 @media (max-width:420px){.topbar{padding-left:.5rem;padding-right:.5rem;gap:.35rem}.topbar .pill{padding:.45rem .62rem;letter-spacing:.04em}.topnav{gap:.3rem}}
 .start-overlay{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
@@ -123,9 +132,11 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     <div class="topnav">
       <a class="pill" href="../missions.html" aria-label="Back to missions" title="Back to missions">← Missions</a>
     </div>
+    <button type="button" class="btn-audio" id="raToggle" aria-pressed="false" aria-label="Audio on. Read aloud" title="Read aloud"><svg class="ico-spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   </div>
   <div class="stage-wrap" id="stageWrap">
     <div class="stage" id="stage" aria-live="polite"></div>
+    <div class="start-overlay" id="startOverlay"><button type="button" id="startBtn">Tap to start reading</button></div>
     <button type="button" class="hit left" id="hitLeft" aria-label="Previous page"></button>
     <button type="button" class="hit right" id="hitRight" aria-label="Next page"></button>
   </div>
@@ -141,14 +152,31 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
   try{const k='colonies_read_missions';const r=JSON.parse(localStorage.getItem(k)||'[]');if(!r.includes('m1')){r.push('m1');localStorage.setItem(k,JSON.stringify(r));}}catch(e){}
   const stage=document.getElementById('stage'), pageMeta=document.getElementById('pageMeta'), dots=document.getElementById('dots');
   const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn');
-  const fallback=document.getElementById('fallback');
+  const raToggle=document.getElementById('raToggle'), fallback=document.getElementById('fallback');
+  const startOverlay=document.getElementById('startOverlay'), startBtn=document.getElementById('startBtn');
   const hitLeft=document.getElementById('hitLeft'), hitRight=document.getElementById('hitRight');
   const audio=document.createElement('audio'); audio.setAttribute('playsinline',''); audio.preload='auto'; audio.style.display='none'; document.body.appendChild(audio);
   let book=null, pageIndex=0, token=0, turning=false, activeBtn=null;
+  let readingAll=false, userStopped=false, autoTurnTimer=null;
+  const AUDIO_KEY='colonies_audio_off';
+  let audioOff=false;
+  try{ audioOff = localStorage.getItem(AUDIO_KEY)==='1'; }catch(e){}
+  if(audioOff) userStopped=true;
   const SPEAKER_SVG="<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9H4z\" fill=\"currentColor\"/><path d=\"M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>";
   const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  function syncAudioBtn(){
+    if(!raToggle) return;
+    raToggle.classList.toggle('is-off', audioOff);
+    raToggle.setAttribute('aria-pressed', readingAll?'true':'false');
+    raToggle.setAttribute('aria-label', audioOff ? 'Audio off. Tap to turn on' : (readingAll ? 'Audio on, reading. Tap to stop' : 'Audio on. Read aloud'));
+    raToggle.title = audioOff ? 'Audio off' : 'Read aloud';
+  }
+  function setAudioOff(off){ audioOff=!!off; try{localStorage.setItem(AUDIO_KEY, off?'1':'0');}catch(e){} syncAudioBtn(); }
+  syncAudioBtn();
   function setActive(el){document.querySelectorAll('.ra-active').forEach(n=>n.classList.remove('ra-active')); if(el) el.classList.add('ra-active');}
   function showFallback(retry){fallback.classList.add('show'); fallback.onclick=()=>{fallback.classList.remove('show'); if(retry) retry();};}
+  function showStartOverlay(show){ if(startOverlay) startOverlay.classList.toggle('show', !!show); }
+  function clearAutoTurn(){ if(autoTurnTimer){ clearTimeout(autoTurnTimer); autoTurnTimer=null; } }
   function setBtnPlaying(btn,on){
     if(!btn) return;
     btn.classList.toggle('is-playing', !!on);
@@ -158,13 +186,13 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
   }
   function stopVoice(){
     token++;
+    clearAutoTurn();
     try{audio.pause();}catch(e){}
     try{audio.removeAttribute('src'); audio.src='';}catch(e){}
     try{speechSynthesis&&speechSynthesis.cancel();}catch(e){}
     setActive(null);
     if(activeBtn){ setBtnPlaying(activeBtn,false); activeBtn=null; }
   }
-  // Play one clip exactly once. Generation token ignores stale ended/error from stopVoice()'s load().
   function playSrc(src, expectSec, my){return new Promise(resolve=>{
     let done=false, wd=null;
     const fin=r=>{ if(done)return; done=true; clearTimeout(wd); clearInterval(poll);
@@ -193,7 +221,6 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     const t=setTimeout(()=>{ try{speechSynthesis.cancel();}catch(e){} fin(false); }, 2500+words*450);
     try{if(!window.speechSynthesis||!text)return fin(false);const u=new SpeechSynthesisUtterance(text);u.rate=.92;u.onend=()=>fin(true);u.onerror=()=>fin(false);speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){fin(false);}
   });}
-
   function renderDots(){dots.innerHTML=''; book.pages.forEach((_,i)=>{const d=document.createElement('i'); if(i===pageIndex)d.classList.add('cur'); if(i<pageIndex)d.classList.add('seen'); dots.appendChild(d);});}
   function kindLabel(pg){
     const k=pg.kind||'';
@@ -207,7 +234,6 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     if(k==='image') return ' · Image';
     return '';
   }
-
   function injectBoxAudio(){
     const box=stage.querySelector('.scene-log, .page-art.logish');
     if(!box) return;
@@ -223,35 +249,103 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     btn.innerHTML=SPEAKER_SVG;
     btn.addEventListener('click', function(e){
       e.preventDefault(); e.stopPropagation();
-      toggleBox(btn);
+      if(btn.classList.contains('is-playing')){ stopVoice(); readingAll=false; syncAudioBtn(); return; }
+      setReading(true, {remember:false});
+      stopVoice();
+      readPageOnly(btn);
     });
     btn.addEventListener('touchstart', function(e){ e.stopPropagation(); }, {passive:true});
     btn.addEventListener('touchend', function(e){ e.stopPropagation(); }, {passive:true});
     box.appendChild(btn);
   }
-
-  async function toggleBox(btn){
-    if(btn.classList.contains('is-playing')){ stopVoice(); return; }
-    stopVoice();
-    const playId=token;
-    activeBtn=btn; setBtnPlaying(btn,true);
-    const pg=book.pages[pageIndex];
-    const clips=pg.clips||[];
+  async function playPageClips(btn){
+    const pg=book.pages[pageIndex]; const clips=pg.clips||[]; const my=token;
+    if(btn){ activeBtn=btn; setBtnPlaying(btn,true); }
     for(const it of clips){
-      if(playId!==token) return;
+      if(my!==token) return 'cancel';
       if(it.pause){ setActive(null); await sleep(Math.max(80, Math.round((it.duration||.45)*1000))); continue; }
       const el=stage.querySelector('[data-clip="'+it.id+'"]'); setActive(el);
-      const r=await playSrc('audio/'+it.file, it.duration, playId);
-      if(playId!==token || r==='cancel') return;
-      if(r==='blocked'){ setBtnPlaying(btn,false); activeBtn=null; showFallback(()=>toggleBox(btn)); return; }
+      const r=await playSrc('audio/'+it.file, it.duration, my);
+      if(my!==token || r==='cancel') return 'cancel';
+      if(r==='blocked') return 'blocked';
       if(r==='error'){
-        await speakFallback(it.speak||it.text||(el?el.textContent:''), playId);
-        if(playId!==token) return;
+        await speakFallback(it.speak||it.text||(el?el.textContent:''), my);
+        if(my!==token) return 'cancel';
       }
     }
-    if(playId===token){ setActive(null); setBtnPlaying(btn,false); if(activeBtn===btn) activeBtn=null; }
+    if(my===token){ setActive(null); if(btn){ setBtnPlaying(btn,false); if(activeBtn===btn) activeBtn=null; } }
+    return my===token ? 'ok' : 'cancel';
   }
-
+  async function readPageOnly(btn){
+    const my=token;
+    const r=await playPageClips(btn);
+    if(my!==token) return;
+    if(r==='blocked'){ showFallback(()=>readPageOnly(btn)); return; }
+  }
+  async function readFromHere(){
+    const my=token;
+    const r=await playPageClips(null);
+    if(my!==token || !readingAll) return;
+    if(r==='blocked'){
+      setReading(false,{remember:false});
+      showStartOverlay(true);
+      armGestureStart();
+      return;
+    }
+    const pg=book.pages[pageIndex];
+    if(pg.kind==='end' || pageIndex>=book.pages.length-1){
+      setReading(false,{remember:false});
+      return;
+    }
+    clearAutoTurn();
+    autoTurnTimer=setTimeout(()=>{
+      autoTurnTimer=null;
+      if(my!==token || !readingAll) return;
+      if(pageIndex<book.pages.length-1) goTo(pageIndex+1,1);
+    }, 1500);
+  }
+  function setReading(on, opts){
+    opts=opts||{};
+    readingAll=!!on;
+    if(!on){
+      stopVoice();
+      if(opts.remember!==false){
+        userStopped=true;
+        setAudioOff(true);
+      }
+    } else {
+      userStopped=false;
+      if(audioOff) setAudioOff(false);
+      showStartOverlay(false);
+    }
+    syncAudioBtn();
+  }
+  function toggleRead(){
+    if(!audioOff && !startOverlay.classList.contains('show')){ setReading(false); return; }
+    setReading(true); stopVoice();
+    readFromHere();
+  }
+  function tryAutoStart(){
+    if(userStopped || audioOff) return;
+    setReading(true, {remember:false});
+    readFromHere();
+  }
+  let gestureArmed=false;
+  function armGestureStart(){
+    if(gestureArmed || userStopped || audioOff) return;
+    gestureArmed=true;
+    const kick=(e)=>{
+      if(e.target && e.target.closest && e.target.closest('#raToggle,#startBtn')) return;
+      if(!gestureArmed) return;
+      gestureArmed=false;
+      document.removeEventListener('pointerdown', kick, true);
+      document.removeEventListener('keydown', kick, true);
+      showStartOverlay(false);
+      if(!readingAll && !audioOff){ setReading(true,{remember:false}); stopVoice(); readFromHere(); }
+    };
+    document.addEventListener('pointerdown', kick, true);
+    document.addEventListener('keydown', kick, true);
+  }
   function renderPage(){
     const pg=book.pages[pageIndex], total=book.pages.length;
     pageMeta.textContent=(pageIndex+1)+' / '+total+kindLabel(pg);
@@ -268,7 +362,6 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     prevBtn.disabled=pageIndex<=0; nextBtn.disabled=pageIndex>=total-1; renderDots();
     injectBoxAudio();
   }
-
   let pendingTurn=null, turnTarget=0;
   async function goTo(i,dir){
     if(!book) return;
@@ -276,7 +369,9 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
     if(turning){ pendingTurn={i,dir}; return; }
     if(i===pageIndex) return;
     turning=true; turnTarget=i;
+    const keepReading=readingAll;
     stopVoice();
+    readingAll=keepReading; syncAudioBtn();
     try{
       const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
       const out=dir>=0?'turn-out-next':'turn-out-prev'; const inn=dir>=0?'turn-in-next':'turn-in-prev';
@@ -287,39 +382,47 @@ button,a{font:inherit;color:inherit} img{display:block;max-width:100%;height:aut
       stage.classList.remove(inn);
     } finally { turning=false; }
     if(pendingTurn){ const p=pendingTurn; pendingTurn=null; if(p.i!==pageIndex){ goTo(p.i,p.dir); return; } }
+    if(readingAll && !audioOff) readFromHere();
   }
   const tgt=d=>Math.max(0,Math.min(book?book.pages.length-1:0,(pendingTurn?pendingTurn.i:(turning?turnTarget:pageIndex))+d));
   const next=()=>{ if(book) goTo(tgt(1),1); }, prev=()=>{ if(book) goTo(tgt(-1),-1); };
   function hitTurn(dir){
     return function(e){
-      // Hit overlays sit above the page; peek underneath so the in-box speaker still receives taps
       const hits=[hitLeft,hitRight];
       hits.forEach(h=>{ h.style.pointerEvents='none'; });
       const under=document.elementFromPoint(e.clientX, e.clientY);
       hits.forEach(h=>{ h.style.pointerEvents=''; });
       const btn=under && under.closest && under.closest('.box-audio');
       if(btn){ btn.click(); return; }
-      if(under && under.closest && under.closest('a,.end-actions')) return;
+      if(under && under.closest && under.closest('a,.end-actions,#startOverlay,#raToggle')) return;
       if(dir>0) next(); else prev();
     };
   }
   prevBtn.onclick=prev; nextBtn.onclick=next; hitLeft.onclick=hitTurn(-1); hitRight.onclick=hitTurn(1);
-  document.addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();next();} if(e.key==='ArrowLeft'){e.preventDefault();prev();} });
+  if(raToggle) raToggle.onclick=function(e){ e.preventDefault(); e.stopPropagation(); toggleRead(); };
+  if(startBtn) startBtn.onclick=function(){ showStartOverlay(false); if(!readingAll) toggleRead(); };
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'){e.preventDefault();next();}
+    if(e.key==='ArrowLeft'){e.preventDefault();prev();}
+    if(e.key===' '){e.preventDefault();toggleRead();}
+  });
   let tx=null,ty=null; const wrap=document.getElementById('stageWrap');
   wrap.addEventListener('touchstart',e=>{
-    if(e.target.closest&&e.target.closest('a,.end-actions,.box-audio')){tx=ty=null;return;}
+    if(e.target.closest&&e.target.closest('a,.end-actions,.box-audio,#raToggle,#startOverlay')){tx=ty=null;return;}
     const t=e.changedTouches[0];tx=t.clientX;ty=t.clientY;
   },{passive:true});
   wrap.addEventListener('touchend',e=>{
     if(tx==null)return;
-    if(e.target.closest&&e.target.closest('.box-audio')){tx=ty=null;return;}
+    if(e.target.closest&&e.target.closest('.box-audio,#raToggle')){tx=ty=null;return;}
     const t=e.changedTouches[0];const dx=t.clientX-tx,dy=t.clientY-ty;tx=ty=null;
     if(Math.abs(dx)<48||Math.abs(dx)<Math.abs(dy)*1.2)return; if(dx<0)next(); else prev();
   },{passive:true});
   fetch('audio/manifest.json',{cache:'no-cache'}).then(r=>r.json()).then(m=>{
     book=m; if(!book.pages) throw 0; renderPage();
+    setTimeout(()=>{ tryAutoStart(); if(!readingAll && !audioOff) armGestureStart(); }, 80);
   }).catch(()=>{stage.innerHTML='<div class="page-art logish"><p>Could not load the log.</p></div>';});
 })();
 </script>
+
 </body>
 </html>
