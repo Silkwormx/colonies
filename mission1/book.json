@@ -654,7 +654,7 @@
       "img": "scene05.jpg",
       "alt": "14:05",
       "hold_sec": 1.0,
-      "html": "<p class=\"log-head\" data-clip=\"a1_s05_head\">14:05</p><div class=\"log-body\"><p><span data-clip=\"a1_s05_a\">We tried a scrap fan to blow the dust and pull air from it.</span> <span data-clip=\"a1_s05_b\">The dust moved, but the air did not change.</span> <span data-clip=\"a1_s05_c\">The method had three mistakes. We stopped the trial.</span></p></div>",
+      "html": "<p class=\"log-head\" data-clip=\"a1_s05_head\">14:05</p><div class=\"log-body\"><p><span data-clip=\"a1_s05_a\">Comet couldn't wait and built a fan from scrap, hoping it would make the air better.</span> <span data-clip=\"a1_s05_b\">It spun, and dust flew off the bench, but the oxygen gauge didn't move.</span> <span data-clip=\"a1_s05_c\">A fan moves air.</span> <span data-clip=\"a1_s05_d\">It can't make it.</span> <span data-clip=\"a1_s05_e\">Kepler kept the fan anyway.</span> <span data-clip=\"a1_s05_f\">Once there's oxygen, they'll need something to move it around.</span></p></div>",
       "clips": [
         {
           "id": "sil_240",
@@ -667,10 +667,10 @@
         {
           "id": "a1_s05_a",
           "speaker": "narrator",
-          "text": "We tried a scrap fan to blow the dust and pull air from it.",
-          "speak": "We tried a scrap fan to blow the dust and pull air from it.",
+          "text": "Comet couldn't wait and built a fan from scrap, hoping it would make the air better.",
+          "speak": "Comet couldn't wait and built a fan from scrap, hoping it would make the air better.",
           "file": "a1_s05_a.mp3",
-          "duration": 3.816,
+          "duration": 4.992,
           "rate": "-7%"
         },
         {
@@ -684,10 +684,10 @@
         {
           "id": "a1_s05_b",
           "speaker": "narrator",
-          "text": "The dust moved, but the air did not change.",
-          "speak": "The dust moved, but the air did not change.",
+          "text": "It spun, and dust flew off the bench, but the oxygen gauge didn't move.",
+          "speak": "It spun, and dust flew off the bench, but the oxygen gauge didn't move.",
           "file": "a1_s05_b.mp3",
-          "duration": 3.072,
+          "duration": 4.896,
           "rate": "-7%"
         },
         {
@@ -701,10 +701,61 @@
         {
           "id": "a1_s05_c",
           "speaker": "narrator",
-          "text": "The method had three mistakes. We stopped the trial.",
-          "speak": "The method had three mistakes. We stopped the trial.",
+          "text": "A fan moves air.",
+          "speak": "A fan moves air.",
           "file": "a1_s05_c.mp3",
-          "duration": 3.6,
+          "duration": 1.368,
+          "rate": "-7%"
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "a1_s05_d",
+          "speaker": "narrator",
+          "text": "It can't make it.",
+          "speak": "It can't make it.",
+          "file": "a1_s05_d.mp3",
+          "duration": 0.912,
+          "rate": "-7%"
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "a1_s05_e",
+          "speaker": "narrator",
+          "text": "Kepler kept the fan anyway.",
+          "speak": "Kepler, kept the fan anyway.",
+          "file": "a1_s05_e.mp3",
+          "duration": 2.16,
+          "rate": "-7%"
+        },
+        {
+          "id": "sil_240",
+          "speaker": "pause",
+          "text": "",
+          "file": "silence_240.mp3",
+          "pause": true,
+          "duration": 0.24
+        },
+        {
+          "id": "a1_s05_f",
+          "speaker": "narrator",
+          "text": "Once there's oxygen, they'll need something to move it around.",
+          "speak": "Once there's oxygen, they'll need something to move it around.",
+          "file": "a1_s05_f.mp3",
+          "duration": 3.648,
           "rate": "-7%"
         }
       ]

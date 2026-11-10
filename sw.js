@@ -1,4 +1,4 @@
-const CACHE = 'colonies-v38';
+const CACHE = 'colonies-v39';
 const PRECACHE = [
   './',
   './index.html',
@@ -94,6 +94,9 @@ const PRECACHE = [
   './mission1/audio/a1_s05_a.mp3',
   './mission1/audio/a1_s05_b.mp3',
   './mission1/audio/a1_s05_c.mp3',
+  './mission1/audio/a1_s05_d.mp3',
+  './mission1/audio/a1_s05_e.mp3',
+  './mission1/audio/a1_s05_f.mp3',
   './mission1/audio/a1_s05_head.mp3',
   './mission1/audio/a1_s06_a.mp3',
   './mission1/audio/a1_s06_b.mp3',
