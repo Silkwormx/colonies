@@ -48,21 +48,125 @@
   var SPEAKER_SVG = "<svg class=\"ico-spk\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 9v6h4l5 4V5L8 9H4z\" fill=\"currentColor\"/><path d=\"M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>";
   var SPEAKER_TOGGLE_SVG = SPEAKER_SVG + '<svg class="ico-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 9l6 6M22 9l-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
 
+  /* Auto-advance after a solved game: next in order, or the Solve it index after the finale. */
+  var advance = { timer: null, cancelled: false, onPlayEnd: null, safety: null };
+
+  function cancelAdvance() {
+    advance.cancelled = true;
+    if (advance.timer) { clearTimeout(advance.timer); advance.timer = null; }
+    if (advance.safety) { clearTimeout(advance.safety); advance.safety = null; }
+    advance.onPlayEnd = null;
+    var countEl = document.getElementById('done-count');
+    var stayBtn = document.getElementById('stay-here');
+    if (countEl) { countEl.hidden = true; countEl.textContent = ''; }
+    if (stayBtn) stayBtn.hidden = true;
+    var panel = document.getElementById('done');
+    if (panel) panel.setAttribute('data-advance', 'cancelled');
+  }
+
+  function nextAfter(id) {
+    var idx = -1;
+    for (var i = 0; i < GAMES.length; i++) if (GAMES[i].id === id) idx = i;
+    if (idx >= 0 && idx < GAMES.length - 1) return GAMES[idx + 1];
+    return null;
+  }
+
+  function revealDone(panel) {
+    function go() {
+      try { panel.scrollIntoView({ behavior: 'auto', block: 'start' }); }
+      catch (e) { try { panel.scrollIntoView(true); } catch (e2) {} }
+    }
+    go();
+    setTimeout(go, 80);
+    setTimeout(go, 400);
+    var btn = document.getElementById('next-puzzle');
+    if (btn && btn.focus) {
+      try { btn.focus({ preventScroll: true }); } catch (e) { try { btn.focus(); } catch (e2) {} }
+    }
+  }
+
+  function countdownLabel(next, n) {
+    if (next) return 'Next puzzle in ' + n + '…';
+    return 'Finishing mission in ' + n + '…';
+  }
+
+  function beginCountdown(seconds, href, next) {
+    if (advance.cancelled) return;
+    if (advance.timer) { clearTimeout(advance.timer); advance.timer = null; }
+    var countEl = document.getElementById('done-count');
+    var stayBtn = document.getElementById('stay-here');
+    if (countEl) countEl.hidden = false;
+    if (stayBtn) stayBtn.hidden = false;
+    var left = seconds;
+    function tick() {
+      if (advance.cancelled) return;
+      if (countEl) countEl.textContent = countdownLabel(next, left);
+      if (left <= 0) {
+        var panel = document.getElementById('done');
+        if (panel) panel.setAttribute('data-advance', 'go');
+        location.href = href;
+        return;
+      }
+      left--;
+      advance.timer = setTimeout(tick, 1000);
+    }
+    tick();
+  }
+
+  function firePlayEnd() {
+    var cb = advance.onPlayEnd;
+    advance.onPlayEnd = null;
+    if (advance.safety) { clearTimeout(advance.safety); advance.safety = null; }
+    if (cb) cb();
+  }
+
+  function startAdvance(href, next, resultClip) {
+    advance.cancelled = false;
+    advance.onPlayEnd = null;
+    if (advance.timer) { clearTimeout(advance.timer); advance.timer = null; }
+    if (advance.safety) { clearTimeout(advance.safety); advance.safety = null; }
+    var panel = document.getElementById('done');
+    if (panel) panel.setAttribute('data-advance', 'pending');
+    var stayBtn = document.getElementById('stay-here');
+    if (stayBtn && !stayBtn._bound) {
+      stayBtn._bound = true;
+      stayBtn.addEventListener('click', function () {
+        cancelAdvance();
+        stopAll();
+      });
+    }
+    if (help.muted) {
+      beginCountdown(6, href, next);
+      return;
+    }
+    if (resultClip && help.byId[resultClip]) {
+      var btn = panel ? panel.querySelector('.done-card .box-audio, .box-audio') : null;
+      advance.onPlayEnd = function () {
+        if (advance.cancelled) return;
+        beginCountdown(3, href, next);
+      };
+      playQueue([resultClip], btn);
+      advance.safety = setTimeout(function () {
+        if (advance.cancelled || !advance.onPlayEnd) return;
+        firePlayEnd();
+      }, 20000);
+      return;
+    }
+    beginCountdown(3, href, next);
+  }
+
   function finish(opts) {
     var id = document.body.getAttribute('data-game');
     markSolved(id);
-    var idx = -1;
-    for (var i = 0; i < GAMES.length; i++) if (GAMES[i].id === id) idx = i;
-    var next = null;
-    var solved = read();
-    for (var k = 1; k <= GAMES.length; k++) {
-      var g = GAMES[(idx + k) % GAMES.length];
-      if (solved.indexOf(g.id) === -1) { next = g; break; }
-    }
+    var next = nextAfter(id);
+    var href = next ? next.file : 'index.html';
     var who = opts.who === 'Comet' ? 'Comet' : 'Kepler';
     var portrait = who === 'Comet' ? '../../art/comet_portrait.jpg' : '../../art/kepler_portrait.jpg';
     var resultClip = opts.resultClip || null;
     var panel = document.getElementById('done');
+    var primary = next
+      ? ('Next puzzle<span class="next-sub">' + esc(next.title) + '</span>')
+      : 'Finish mission';
     panel.innerHTML =
       '<div class="done-card">' +
         '<div class="solved-badge">' + CHECK + '<span>Solved</span></div>' +
@@ -70,18 +174,26 @@
           '<p><span class="who">' + who + '</span> ' + esc(opts.line) + '</p></div>' +
         (opts.fact ? '<p class="done-fact" id="done-fact">' + opts.fact + '</p>' : '') +
         '<div class="done-actions">' +
-          (next ? '<a class="btn primary" href="' + next.file + '">Next: ' + esc(next.title) + '</a>'
-                : '<a class="btn primary" href="index.html">All five solved</a>') +
+          '<a class="btn primary btn-next-puzzle" id="next-puzzle" href="' + href + '">' + primary + '</a>' +
           '<button class="btn ghost" type="button" id="again">Play again</button>' +
         '</div>' +
+        '<p class="done-count" id="done-count" hidden></p>' +
+        '<button class="btn ghost" type="button" id="stay-here">Stay here</button>' +
       '</div>';
     panel.hidden = false;
     panel.setAttribute('data-result-clip', resultClip || '');
-    document.getElementById('again').addEventListener('click', function () { location.reload(); });
+    document.body.classList.add('game-finished');
+    document.getElementById('again').addEventListener('click', function () {
+      cancelAdvance();
+      location.reload();
+    });
+    var nextBtn = document.getElementById('next-puzzle');
+    if (nextBtn) nextBtn.addEventListener('click', function () { cancelAdvance(); });
     if (resultClip) attachBoxAudio(panel.querySelector('.done-card') || panel, function () { return [resultClip]; });
-    setTimeout(function () { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 60);
+    revealDone(panel);
     var st = document.getElementById('solved-flag');
     if (st) { st.innerHTML = CHECK + '<span>Solved</span>'; st.hidden = false; }
+    startAdvance(href, next, resultClip);
   }
 
   function initHeader() {
@@ -172,7 +284,10 @@
   function playNext(gen) {
     if (gen !== help.playGen) return;
     if (!help.playing || !help.queue.length) {
-      if (gen === help.playGen) stopAll();
+      if (gen === help.playGen) {
+        stopAll();
+        firePlayEnd();
+      }
       return;
     }
     var clip = help.queue.shift();
@@ -205,7 +320,7 @@
       var gen = help.playGen;
       if (!help.playing) return;
       if (help.queue.length) playNext(gen);
-      else stopAll();
+      else { stopAll(); firePlayEnd(); }
     });
     a.addEventListener('error', function () {
       var gen = help.playGen;
@@ -214,7 +329,7 @@
       var src = a.getAttribute('src') || a.src || '';
       if (!src || src === location.href || /\/$/.test(src)) return;
       if (help.queue.length) playNext(gen);
-      else stopAll();
+      else { stopAll(); firePlayEnd(); }
     });
   }
 
@@ -242,7 +357,7 @@
     btn.addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      if (help.playing && help.activeBtn === btn) { stopAll(); return; }
+      if (help.playing && help.activeBtn === btn) { stopAll(); firePlayEnd(); return; }
       var ids = typeof idsFn === 'function' ? idsFn() : (idsFn || []);
       ids = (ids || []).filter(function (id) { return id && help.byId[id]; });
       if (!ids.length) return;
@@ -398,7 +513,10 @@
     help.muted = !!off;
     try { localStorage.setItem('colonies_audio_off', off ? '1' : '0'); } catch (e) {}
     syncAudioBtn(document.getElementById('read-instr'));
-    if (off) stopAll();
+    if (off) {
+      stopAll();
+      if (advance.onPlayEnd) firePlayEnd();
+    }
   }
 
   function syncAudioBtn(btn) {
@@ -511,7 +629,7 @@
   window.Solve = {
     GAMES: GAMES, read: read, isSolved: isSolved, markSolved: markSolved,
     shuffle: shuffle, esc: esc, feedback: feedback, clearFeedback: clearFeedback,
-    finish: finish, CHECK: CHECK,
+    finish: finish, cancelAdvance: cancelAdvance, CHECK: CHECK,
     installHelp: installHelp, setHintStep: setHintStep, stopInstr: stopAll,
     setGoal: setGoal, setHappening: setHappening, setResultLine: setResultLine,
     speakClip: speakClip, makeSpeakBtn: makeSpeakBtn, bindSpeakButtons: bindSpeakButtons,

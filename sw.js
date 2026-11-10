@@ -1,4 +1,4 @@
-const CACHE = 'colonies-v37';
+const CACHE = 'colonies-v38';
 const PRECACHE = [
   './',
   './index.html',
