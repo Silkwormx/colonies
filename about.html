@@ -63,6 +63,21 @@ a { color: var(--accent); }
   letter-spacing: -0.02em; line-height: 1.12;
   text-wrap: balance;
 }
+.hero-band .hero-heading { width: 100%; }
+.hero-band .hero-intro {
+  margin-top: 0.4rem;
+  font-family: Fraunces, Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(0.95rem, 2.8vw, 1.2rem);
+  color: #f3e2c4;
+  line-height: 1.35;
+  text-wrap: balance;
+  max-width: 32rem;
+  text-shadow:
+    0 1px 0 rgba(20,12,8,0.35),
+    0 2px 12px rgba(20,12,8,0.75);
+}
 .wrap { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.35rem 3.5rem; }
 .tag {
   font-family: Fraunces, Georgia, serif; font-style: italic;
@@ -274,7 +289,12 @@ a.x-card:hover, a.x-card:focus-visible {
 
 <div class="hero-band">
   <img src="hero-about.jpg" alt="Kepler carefully probes a Martian rock while Comet, with goggles and a notebook, points excitedly beside their landing pod" />
-  <div class="veil"><h1>About Colonies</h1></div>
+  <div class="veil">
+    <div class="hero-heading">
+      <h1>About Colonies</h1>
+      <p class="hero-intro">Build a habitat and learn how elements work on Mars.</p>
+    </div>
+  </div>
 </div>
 
 <main class="wrap">
